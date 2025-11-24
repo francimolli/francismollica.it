@@ -16,7 +16,8 @@ const ControlSlider = ({
     max,
     step,
     onChange,
-    unit = ""
+    unit = "",
+    displayValue
 }: {
     label: string,
     value: number,
@@ -24,13 +25,14 @@ const ControlSlider = ({
     max: number,
     step: number,
     onChange: (val: number) => void,
-    unit?: string
+    unit?: string,
+    displayValue?: string
 }) => (
     <div className="group flex flex-col gap-1.5 w-full max-w-[140px] relative">
         {/* Label Row */}
         <div className="flex justify-between items-end text-[10px] font-mono tracking-widest uppercase">
             <span className="text-cyan-600 group-hover:text-cyan-400 transition-colors">{label}</span>
-            <span className="text-cyan-100">{value}{unit}</span>
+            <span className="text-cyan-100">{displayValue || value}{unit}</span>
         </div>
 
         {/* Slider Input */}
@@ -72,7 +74,9 @@ export function Header() {
         time, setTime,
         trafficLevel, setTrafficLevel,
         zoom, setZoom,
-        resetDefaults
+        resetDefaults,
+        manualSetTime,
+        timeSpeed, setTimeSpeed
     } = useCityControls();
 
     return (
@@ -112,16 +116,16 @@ export function Header() {
                         <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,transparent,transparent_2px,rgba(255,255,255,0.03)_2px,rgba(255,255,255,0.03)_4px)] pointer-events-none" />
 
                         <div className="flex items-center gap-8 relative z-10">
-                            <ControlSlider label="Time" value={time} min={0} max={24} step={0.5} onChange={setTime} unit="h" />
+                            <ControlSlider label="Time" value={time} displayValue={time.toFixed(1)} min={0} max={24} step={0.5} onChange={manualSetTime} unit="h" />
+
+                            <div className="w-px h-8 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+
+                            <ControlSlider label="Speed" value={timeSpeed} min={-5} max={5} step={0.25} onChange={setTimeSpeed} unit="x" />
 
                             {/* Vertical Separator */}
                             <div className="w-px h-8 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
                             <ControlSlider label="Traffic" value={trafficLevel} min={0} max={100} step={1} onChange={setTrafficLevel} unit="%" />
-
-                            <div className="w-px h-8 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
-
-                            <ControlSlider label="Zoom" value={zoom} min={0.5} max={2.0} step={0.1} onChange={setZoom} unit="x" />
                         </div>
 
                         <button
@@ -141,14 +145,16 @@ export function Header() {
                     <div className="hidden md:flex items-center bg-black/40 rounded-full border border-white/10 p-1">
                         <button
                             onClick={() => setLanguage("en")}
-                            className={`px-3 py-1 rounded-full text-[10px] font-mono font-bold transition-all duration-300 ${language === "en" ? "bg-cyan-900/50 text-cyan-400 shadow-[0_0_10px_rgba(8,145,178,0.2)]" : "text-white/40 hover:text-white"
+                            data-text="EN"
+                            className={`glitch-hover px-3 py-1 rounded-full text-[10px] font-mono font-bold transition-all duration-300 ${language === "en" ? "bg-cyan-900/50 text-cyan-400 shadow-[0_0_10px_rgba(8,145,178,0.2)]" : "text-white/40 hover:text-white"
                                 }`}
                         >
                             EN
                         </button>
                         <button
                             onClick={() => setLanguage("it")}
-                            className={`px-3 py-1 rounded-full text-[10px] font-mono font-bold transition-all duration-300 ${language === "it" ? "bg-cyan-900/50 text-cyan-400 shadow-[0_0_10px_rgba(8,145,178,0.2)]" : "text-white/40 hover:text-white"
+                            data-text="IT"
+                            className={`glitch-hover px-3 py-1 rounded-full text-[10px] font-mono font-bold transition-all duration-300 ${language === "it" ? "bg-cyan-900/50 text-cyan-400 shadow-[0_0_10px_rgba(8,145,178,0.2)]" : "text-white/40 hover:text-white"
                                 }`}
                         >
                             IT
@@ -183,9 +189,8 @@ export function Header() {
 
                                         {/* Mobile Sliders need full width */}
                                         <div className="space-y-6 [&_div]:max-w-full">
-                                            <ControlSlider label="Time Cycle" value={time} min={0} max={24} step={1} onChange={setTime} unit=":00" />
+                                            <ControlSlider label="Time Cycle" value={time} min={0} max={24} step={1} onChange={manualSetTime} unit=":00" />
                                             <ControlSlider label="Traffic Density" value={trafficLevel} min={0} max={100} step={1} onChange={setTrafficLevel} unit="%" />
-                                            <ControlSlider label="Optical Zoom" value={zoom} min={0.5} max={2.0} step={0.1} onChange={setZoom} unit="x" />
                                         </div>
                                     </div>
 
@@ -207,8 +212,8 @@ export function Header() {
                                         <button
                                             onClick={() => { setLanguage("en"); setIsOpen(false); }}
                                             className={`flex items-center justify-between px-4 py-3 rounded border text-xs font-mono transition-all ${language === "en"
-                                                    ? "bg-cyan-950/40 border-cyan-500/50 text-cyan-400"
-                                                    : "bg-black border-white/10 text-white/50"
+                                                ? "bg-cyan-950/40 border-cyan-500/50 text-cyan-400"
+                                                : "bg-black border-white/10 text-white/50"
                                                 }`}
                                         >
                                             ENGLISH {language === "en" && <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_5px_rgba(34,211,238,1)]" />}
@@ -216,8 +221,8 @@ export function Header() {
                                         <button
                                             onClick={() => { setLanguage("it"); setIsOpen(false); }}
                                             className={`flex items-center justify-between px-4 py-3 rounded border text-xs font-mono transition-all ${language === "it"
-                                                    ? "bg-cyan-950/40 border-cyan-500/50 text-cyan-400"
-                                                    : "bg-black border-white/10 text-white/50"
+                                                ? "bg-cyan-950/40 border-cyan-500/50 text-cyan-400"
+                                                : "bg-black border-white/10 text-white/50"
                                                 }`}
                                         >
                                             ITALIANO {language === "it" && <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_5px_rgba(34,211,238,1)]" />}

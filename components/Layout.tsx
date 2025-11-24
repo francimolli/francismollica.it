@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
-import { FuturisticCity } from "@/components/FuturisticCity";
+import { FuturisticCity } from "./FuturisticCity";
 
 export default function Layout({ children }: { children: ReactNode }) {
     return (
@@ -22,6 +22,9 @@ export default function Layout({ children }: { children: ReactNode }) {
                 'pointer-events-none' è CRUCIALE: i click passano attraverso questo livello 
                 e colpiscono la città sotto. */}
             <div className="absolute inset-0 z-0 bg-black/40 pointer-events-none" />
+
+            {/* CRT SCANLINE EFFECT */}
+            <div className="scanlines" />
 
             {/* ------------------------------------------------------ */}
             {/* LIVELLO 2: CONTENUTO UI (Selettivo)                    */}

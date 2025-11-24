@@ -47,44 +47,44 @@
   --radius: 0.625rem;
   /* Earth Tones Palette */
   /* Background: Soft Beige / Off-white */
-  --background: oklch(0.98 0.01 90); 
+  --background: oklch(0.98 0.01 90);
   /* Foreground: Soft Charcoal */
   --foreground: oklch(0.25 0.02 90);
-  
+
   /* Card: Slightly lighter than background or white */
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.25 0.02 90);
-  
+
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.25 0.02 90);
-  
+
   /* Primary: Sage Green */
   --primary: oklch(0.55 0.08 140);
   --primary-foreground: oklch(0.98 0.01 90);
-  
+
   /* Secondary: Warm Sand */
   --secondary: oklch(0.92 0.03 90);
   --secondary-foreground: oklch(0.25 0.02 90);
-  
+
   /* Muted: Light Grey/Beige */
   --muted: oklch(0.95 0.01 90);
   --muted-foreground: oklch(0.50 0.02 90);
-  
+
   /* Accent: Soft Terracotta/Clay */
   --accent: oklch(0.92 0.03 90);
   --accent-foreground: oklch(0.25 0.02 90);
-  
+
   --destructive: oklch(0.6 0.15 25);
   --border: oklch(0.90 0.01 90);
   --input: oklch(0.90 0.01 90);
   --ring: oklch(0.55 0.08 140);
-  
+
   --chart-1: oklch(0.55 0.08 140);
   --chart-2: oklch(0.65 0.10 60);
   --chart-3: oklch(0.45 0.05 200);
   --chart-4: oklch(0.80 0.10 80);
   --chart-5: oklch(0.70 0.15 40);
-  
+
   --sidebar: oklch(0.98 0.01 90);
   --sidebar-foreground: oklch(0.25 0.02 90);
   --sidebar-primary: oklch(0.55 0.08 140);
@@ -100,38 +100,38 @@
   /* Background: Deep Charcoal/Forest */
   --background: oklch(0.15 0.02 140);
   --foreground: oklch(0.95 0.01 90);
-  
+
   --card: oklch(0.20 0.02 140);
   --card-foreground: oklch(0.95 0.01 90);
-  
+
   --popover: oklch(0.20 0.02 140);
   --popover-foreground: oklch(0.95 0.01 90);
-  
+
   /* Primary: Muted Sage */
   --primary: oklch(0.65 0.08 140);
   --primary-foreground: oklch(0.15 0.02 140);
-  
+
   /* Secondary: Dark Sand */
   --secondary: oklch(0.25 0.02 90);
   --secondary-foreground: oklch(0.95 0.01 90);
-  
+
   --muted: oklch(0.25 0.02 90);
   --muted-foreground: oklch(0.70 0.02 90);
-  
+
   --accent: oklch(0.25 0.02 90);
   --accent-foreground: oklch(0.95 0.01 90);
-  
+
   --destructive: oklch(0.4 0.15 25);
   --border: oklch(0.30 0.02 140);
   --input: oklch(0.30 0.02 140);
   --ring: oklch(0.65 0.08 140);
-  
+
   --chart-1: oklch(0.65 0.08 140);
   --chart-2: oklch(0.75 0.10 60);
   --chart-3: oklch(0.55 0.05 200);
   --chart-4: oklch(0.90 0.10 80);
   --chart-5: oklch(0.80 0.15 40);
-  
+
   --sidebar: oklch(0.20 0.02 140);
   --sidebar-foreground: oklch(0.95 0.01 90);
   --sidebar-primary: oklch(0.65 0.08 140);
@@ -146,10 +146,132 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground font-sans;
   }
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-serif;
   }
+}
+
+/* --- CYBERPUNK FX --- */
+
+/* 1. SCANLINES (CRT Monitor Effect) */
+.scanlines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0) 50%,
+      rgba(0, 0, 0, 0.1) 50%,
+      rgba(0, 0, 0, 0.1));
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.6;
+}
+
+/* 2. GLITCH EFFECT (On Hover) */
+@keyframes glitch-anim-1 {
+  0% {
+    clip-path: inset(20% 0 80% 0);
+    transform: translate(-2px, 1px);
+  }
+
+  20% {
+    clip-path: inset(60% 0 10% 0);
+    transform: translate(2px, -1px);
+  }
+
+  40% {
+    clip-path: inset(40% 0 50% 0);
+    transform: translate(-2px, 2px);
+  }
+
+  60% {
+    clip-path: inset(80% 0 5% 0);
+    transform: translate(2px, -2px);
+  }
+
+  80% {
+    clip-path: inset(10% 0 70% 0);
+    transform: translate(-1px, 1px);
+  }
+
+  100% {
+    clip-path: inset(30% 0 50% 0);
+    transform: translate(1px, -1px);
+  }
+}
+
+@keyframes glitch-anim-2 {
+  0% {
+    clip-path: inset(10% 0 60% 0);
+    transform: translate(2px, -1px);
+  }
+
+  20% {
+    clip-path: inset(80% 0 5% 0);
+    transform: translate(-2px, 2px);
+  }
+
+  40% {
+    clip-path: inset(30% 0 20% 0);
+    transform: translate(2px, 1px);
+  }
+
+  60% {
+    clip-path: inset(10% 0 80% 0);
+    transform: translate(-1px, -2px);
+  }
+
+  80% {
+    clip-path: inset(50% 0 30% 0);
+    transform: translate(1px, 2px);
+  }
+
+  100% {
+    clip-path: inset(20% 0 70% 0);
+    transform: translate(-2px, 1px);
+  }
+}
+
+.glitch-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.glitch-hover:hover::before,
+.glitch-hover:hover::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  /* Matches button bg */
+  opacity: 0.8;
+}
+
+.glitch-hover:hover::before {
+  left: 2px;
+  text-shadow: -1px 0 #ff00c1;
+  animation: glitch-anim-1 0.3s infinite linear alternate-reverse;
+}
+
+.glitch-hover:hover::after {
+  left: -2px;
+  text-shadow: -1px 0 #00fff9;
+  animation: glitch-anim-2 0.3s infinite linear alternate-reverse;
 }
