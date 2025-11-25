@@ -3,19 +3,21 @@
 import { ReactNode, useState, useEffect, useRef } from "react";
 import { useFloatingSection } from "./FloatingSectionContext";
 import { useCityControls } from "./CityControlsContext";
-import { Home, User, Briefcase, Mail, LucideIcon } from "lucide-react";
+import { Home, User, Briefcase, Mail, LucideIcon, Headphones } from "lucide-react";
 
 const iconMap: Record<string, LucideIcon> = {
     "Home": Home,
     "Who am I?": User,
     "Projects": Briefcase,
     "Contact": Mail,
+    "Music": Headphones,
 };
 
 const targetMap: Record<string, { x: number, z: number }> = {
     "Who am I?": { x: 0, z: -120 },   // North
     "Projects": { x: 120, z: 0 },     // East
     "Contact": { x: -120, z: 0 },     // West
+    "Music": { x: 0, z: 120 },        // South
     // "Home" removed - handled by resetView
 };
 
@@ -158,9 +160,13 @@ export default function SectionCard({
         // Apri SOLO se non stavi trascinando (click pulito)
         if (!isDragGesture.current) {
 
-            // SPECIAL CASE: HOME -> RESET VIEW
-            if (title === "Home") {
+            // SPECIAL CASE: HOME -> RESET VIEW (Only when opening)
+            if (title === "Home" && !isExpanded) {
                 resetView();
+                // Wait for reset animation (2s) then open
+                setTimeout(() => {
+                    setExpandedSection(id);
+                }, 2000);
                 return;
             }
 
@@ -194,10 +200,10 @@ export default function SectionCard({
                 onClick={handleClick}
             >
                 <div
-                    className={`w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-xl border border-cyan-500/50 bg-black/90 backdrop-blur-md shadow-[0_0_50px_rgba(6,182,212,0.4)] p-8 animate-in zoom-in-95 duration-300 pointer-events-auto ${className || ""}`}
+                    className={`w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-xl border border-cyan-500/50 bg-black/90 backdrop-blur-md shadow-[0_0_50px_rgba(6,182,212,0.4)] animate-in zoom-in-95 duration-300 pointer-events-auto ${className || ""}`}
                     onClick={(e) => e.stopPropagation()}
                 >
-                    <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
+                    <div className="sticky top-0 z-10 flex items-center justify-between mb-2 border-b border-white/10 pb-2 pt-8 px-8 -mx-4 -mt-8 bg-black/90 backdrop-blur-md">
                         {title && (
                             <h2 className="text-3xl font-bold text-white drop-shadow-[0_0_10px_rgba(0,255,255,0.6)] flex items-center gap-3">
                                 <Icon className="w-8 h-8 text-cyan-400" />
@@ -213,7 +219,7 @@ export default function SectionCard({
                             </svg>
                         </button>
                     </div>
-                    <div className="text-white">
+                    <div className="text-white px-8 pb-8">
                         {children}
                     </div>
                 </div>

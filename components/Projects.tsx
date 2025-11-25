@@ -30,44 +30,20 @@ export function Projects() {
     const { t } = useLanguage();
 
     // Dati dei progetti
-    const projects = [
-        {
-            id: "PRJ_01",
-            title: t.projects.items[0]?.title || "Project 1",
-            description: t.projects.items[0]?.description || "Description",
-            tags: ["GTM", "Adobe Analytics", "JS", "Data"],
-            demoUrl: "https://bitbang.com",
-            repoUrl: "https://github.com/francimolli",
-            icon: Database
-        },
-        {
-            id: "PRJ_02",
-            title: t.projects.items[1]?.title || "Project 2",
-            description: t.projects.items[1]?.description || "Description",
-            tags: ["Next.js", "React", "TS", "Freelance"],
-            demoUrl: "#",
-            repoUrl: "https://github.com/francimolli",
-            icon: Terminal
-        },
-        {
-            id: "PRJ_03",
-            title: t.projects.items[3]?.title || "Project 3",
-            description: t.projects.items[3]?.description || "Description",
-            tags: ["Python", "TensorFlow", "Keras", "AI"],
-            demoUrl: "https://www.enea.it/it/",
-            repoUrl: "https://github.com/francimolli",
-            icon: Cpu
-        },
-        {
-            id: "PRJ_04",
-            title: t.projects.items[2]?.title || "Project 4",
-            description: t.projects.items[2]?.description || "Description",
-            tags: ["React", "Next.js", "SEO", "E-com"],
-            demoUrl: "https://www.payinbitcoin.org/",
-            repoUrl: "https://github.com/francimolli",
-            icon: Folder
-        }
-    ];
+    // Dati dei progetti dinamici dalle traduzioni
+    const projects = t.projects.items.map((item, index) => ({
+        id: `PRJ_0${index + 1}`,
+        title: item.title,
+        description: item.description,
+        tags: item.tags || [],
+        // Assegna icone in base all'indice o a qualche logica (qui ciclico per semplicità)
+        icon: [Database, Terminal, Folder, Cpu, Github, ExternalLink][index % 6],
+        // Placeholder URLs - in un caso reale potrebbero venire dal file di traduzione o da un config separato
+        demoUrl: item.url,
+        repoUrl: "https://github.com/francimolli",
+        company: item.company, // Aggiunto campo company
+        period: item.period    // Aggiunto campo period
+    }));
 
     return (
         <section id="projects" className="relative w-full min-h-screen py-20 bg-black overflow-hidden font-mono text-cyan-500">
@@ -125,9 +101,13 @@ export function Projects() {
 
                             {/* Card Body */}
                             <div className="relative z-10 p-6 flex flex-col flex-grow">
-                                <h3 className="text-2xl text-cyan-100 font-bold mb-3 group-hover:text-cyan-300 transition-colors group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]">
+                                <h3 className="text-2xl text-cyan-100 font-bold mb-1 group-hover:text-cyan-300 transition-colors group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]">
                                     {project.title}
                                 </h3>
+                                <div className="flex justify-between items-center text-xs text-cyan-600 mb-3 font-bold uppercase tracking-wider">
+                                    <span>{project.company}</span>
+                                    <span>{project.period}</span>
+                                </div>
 
                                 <p className="text-cyan-400/70 text-sm leading-relaxed mb-6 flex-grow">
                                     {project.description}

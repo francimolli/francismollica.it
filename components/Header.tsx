@@ -4,9 +4,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
 import { Menu, RotateCcw, Settings2, SlidersHorizontal, Globe, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useCityControls } from "@/components/CityControlsContext";
+import { useFloatingSection } from "@/components/FloatingSectionContext";
 
 // --- PROFESSIONAL SLIDER COMPONENT ---
 const ControlSlider = ({
@@ -76,8 +77,28 @@ export function Header() {
         zoom, setZoom,
         resetDefaults,
         manualSetTime,
-        timeSpeed, setTimeSpeed
+        timeSpeed, setTimeSpeed,
+        resetView
     } = useCityControls();
+
+    const { setExpandedSection } = useFloatingSection();
+
+    // Check if currently online (8:00-24:00 Rome time)
+    const [isOnline, setIsOnline] = useState(false);
+
+    useEffect(() => {
+        const checkOnlineStatus = () => {
+            const now = new Date();
+            const romeTime = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Rome' }));
+            const hour = romeTime.getHours();
+            setIsOnline(hour >= 8 && hour < 24);
+        };
+
+        checkOnlineStatus();
+        const interval = setInterval(checkOnlineStatus, 600000); // Check every 10 minute
+
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
@@ -88,25 +109,33 @@ export function Header() {
 
                 {/* 1. SINISTRA: Identity Module */}
                 <div className="flex items-center gap-4 justify-self-start">
-                    <Link href="/" className="flex items-center gap-3 group">
+                    <Link
+                        href="/"
+                        className="flex items-center gap-3 group"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            resetView();
+                            setExpandedSection('home');
+                        }}
+                    >
                         <div className="relative w-10 h-10 flex items-center justify-center bg-cyan-950/30 border border-cyan-500/20 rounded-sm group-hover:border-cyan-400/50 transition-colors overflow-hidden">
                             {/* Animated Corner Accents */}
                             <div className="absolute top-0 left-0 w-2 h-2 border-l border-t border-cyan-500 opacity-50" />
                             <div className="absolute bottom-0 right-0 w-2 h-2 border-r border-b border-cyan-500 opacity-50" />
 
-                            <span className="font-mono font-bold text-lg text-white tracking-tighter">FM</span>
-                        </div>
-
-                        <div className="hidden sm:flex flex-col">
-                            <span className="font-sans text-sm font-bold text-white tracking-wide group-hover:text-cyan-400 transition-colors">
-                                Francesco Mollica
-                            </span>
-                            <span className="font-mono text-[10px] text-cyan-600 uppercase tracking-widest flex items-center gap-1.5">
-                                <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_5px_rgba(34,211,238,0.8)]" />
-                                System Online
-                            </span>
+                            <span className="font-mono font-bold text-lg text-white tracking-tighter">☊</span>
                         </div>
                     </Link>
+
+                    <div className="hidden sm:flex flex-col">
+                        <span className="font-sans text-sm font-bold text-white tracking-wide hover:text-cyan-400 transition-colors">
+                            <a href="mailto:francesco.mollica@outlook.com" className="underline">francesco@mollica.dev</a>
+                        </span>
+                        <span className="font-mono text-[10px] uppercase tracking-widest flex items-center gap-1.5" style={{ color: isOnline ? 'rgb(8 145 178)' : 'rgb(107 114 128)' }}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-cyan-500 animate-pulse shadow-[0_0_5px_rgba(34,211,238,0.8)]' : 'bg-gray-500'}`} />
+                            {isOnline ? 'Awake' : 'Asleep'}
+                        </span>
+                    </div>
                 </div>
 
                 {/* 2. CENTRO: Control Deck (Desktop Only) */}
@@ -116,7 +145,7 @@ export function Header() {
                         <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,transparent,transparent_2px,rgba(255,255,255,0.03)_2px,rgba(255,255,255,0.03)_4px)] pointer-events-none" />
 
                         <div className="flex items-center gap-8 relative z-10">
-                            <ControlSlider label="Time" value={time} displayValue={time.toFixed(1)} min={0} max={24} step={0.5} onChange={manualSetTime} unit="h" />
+                            <ControlSlider label="Time" value={time} displayValue={time.toFixed(0)} min={0} max={24} step={0.5} onChange={manualSetTime} unit="h" />
 
                             <div className="w-px h-8 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
@@ -189,7 +218,7 @@ export function Header() {
 
                                         {/* Mobile Sliders need full width */}
                                         <div className="space-y-6 [&_div]:max-w-full">
-                                            <ControlSlider label="Time Cycle" value={time} min={0} max={24} step={1} onChange={manualSetTime} unit=":00" />
+                                            <ControlSlider label="Time Speed" value={timeSpeed} min={-5} max={5} step={0.25} onChange={setTimeSpeed} unit="x" />
                                             <ControlSlider label="Traffic Density" value={trafficLevel} min={0} max={100} step={1} onChange={setTrafficLevel} unit="%" />
                                         </div>
                                     </div>
@@ -197,7 +226,7 @@ export function Header() {
                                     <Button
                                         variant="outline"
                                         onClick={resetDefaults}
-                                        className="w-full border-dashed border-white/20 hover:border-cyan-500 text-white/60 hover:text-cyan-400 hover:bg-cyan-950/20 font-mono text-xs uppercase tracking-widest h-10"
+                                        className="w-full border-dashed border-white/20 hover:border-cyan-500 text-black/60 hover:text-cyan-400 hover:bg-cyan-950/20 font-mono text-xs uppercase tracking-widest h-10"
                                     >
                                         <RotateCcw className="mr-2 h-3 w-3" /> Restore Defaults
                                     </Button>

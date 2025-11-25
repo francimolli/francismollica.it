@@ -9,9 +9,15 @@ import {
     SiNextdotjs,
     SiPython,
     SiGoogletagmanager,
-    SiAdobe,
     SiTensorflow,
     SiKeras,
+    SiTailwindcss,
+    SiShadcnui,
+    SiNodedotjs,
+    SiPostgresql,
+    SiGit,
+    SiDocker,
+    SiPandas
 } from "react-icons/si";
 import Link from "next/link";
 
@@ -57,27 +63,39 @@ function TypewriterText({
     );
 }
 
-// --- 2. Componente About Standalone ---
 export function About() {
     const { t } = useLanguage();
 
-    // Lista Skills
     const skills = [
+        // Core Web & Frontend
         { name: "JavaScript", url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", icon: SiJavascript },
         { name: "TypeScript", url: "https://www.typescriptlang.org/", icon: SiTypescript },
         { name: "React", url: "https://react.dev/", icon: SiReact },
         { name: "Next.js", url: "https://nextjs.org/", icon: SiNextdotjs },
+
+        // Styling & UI (Aggiunti)
+        { name: "Tailwind CSS", url: "https://tailwindcss.com/", icon: SiTailwindcss },
+        { name: "shadcn/ui", url: "https://ui.shadcn.com/", icon: SiShadcnui },
+
+        // Data & AI
         { name: "Python", url: "https://www.python.org/", icon: SiPython },
-        { name: "GTM", url: "https://marketingplatform.google.com/about/tag-manager/", icon: SiGoogletagmanager },
-        { name: "Adobe Analytics", url: "https://business.adobe.com/products/analytics/adobe-analytics.html", icon: SiAdobe },
+        { name: "Pandas", url: "https://pandas.pydata.org/", icon: SiPandas }, // Essenziale per Data Analysis
         { name: "TensorFlow", url: "https://www.tensorflow.org/", icon: SiTensorflow },
         { name: "Keras", url: "https://keras.io/", icon: SiKeras },
+
+        // Analytics & Business
+        { name: "GTM", url: "https://marketingplatform.google.com/about/tag-manager/", icon: SiGoogletagmanager },
+
+        // Backend & Engineering (Opzionali ma consigliati per il tuo profilo)
+        { name: "Node.js", url: "https://nodejs.org/", icon: SiNodedotjs },
+        { name: "PostgreSQL", url: "https://www.postgresql.org/", icon: SiPostgresql },
+        { name: "Git", url: "https://git-scm.com/", icon: SiGit },
+        { name: "Docker", url: "https://www.docker.com/", icon: SiDocker },
     ];
 
     return (
         <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-black text-white py-20">
 
-            {/* --- EFFETTI CRT / SFONDO (Presi dalla Hero) --- */}
             {/* Scanlines layer */}
             <div className="absolute inset-0 z-10 pointer-events-none opacity-20">
                 <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(6,182,212,0.1)_2px,rgba(6,182,212,0.1)_4px)]" />
@@ -89,7 +107,6 @@ export function About() {
             {/* --- CONTENUTO PRINCIPALE --- */}
             <div className="container relative z-20 px-6 md:px-8 max-w-6xl">
 
-                {/* Header della "Finestra" Terminale */}
                 <div className="w-full border-b border-cyan-900/50 mb-12 pb-2 flex items-center justify-between text-xs font-mono text-cyan-600/60 uppercase tracking-widest">
                     <div className="flex gap-4">
                         <span>SYS.BIO.V2</span>
@@ -196,7 +213,6 @@ export function About() {
                 </div>
             </div>
 
-            {/* Custom Animation Styles (inline for portability) */}
             <style jsx>{`
                 @keyframes scanVertical {
                     0% { transform: translateY(-50%); }

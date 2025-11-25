@@ -449,28 +449,58 @@ export function FuturisticCity() {
         const moveRef = { x: 0, z: 0 };
         let lastResetTrigger = resetTrigger;
 
+        // Reset Animation State
+        const resetAnimation = {
+            active: false,
+            startTime: 0,
+            startPos: new THREE.Vector3(),
+            startTarget: new THREE.Vector3()
+        };
+
         function animate() {
             animationId = requestAnimationFrame(animate);
             const elapsed = clock.getElapsedTime();
             const { time, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger } = stateRef.current;
 
             // --- RESET LOGIC ---
+            // --- RESET LOGIC (SMOOTH TRANSPORTATION) ---
             if (resetTrigger > lastResetTrigger) {
-                // Reset Camera Position
-                camera.position.set(-140, 110, 140);
-                camera.lookAt(0, 0, 0);
+                // Initialize Reset Animation
+                resetAnimation.active = true;
+                resetAnimation.startTime = elapsed;
+                resetAnimation.startPos.copy(camera.position);
+                resetAnimation.startTarget.copy(controls.target);
 
-                // Reset Controls
-                controls.target.set(0, 0, 0);
-                controls.autoRotate = true;
-                controls.enablePan = true;
-
-                // Reset Movement
+                // Reset Movement State
                 moveRef.x = 0;
                 moveRef.z = 0;
                 setMoveDirection({ x: 0, z: 0 });
 
+                // Disable auto rotate during reset
+                controls.autoRotate = false;
+                controls.enablePan = false;
+
                 lastResetTrigger = resetTrigger;
+            }
+
+            if (resetAnimation.active) {
+                const duration = 2.0; // 2 seconds for smooth transport
+                const t = Math.min((elapsed - resetAnimation.startTime) / duration, 1.0);
+
+                // Ease out cubic
+                const ease = 1 - Math.pow(1 - t, 3);
+
+                // Interpolate Position
+                camera.position.lerpVectors(resetAnimation.startPos, new THREE.Vector3(-140, 110, 140), ease);
+
+                // Interpolate Target
+                controls.target.lerpVectors(resetAnimation.startTarget, new THREE.Vector3(0, 0, 0), ease);
+
+                if (t >= 1.0) {
+                    resetAnimation.active = false;
+                    controls.autoRotate = true;
+                    controls.enablePan = true;
+                }
             }
 
             // --- NAVIGATION LOGIC ---
@@ -782,14 +812,14 @@ export function FuturisticCity() {
 
             {/* --- GRAPHIC PRESENTATION TEXT --- */}
             {/* Moved down to top-32 to avoid Header overlap */}
-            <div className={`absolute top-32 left-10 z-10 pointer-events-none mix-blend-screen transition-opacity duration-300 ${systemStatus !== 'NORMAL' ? 'opacity-20' : 'opacity-80'}`}>
+            <div className={`hidden md:block absolute top-32 left-10 z-10 pointer-events-none mix-blend-screen transition-opacity duration-300 ${systemStatus !== 'NORMAL' ? 'opacity-20' : 'opacity-80'}`}>
                 <h1 className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 tracking-tighter drop-shadow-[0_0_30px_rgba(0,255,255,0.5)]"
                     style={{ fontFamily: "'Orbitron', sans-serif" }}>
-                    ST-SPACE
+                    ORBIT
                 </h1>
                 <div className="mt-2 h-1 w-32 bg-cyan-500 shadow-[0_0_10px_#00ffff]" />
                 <div className="mt-1 text-xs text-cyan-300 font-mono tracking-[0.5em]">
-                    SECTOR 7 // SIMULATION
+                    SIMULATION
                 </div>
             </div>
 
@@ -797,24 +827,31 @@ export function FuturisticCity() {
             {/* Moved down to top-28 to avoid Header overlap */}
             <div className="absolute top-28 right-4 font-mono text-right pointer-events-none select-none z-10">
                 <div className={`text-5xl font-bold tracking-tighter mb-2 transition-colors duration-200 ${systemStatus === 'NORMAL' ? 'text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]' : 'text-red-500 drop-shadow-[0_0_15px_rgba(255,0,0,0.9)] animate-pulse'}`}>
-                    {Math.floor(time).toString().padStart(2, '0')}:{Math.floor((time % 1) * 60).toString().padStart(2, '0')}
+                    {(() => {
+                        const hours = Math.floor(time).toString().padStart(2, '0');
+                        const minutes = Math.floor((time % 1) * 60);
+
+                        if (minutes >= 45) return <>{hours}<span className="text-3xl align-top ml-1">¾</span></>;
+                        if (minutes >= 30) return <>{hours}<span className="text-3xl align-top ml-1">½</span></>;
+                        if (minutes >= 15) return <>{hours}<span className="text-3xl align-top ml-1">¼</span></>;
+                        return hours;
+                    })()}
                 </div>
 
-                <div className="text-[10px] text-cyan-500/40 space-y-1">
-                    <div className={systemStatus !== 'NORMAL' ? 'text-red-500' : ''}>
+                <div className="text-[10px] text-cyan-400/80 space-y-1 bg-black/60 backdrop-blur-sm p-3 rounded-lg border border-white/5 shadow-lg inline-block">
+                    {/* <div className={systemStatus !== 'NORMAL' ? 'text-red-500' : ''}>
                         // SYSTEM_{systemStatus}
                     </div>
-                    <div>_ DATA_LINK_ESTABLISHED</div>
-                    <div>_ TRAFFIC_DENSITY: {systemStatus === 'BLACKOUT' ? 'ERR' : 'HIGH'}</div>
-                    <div className="text-cyan-400">_ UPTIME: {sessionDuration}</div>
+                    <div>_ TRAFFIC_DENSITY: {systemStatus === 'BLACKOUT' ? 'ERR' : 'HIGH'}</div> */}
+                    <div className="text-cyan-300">_ UPTIME: {sessionDuration}</div>
 
-                    <div className="pt-2 opacity-50 text-[8px] leading-tight">
+                    {/* <div className="text-red-400/70 pt-2 text-[8px] leading-tight">
                         * TECH_COOKIE: 'neo_session_start'<br />
                         DETECTED. DELETE TO RESET.
-                    </div>
+                    </div> */}
 
                     {/* Time-based System Message */}
-                    <div className="mt-4 text-[9px] text-cyan-300/80 font-mono tracking-widest border-t border-cyan-900/30 pt-2 max-w-[200px] ml-auto">
+                    <div className="mt-4 text-[9px] text-cyan-200/90 font-mono tracking-widest border-t border-cyan-500/30 pt-2 max-w-[200px] ml-auto">
                         {getTimeMessage(time)}
                     </div>
                 </div>
@@ -851,7 +888,7 @@ export function FuturisticCity() {
                         className="w-10 h-10 bg-black/50 border border-cyan-500/30 rounded hover:bg-cyan-500/20 active:bg-cyan-500/40 text-cyan-400 transition-colors flex items-center justify-center backdrop-blur-sm"
                         onPointerDown={() => handleMove(-1, 0)} onPointerUp={() => handleMove(0, 0)} onPointerLeave={() => handleMove(0, 0)}
                     >
-                        ◀
+                        ◀︎
                     </button>
                     <button
                         className="w-10 h-10 bg-black/50 border border-cyan-500/30 rounded hover:bg-cyan-500/20 active:bg-cyan-500/40 text-cyan-400 transition-colors flex items-center justify-center backdrop-blur-sm"
@@ -863,7 +900,7 @@ export function FuturisticCity() {
                         className="w-10 h-10 bg-black/50 border border-cyan-500/30 rounded hover:bg-cyan-500/20 active:bg-cyan-500/40 text-cyan-400 transition-colors flex items-center justify-center backdrop-blur-sm"
                         onPointerDown={() => handleMove(1, 0)} onPointerUp={() => handleMove(0, 0)} onPointerLeave={() => handleMove(0, 0)}
                     >
-                        ▶
+                        ▶︎
                     </button>
                 </div>
                 <div className="mt-2 text-[10px] font-mono text-cyan-500/50 tracking-widest">NAV_SYSTEM</div>

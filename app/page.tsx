@@ -5,6 +5,7 @@ import { Hero } from "@/components/Hero";
 import { Projects } from "@/components/Projects";
 import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
+import { Music } from "@/components/Music";
 import { CityControlsProvider } from "@/components/CityControlsContext";
 import { FloatingSectionProvider } from "@/components/FloatingSectionContext";
 
@@ -25,6 +26,9 @@ export default function Home() {
           </SectionCard>
           <SectionCard id="contact" title="Contact">
             <Contact />
+          </SectionCard>
+          <SectionCard id="music" title="Music">
+            <Music />
           </SectionCard>
         </Layout>
       </FloatingSectionProvider>
