@@ -92,6 +92,32 @@ export const translations = {
             placeholderEmail: "tua@email.com",
             placeholderMessage: "Parlami del tuo progetto...",
         },
+        header: {
+            status: {
+                awake: "Sveglio",
+                asleep: "Dormendo",
+            },
+            controls: {
+                systemConfiguration: "Configurazione Sistema",
+                environmentVariables: "Variabili Ambiente",
+                timeSpeed: "Velocità Tempo",
+                trafficDensity: "Densità Traffico",
+                restoreDefaults: "Ripristina Default",
+                reloadUniverse: "Ricarica Universo",
+                cooldown: "Cooldown",
+                localization: "Localizzazione",
+            },
+        },
+        hud: {
+            missionTime: "Tempo Missione",
+            systemStatus: "Sistema",
+            statusNormal: "NORMALE",
+            statusRebooting: "RIAVVIO",
+            statusBlackout: "BLACKOUT",
+            move: "MUOVI",
+            lookFly: "GUARDA/VOLA",
+            initializing: "INIZIALIZZAZIONE NUCLEO GALATTICO...",
+        },
     },
     en: {
         nav: {
@@ -185,6 +211,32 @@ export const translations = {
             placeholderName: "Your Name",
             placeholderEmail: "you@email.com",
             placeholderMessage: "Tell me about your project...",
+        },
+        header: {
+            status: {
+                awake: "Awake",
+                asleep: "Asleep",
+            },
+            controls: {
+                systemConfiguration: "System Configuration",
+                environmentVariables: "Environment Variables",
+                timeSpeed: "Time Speed",
+                trafficDensity: "Traffic Density",
+                restoreDefaults: "Restore Defaults",
+                reloadUniverse: "Reload Universe",
+                cooldown: "Cooldown",
+                localization: "Localization",
+            },
+        },
+        hud: {
+            missionTime: "Mission Time",
+            systemStatus: "System",
+            statusNormal: "NORMAL",
+            statusRebooting: "REBOOTING",
+            statusBlackout: "BLACKOUT",
+            move: "MOVE",
+            lookFly: "LOOK/FLY",
+            initializing: "INITIALIZING GALACTIC CORE...",
         },
     },
 };

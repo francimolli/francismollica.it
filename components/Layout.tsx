@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
-import { FuturisticCity } from "./FuturisticCity";
+import { FuturisticOrbit } from "./FuturisticOrbit";
 
 export default function Layout({ children }: { children: ReactNode }) {
     return (
@@ -12,7 +12,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             {/* LIVELLO 0: CITTÀ 3D (Interattiva)                      */}
             {/* ------------------------------------------------------ */}
             <div className="absolute inset-0 z-0">
-                <FuturisticCity />
+                <FuturisticOrbit />
             </div>
 
             {/* ------------------------------------------------------ */}

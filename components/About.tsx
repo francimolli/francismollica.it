@@ -113,7 +113,7 @@ export function About() {
                     <div className="flex gap-4">
                         <span>FRANCESCO MOLLICA, 30 years old</span>
                     </div>
-                    <div className="animate-pulse">● ONLINE</div>
+                    <div className="animate-pulse">● AVAILABLE</div>
                 </div>
                 <div className="flex items-center gap-3 text-sm md:text-base text-cyan-500/80 mb-6">
                     <span>francesco@portfolio:~/about</span>

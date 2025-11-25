@@ -9,6 +9,87 @@ import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPa
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 import { SimplexNoise } from "three/examples/jsm/math/SimplexNoise.js";
 import { useCityControls } from "@/components/CityControlsContext";
+import { useLanguage } from "@/lib/language-context";
+import { translations } from "@/lib/translations";
+
+// --- COMPONENT: VIRTUAL JOYSTICK ---
+function Joystick({ onMove, label, className }: { onMove: (x: number, y: number) => void, label?: string, className?: string }) {
+    const ref = useRef<HTMLDivElement>(null);
+    const [pos, setPos] = useState({ x: 0, y: 0 });
+    const [touchId, setTouchId] = useState<number | null>(null);
+
+    const handleStart = (e: React.TouchEvent) => {
+        e.preventDefault(); // Prevent scrolling
+        if (touchId !== null) return;
+        const touch = e.changedTouches[0];
+        setTouchId(touch.identifier);
+        updatePos(touch);
+    };
+
+    const handleMove = (e: React.TouchEvent) => {
+        e.preventDefault();
+        if (touchId === null) return;
+        const touch = Array.from(e.changedTouches).find(t => t.identifier === touchId);
+        if (touch) updatePos(touch);
+    };
+
+    const handleEnd = (e: React.TouchEvent) => {
+        e.preventDefault();
+        if (touchId === null) return;
+        const touch = Array.from(e.changedTouches).find(t => t.identifier === touchId);
+        if (touch) {
+            setTouchId(null);
+            setPos({ x: 0, y: 0 });
+            onMove(0, 0);
+        }
+    };
+
+    const updatePos = (touch: React.Touch) => {
+        if (!ref.current) return;
+        const rect = ref.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        const maxDist = rect.width / 2;
+
+        let dx = touch.clientX - centerX;
+        let dy = touch.clientY - centerY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist > maxDist) {
+            dx = (dx / dist) * maxDist;
+            dy = (dy / dist) * maxDist;
+        }
+
+        setPos({ x: dx, y: dy });
+        // Normalize -1 to 1
+        onMove(dx / maxDist, dy / maxDist);
+    };
+
+    return (
+        <div
+            ref={ref}
+            className={`relative w-24 h-24 bg-black/30 border border-cyan-500/30 rounded-full backdrop-blur-sm touch-none ${className}`}
+            onTouchStart={handleStart}
+            onTouchMove={handleMove}
+            onTouchEnd={handleEnd}
+        >
+            {/* Stick */}
+            <div
+                className="absolute w-10 h-10 bg-cyan-500/50 rounded-full shadow-[0_0_15px_rgba(6,182,212,0.5)] border border-cyan-200/30"
+                style={{
+                    top: '50%', left: '50%',
+                    transform: `translate(calc(-50% + ${pos.x}px), calc(-50% + ${pos.y}px))`
+                }}
+            />
+            {/* Decorators */}
+            <div className="absolute inset-2 border border-dashed border-cyan-500/20 rounded-full pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 w-1 h-1 bg-cyan-400 rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+
+            {label && <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] text-cyan-400 font-mono tracking-widest uppercase opacity-70">{label}</div>}
+        </div>
+    );
+}
 
 // --- SHADER: GALACTIC DATA CRYSTAL ---
 const crystalVertexShader = `
@@ -98,11 +179,14 @@ const starFragmentShader = `
     }
 `;
 
-export function FuturisticCity() {
+export function FuturisticOrbit() {
     const containerRef = useRef<HTMLDivElement>(null);
     const [loading, setLoading] = useState(true);
+    const [coordinates, setCoordinatesLocal] = useState({ lat: 0, long: 0 });
+    const { language } = useLanguage();
+    const t = translations[language];
 
-    const { time, fogDensity, trafficLevel, zoom, setZoom, systemStatus, cameraTarget, resetTrigger } = useCityControls();
+    const { time, fogDensity, trafficLevel, zoom, setZoom, systemStatus, cameraTarget, resetTrigger, regenerationTrigger, setCoordinates } = useCityControls();
 
     const stateRef = useRef({ time, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger });
     useEffect(() => { stateRef.current = { time, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger }; }, [time, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger]);
@@ -156,16 +240,21 @@ export function FuturisticCity() {
         if (!containerRef.current) return;
         const container = containerRef.current;
 
+        // Randomize Galaxy Theme on Regeneration
+        const hueShift = Math.random() * Math.PI * 2;
+        const baseColor = new THREE.Color().setHSL(Math.random(), 0.5, 0.1);
+        const activeColor = new THREE.Color().setHSL((Math.random() + 0.5) % 1, 1.0, 0.5);
+
         const CONFIG = {
             colors: {
                 bg: 0x000000, // Deep Space
-                base: new THREE.Color(0x111122),
-                active: new THREE.Color(0x00ffff),
-                poi1: new THREE.Color(0xff00ff),
-                poi2: new THREE.Color(0xffaa00),
-                poi3: new THREE.Color(0x00aaff),
+                base: baseColor,
+                active: activeColor,
+                poi1: new THREE.Color().setHSL(Math.random(), 1.0, 0.5),
+                poi2: new THREE.Color().setHSL(Math.random(), 1.0, 0.5),
+                poi3: new THREE.Color().setHSL(Math.random(), 1.0, 0.5),
             },
-            starCount: 3000,
+            starCount: 3000 + Math.floor(Math.random() * 2000),
             packetCount: 3000
         };
 
@@ -237,11 +326,15 @@ export function FuturisticCity() {
         const simplex = new SimplexNoise();
 
         // Generate Galaxy Distribution
+        // Randomize shape parameters
+        const spiralTightness = 0.1 + Math.random() * 0.5;
+        const armCount = 2 + Math.floor(Math.random() * 4);
+
         for (let i = 0; i < CONFIG.starCount; i++) {
             // Spiral Galaxy Distribution
-            const angle = Math.random() * Math.PI * 2;
+            const angle = Math.random() * Math.PI * 2 * armCount; // More arms?
             const radius = 50 + Math.random() * 400; // Hole in middle
-            const spiralOffset = radius * 0.5; // Twist
+            const spiralOffset = radius * spiralTightness; // Twist
 
             const x = Math.cos(angle + spiralOffset) * radius;
             const z = Math.sin(angle + spiralOffset) * radius;
@@ -377,7 +470,7 @@ export function FuturisticCity() {
         // --- ANIMATION LOOP ---
         const clock = new THREE.Clock();
         let animationId: number;
-        const moveRef = { x: 0, z: 0 };
+        const moveRef = { x: 0, z: 0, y: 0, rot: 0 };
         let lastResetTrigger = resetTrigger;
         const resetAnimation = { active: false, startTime: 0, startPos: new THREE.Vector3(), startTarget: new THREE.Vector3() };
 
@@ -386,14 +479,21 @@ export function FuturisticCity() {
             const elapsed = clock.getElapsedTime();
             const { time, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger } = stateRef.current;
 
+            // Update Coordinates
+            const lat = (camera.position.z / 10).toFixed(2);
+            const long = (camera.position.x / 10).toFixed(2);
+            const coords = { lat: parseFloat(lat), long: parseFloat(long) };
+            setCoordinates(coords);
+            setCoordinatesLocal(coords);
+
             // --- RESET LOGIC ---
             if (resetTrigger > lastResetTrigger) {
                 resetAnimation.active = true;
                 resetAnimation.startTime = elapsed;
                 resetAnimation.startPos.copy(camera.position);
                 resetAnimation.startTarget.copy(controls.target);
-                moveRef.x = 0; moveRef.z = 0;
-                setMoveDirection({ x: 0, z: 0 });
+                moveRef.x = 0; moveRef.z = 0; moveRef.y = 0; moveRef.rot = 0;
+                setMoveDirection({ x: 0, z: 0 }); // Keep for compatibility, though less used now
                 controls.autoRotate = false;
                 controls.enablePan = false;
                 lastResetTrigger = resetTrigger;
@@ -434,18 +534,41 @@ export function FuturisticCity() {
                 const bankAngle = (targetX - camera.position.x) * -0.001;
                 camera.rotation.z = THREE.MathUtils.lerp(camera.rotation.z, bankAngle, 0.05);
 
-            } else if (moveRef.x !== 0 || moveRef.z !== 0) {
+            } else if (moveRef.x !== 0 || moveRef.z !== 0 || moveRef.y !== 0 || moveRef.rot !== 0) {
                 controls.autoRotate = false;
                 controls.enablePan = true;
+
+                // 1. Movement (X/Z)
                 const forward = new THREE.Vector3();
                 camera.getWorldDirection(forward);
                 forward.y = 0; forward.normalize();
+
                 const right = new THREE.Vector3();
                 right.crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
-                const moveVec = new THREE.Vector3().addScaledVector(right, moveRef.x).addScaledVector(forward, moveRef.z).normalize().multiplyScalar(moveSpeed);
+
+                const moveVec = new THREE.Vector3()
+                    .addScaledVector(right, moveRef.x)
+                    .addScaledVector(forward, moveRef.z)
+                    .normalize()
+                    .multiplyScalar(moveSpeed);
+
+                // 2. Vertical Movement (Y)
+                moveVec.y = moveRef.y * moveSpeed;
+
                 controls.target.add(moveVec);
                 camera.position.add(moveVec);
-                camera.rotation.z = THREE.MathUtils.lerp(camera.rotation.z, 0, 0.1);
+
+                // 3. Rotation
+                if (moveRef.rot !== 0) {
+                    // Rotate camera around target
+                    const offset = new THREE.Vector3().subVectors(camera.position, controls.target);
+                    const rotSpeed = 0.03;
+                    offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), -moveRef.rot * rotSpeed);
+                    camera.position.copy(controls.target).add(offset);
+                    camera.lookAt(controls.target);
+                }
+
+                camera.rotation.z = THREE.MathUtils.lerp(camera.rotation.z, -moveRef.x * 0.05, 0.1);
             } else {
                 camera.rotation.z = THREE.MathUtils.lerp(camera.rotation.z, 0, 0.1);
             }
@@ -560,9 +683,11 @@ export function FuturisticCity() {
         }
         animate();
 
-        (container as any)._updateMove = (x: number, z: number) => {
+        (container as any)._updateMove = (x: number, z: number, y: number = 0, rot: number = 0) => {
             moveRef.x = x;
             moveRef.z = z;
+            moveRef.y = y;
+            moveRef.rot = rot;
         };
 
         const handleResize = () => {
@@ -600,13 +725,16 @@ export function FuturisticCity() {
             cancelAnimationFrame(animationId);
             renderer.dispose();
             scene.clear();
+            if (container.contains(renderer.domElement)) {
+                container.removeChild(renderer.domElement);
+            }
         };
-    }, []);
+    }, [regenerationTrigger]); // Re-run when regenerationTrigger changes
 
-    const handleMove = (x: number, z: number) => {
-        setMoveDirection({ x, z });
+    const handleMove = (x: number, z: number, y: number = 0, rot: number = 0) => {
+        // setMoveDirection({ x, z }); // Optional update for React state if needed
         if (containerRef.current && (containerRef.current as any)._updateMove) {
-            (containerRef.current as any)._updateMove(x, z);
+            (containerRef.current as any)._updateMove(x, z, y, rot);
         }
     };
 
@@ -622,53 +750,47 @@ export function FuturisticCity() {
                 {/* Vignette */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_50%,rgba(0,0,0,0.8)_100%)]" />
 
+                {/* Mobile Coordinates (Top-Left) */}
+                <div className="absolute top-24 left-8 lg:hidden flex items-center gap-2 text-xs text-cyan-400 bg-black/40 backdrop-blur-sm p-2 rounded border border-cyan-900/30">
+                    <span>{coordinates.lat.toFixed(2)}°N</span>
+                    <span>{coordinates.long.toFixed(2)}°E</span>
+                </div>
+
                 {/* Session Timer */}
-                <div className="absolute bottom-8 right-8 flex flex-col items-end gap-1">
-                    <div className="text-[10px] text-cyan-600 font-mono tracking-widest uppercase">Mission Time</div>
+                <div className="absolute top-24 right-8 flex flex-col items-end gap-1 pointer-events-none z-20">
+                    <div className="text-[10px] text-cyan-600 font-mono tracking-widest uppercase">{t.hud.missionTime}</div>
                     <div className="text-xl font-bold text-cyan-400 font-mono tracking-widest drop-shadow-[0_0_5px_rgba(0,255,255,0.8)]">
                         {sessionDuration}
                     </div>
                 </div>
 
                 {/* Status Indicator */}
-                <div className="absolute top-24 left-8 flex items-center gap-3 bg-black/40 backdrop-blur-sm p-3 rounded border border-cyan-900/30">
+                <div className="absolute top-24 left-8 hidden md:flex items-center gap-3 bg-black/40 backdrop-blur-sm p-3 rounded border border-cyan-900/30">
                     <div className={`w-2 h-2 rounded-full ${systemStatus === 'NORMAL' ? 'bg-green-500 animate-pulse' : 'bg-red-500 animate-ping'}`} />
                     <span className={`text-xs font-mono tracking-widest ${systemStatus === 'NORMAL' ? 'text-cyan-400' : 'text-red-500'}`}>
-                        SYSTEM: {systemStatus}
+                        {t.hud.systemStatus}: {systemStatus}
                     </span>
                 </div>
 
-                {/* Mobile Controls (D-Pad) */}
-                <div className="absolute bottom-8 left-8 md:hidden pointer-events-auto flex flex-col items-center gap-2">
-                    <button
-                        className="w-12 h-12 bg-black/50 border border-cyan-500/30 rounded-t-lg active:bg-cyan-500/20 text-cyan-400 flex items-center justify-center"
-                        onTouchStart={() => handleMove(0, 1)}
-                        onTouchEnd={() => handleMove(0, 0)}
-                    >▲</button>
-                    <div className="flex gap-2">
-                        <button
-                            className="w-12 h-12 bg-black/50 border border-cyan-500/30 rounded-l-lg active:bg-cyan-500/20 text-cyan-400 flex items-center justify-center"
-                            onTouchStart={() => handleMove(-1, 0)}
-                            onTouchEnd={() => handleMove(0, 0)}
-                        >◀</button>
-                        <button
-                            className="w-12 h-12 bg-black/50 border border-cyan-500/30 rounded-r-lg active:bg-cyan-500/20 text-cyan-400 flex items-center justify-center"
-                            onTouchStart={() => handleMove(1, 0)}
-                            onTouchEnd={() => handleMove(0, 0)}
-                        >▶</button>
-                    </div>
-                    <button
-                        className="w-12 h-12 bg-black/50 border border-cyan-500/30 rounded-b-lg active:bg-cyan-500/20 text-cyan-400 flex items-center justify-center"
-                        onTouchStart={() => handleMove(0, -1)}
-                        onTouchEnd={() => handleMove(0, 0)}
-                    >▼</button>
+                {/* Mobile Controls (Dual Joysticks) */}
+                <div className="absolute bottom-8 left-8 md:hidden pointer-events-auto z-50">
+                    <Joystick
+                        label={t.hud.move}
+                        onMove={(x, y) => handleMove(x, -y, 0, 0)} // y inverted because screen y is down
+                    />
+                </div>
+                <div className="absolute bottom-8 right-8 md:hidden pointer-events-auto z-50">
+                    <Joystick
+                        label={t.hud.lookFly}
+                        onMove={(x, y) => handleMove(0, 0, -y, x)} // y inverted for up/down, x for rotation
+                    />
                 </div>
             </div>
 
             {/* Loading Screen */}
             {loading && (
                 <div className="absolute inset-0 z-50 bg-black flex items-center justify-center">
-                    <div className="text-cyan-500 font-mono text-xl animate-pulse">INITIALIZING GALACTIC CORE...</div>
+                    <div className="text-cyan-500 font-mono text-xl animate-pulse">{t.hud.initializing}</div>
                 </div>
             )}
         </div>

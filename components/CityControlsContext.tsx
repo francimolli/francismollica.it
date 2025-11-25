@@ -21,6 +21,10 @@ interface CityControls {
     resetView: () => void;
     resetTrigger: number; // Counter to trigger reset effect
     cameraTarget: { x: number, z: number } | null;
+    regenerationTrigger: number;
+    regenerateSimulation: () => void;
+    coordinates: { lat: number, long: number };
+    setCoordinates: (coords: { lat: number, long: number }) => void;
 }
 
 const CityControlsContext = createContext<CityControls | undefined>(undefined);
@@ -37,18 +41,20 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
     const [fogDensity, setFogDensity] = useState(DEFAULT_FOG);
     const [trafficLevel, setTrafficLevel] = useState(DEFAULT_TRAFFIC);
     const [systemStatus, setSystemStatus] = useState<'NORMAL' | 'BLACKOUT' | 'REBOOTING'>('NORMAL');
-    const [timeSpeed, setTimeSpeed] = useState(1.0);
+    const [timeSpeed, setTimeSpeed] = useState(3.0);
     const [cameraTarget, setCameraTarget] = useState<{ x: number, z: number } | null>(null);
     const [resetTrigger, setResetTrigger] = useState(0);
+    const [regenerationTrigger, setRegenerationTrigger] = useState(0);
+    const [coordinates, setCoordinates] = useState({ lat: 41.90, long: 12.49 });
 
     // --- 2. RILEVAMENTO MOBILE (ZOOM DEFAULT) ---
     useEffect(() => {
-        // Se lo schermo è piccolo (<768px), partiamo più lontani (0.6)
+        // Se lo schermo è piccolo (<768px), partiamo più lontani (0.4)
         const isMobile = window.innerWidth < 768;
         if (isMobile) {
-            setZoom(0.6);
+            setZoom(0.4);
         } else {
-            setZoom(1.0);
+            setZoom(0.8);
         }
 
         // --- CALCOLO TEMPO INIZIALE BASATO SULLA SESSIONE ---
@@ -113,9 +119,9 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
         // setTime(DEFAULT_TIME); // Time is preserved
         setFogDensity(DEFAULT_FOG);
         setTrafficLevel(DEFAULT_TRAFFIC);
-        setZoom(isMobile ? 0.6 : 1.0);
+        setZoom(isMobile ? 0.4 : 0.8);
         setSystemStatus('NORMAL');
-        setTimeSpeed(1.0);
+        setTimeSpeed(3.0);
         setCameraTarget(null); // Reset camera target
     };
 
@@ -132,6 +138,10 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
         setCameraTarget(null); // Stop any active flying
     };
 
+    const regenerateSimulation = () => {
+        setRegenerationTrigger(prev => prev + 1);
+    };
+
     return (
         <CityControlsContext.Provider
             value={{
@@ -144,7 +154,9 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
                 manualSetTime,
                 timeSpeed, setTimeSpeed,
                 cameraTarget, flyTo, stopFlying,
-                resetView, resetTrigger
+                resetView, resetTrigger,
+                regenerationTrigger, regenerateSimulation,
+                coordinates, setCoordinates
             }}
         >
             {children}

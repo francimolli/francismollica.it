@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
-import { Menu, RotateCcw, Settings2, SlidersHorizontal, Globe, ChevronRight } from "lucide-react";
+import { Menu, RotateCcw, Settings2, SlidersHorizontal, Globe, ChevronRight, RefreshCw } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useCityControls } from "@/components/CityControlsContext";
 import { useFloatingSection } from "@/components/FloatingSectionContext";
+import { translations } from "@/lib/translations";
 
 // --- PROFESSIONAL SLIDER COMPONENT ---
 const ControlSlider = ({
@@ -70,6 +71,7 @@ const ControlSlider = ({
 export function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const { language, setLanguage } = useLanguage();
+    const t = translations[language];
 
     const {
         time, setTime,
@@ -78,7 +80,8 @@ export function Header() {
         resetDefaults,
         manualSetTime,
         timeSpeed, setTimeSpeed,
-        resetView
+        resetView,
+        coordinates, regenerateSimulation
     } = useCityControls();
 
     const { setExpandedSection } = useFloatingSection();
@@ -100,6 +103,22 @@ export function Header() {
         return () => clearInterval(interval);
     }, []);
 
+    // Cooldown for regeneration
+    const [cooldown, setCooldown] = useState(0);
+
+    useEffect(() => {
+        if (cooldown > 0) {
+            const timer = setInterval(() => setCooldown(c => c - 1), 1000);
+            return () => clearInterval(timer);
+        }
+    }, [cooldown]);
+
+    const handleRegenerate = () => {
+        if (cooldown > 0) return;
+        regenerateSimulation();
+        setCooldown(145);
+    };
+
     const formatTime = (val: number) => {
         const hours = Math.floor(val);
         const minutes = Math.floor((val - hours) * 60);
@@ -111,7 +130,7 @@ export function Header() {
             {/* Glassmorphism Background with bottom border */}
             <div className="absolute inset-0 h-20 bg-gradient-to-b from-black/90 to-black/60 backdrop-blur-md border-b border-white/5 shadow-2xl z-0" />
 
-            <div className="container relative z-10 grid grid-cols-[auto_1fr_auto] h-20 items-center px-6 md:px-8 pointer-events-auto">
+            <div className="container relative z-10 grid grid-cols-[1fr_auto_1fr] h-20 items-center px-6 md:px-8 pointer-events-auto">
 
                 {/* 1. SINISTRA: Identity Module */}
                 <div className="flex items-center gap-4 justify-self-start">
@@ -139,21 +158,21 @@ export function Header() {
                         </span>
                         <span className="font-mono text-[10px] uppercase tracking-widest flex items-center gap-1.5" style={{ color: isOnline ? 'rgb(8 145 178)' : 'rgb(107 114 128)' }}>
                             <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-cyan-500 animate-pulse shadow-[0_0_5px_rgba(34,211,238,0.8)]' : 'bg-gray-500'}`} />
-                            {isOnline ? 'Awake' : 'Asleep'}
+                            {isOnline ? t.header.status.awake : t.header.status.asleep}
                         </span>
                     </div>
                 </div>
 
-                {/* Mobile Time Display (Absolute Center) */}
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:hidden flex flex-col items-center pointer-events-none">
-                    <div className="text-[8px] text-cyan-600 font-mono tracking-widest uppercase opacity-70">SYSTEM TIME</div>
+                {/* Mobile Time Display (Right side) */}
+                <div className="absolute top-1/2 right-8 -translate-y-1/2 lg:hidden flex flex-col items-end pointer-events-none">
+                    <div className="text-[8px] text-cyan-600 font-mono tracking-widest uppercase opacity-70">TIME HERE</div>
                     <div className="text-lg font-bold text-cyan-400 font-mono tracking-widest drop-shadow-[0_0_5px_rgba(0,255,255,0.8)]">
                         {formatTime(time)}
                     </div>
                 </div>
 
                 {/* 2. CENTRO: Control Deck (Desktop Only) */}
-                <div className="hidden lg:flex justify-self-center items-center">
+                <div className="hidden lg:flex justify-self-center items-center w-full justify-center">
                     <div className="flex items-center gap-6 px-8 py-3 bg-black/40 border border-white/10 rounded-full backdrop-blur-md shadow-inner relative overflow-hidden">
                         {/* Subtle scanline effect inside the control deck */}
                         <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,transparent,transparent_2px,rgba(255,255,255,0.03)_2px,rgba(255,255,255,0.03)_4px)] pointer-events-none" />
@@ -182,7 +201,15 @@ export function Header() {
                 </div>
 
                 {/* 3. DESTRA: Settings & Mobile Trigger */}
-                <div className="flex items-center gap-4 justify-self-end">
+                <div className="flex items-center gap-6 justify-self-end">
+
+                    {/* Telemetry Data (Desktop Only) */}
+                    <div className="hidden xl:flex flex-col items-end text-[10px] font-mono text-cyan-600/70 leading-tight tracking-wider">
+                        <div className="flex items-center gap-2">
+                            <span>COORDS</span>
+                            <span className="text-cyan-400">{coordinates.lat.toFixed(2)}°N {coordinates.long.toFixed(2)}°E</span>
+                        </div>
+                    </div>
 
                     {/* Desktop Language Switch */}
                     <div className="hidden md:flex items-center bg-black/40 rounded-full border border-white/10 p-1">
@@ -204,9 +231,34 @@ export function Header() {
                         </button>
                     </div>
 
+                    {/* Regenerate Button */}
+                    <div className="hidden md:flex items-center">
+                        <button
+                            onClick={handleRegenerate}
+                            disabled={cooldown > 0}
+                            className={`
+                                flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-300
+                                ${cooldown > 0
+                                    ? "bg-red-950/30 border-red-500/30 text-red-400 cursor-not-allowed"
+                                    : "bg-black/40 border-white/10 text-cyan-400 hover:bg-cyan-950/30 hover:border-cyan-400 hover:shadow-[0_0_10px_rgba(34,211,238,0.3)]"
+                                }
+                            `}
+                            title="Regenerate Simulation"
+                        >
+                            {cooldown > 0 ? (
+                                <span className="text-[10px] font-mono font-bold">{cooldown}s</span>
+                            ) : (
+                                <>
+                                    <RefreshCw size={14} className="animate-[spin_10s_linear_infinite] hover:animate-[spin_1s_linear_infinite]" />
+                                    <span className="text-[10px] font-mono font-bold tracking-wider">{t.header.controls.reloadUniverse.toUpperCase()}</span>
+                                </>
+                            )}
+                        </button>
+                    </div>
+
                     {/* Mobile Menu Trigger */}
                     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-                        <SheetTrigger asChild className="lg:hidden">
+                        <SheetTrigger asChild className="lg:hidden ml-auto">
                             <Button variant="outline" size="icon" className="bg-black/50 border-cyan-500/30 text-cyan-400 hover:bg-cyan-950/50 hover:text-cyan-300 hover:border-cyan-400">
                                 <SlidersHorizontal className="h-4 w-4" />
                             </Button>
@@ -219,7 +271,7 @@ export function Header() {
                                 <SheetHeader className="p-6 border-b border-white/10">
                                     <SheetTitle className="flex items-center gap-2 text-cyan-400 font-mono uppercase tracking-widest text-sm">
                                         <Settings2 className="w-4 h-4" />
-                                        System Configuration
+                                        {t.header.controls.systemConfiguration}
                                     </SheetTitle>
                                 </SheetHeader>
 
@@ -227,13 +279,13 @@ export function Header() {
                                 <div className="p-8 space-y-8 flex-1 overflow-y-auto">
                                     <div className="space-y-6">
                                         <div className="flex items-center gap-2 text-white/50 text-xs font-mono uppercase border-b border-white/5 pb-2 mb-4">
-                                            <span>Environment Variables</span>
+                                            <span>{t.header.controls.environmentVariables}</span>
                                         </div>
 
                                         {/* Mobile Sliders need full width */}
                                         <div className="space-y-6 [&_div]:max-w-full">
-                                            <ControlSlider label="Time Speed" value={timeSpeed} min={-5} max={5} step={0.25} onChange={setTimeSpeed} unit="x" />
-                                            <ControlSlider label="Traffic Density" value={trafficLevel} min={0} max={100} step={1} onChange={setTrafficLevel} unit="%" />
+                                            <ControlSlider label={t.header.controls.timeSpeed} value={timeSpeed} min={-5} max={5} step={0.25} onChange={setTimeSpeed} unit="x" />
+                                            <ControlSlider label={t.header.controls.trafficDensity} value={trafficLevel} min={0} max={100} step={1} onChange={setTrafficLevel} unit="%" />
                                         </div>
                                     </div>
 
@@ -242,14 +294,32 @@ export function Header() {
                                         onClick={resetDefaults}
                                         className="w-full border-dashed border-white/20 hover:border-cyan-500 text-black/60 hover:text-cyan-400 hover:bg-cyan-950/20 font-mono text-xs uppercase tracking-widest h-10"
                                     >
-                                        <RotateCcw className="mr-2 h-3 w-3" /> Restore Defaults
+                                        <RotateCcw className="mr-2 h-3 w-3" /> {t.header.controls.restoreDefaults}
+                                    </Button>
+
+                                    <Button
+                                        variant="outline"
+                                        onClick={handleRegenerate}
+                                        disabled={cooldown > 0}
+                                        className={`w-full border-dashed font-mono text-xs uppercase tracking-widest h-10 ${cooldown > 0
+                                            ? "border-red-500/30 text-red-400 bg-red-950/10"
+                                            : "border-cyan-500/30 text-cyan-400 hover:bg-cyan-950/20 hover:border-cyan-400"
+                                            }`}
+                                    >
+                                        {cooldown > 0 ? (
+                                            <span>{t.header.controls.cooldown.toUpperCase()}: {cooldown}s</span>
+                                        ) : (
+                                            <>
+                                                <RefreshCw className="mr-2 h-3 w-3 animate-[spin_10s_linear_infinite]" /> {t.header.controls.reloadUniverse.toUpperCase()}
+                                            </>
+                                        )}
                                     </Button>
                                 </div>
 
                                 {/* Mobile Footer / Language */}
                                 <div className="p-6 border-t border-white/10 bg-white/5">
                                     <div className="flex items-center justify-between mb-2 text-xs text-white/40 font-mono uppercase">
-                                        <span className="flex items-center gap-2"><Globe className="w-3 h-3" /> Localization</span>
+                                        <span className="flex items-center gap-2"><Globe className="w-3 h-3" /> {t.header.controls.localization}</span>
                                     </div>
                                     <div className="grid grid-cols-2 gap-2">
                                         <button
