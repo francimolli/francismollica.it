@@ -100,6 +100,12 @@ export function Header() {
         return () => clearInterval(interval);
     }, []);
 
+    const formatTime = (val: number) => {
+        const hours = Math.floor(val);
+        const minutes = Math.floor((val - hours) * 60);
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    };
+
     return (
         <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
             {/* Glassmorphism Background with bottom border */}
@@ -135,6 +141,14 @@ export function Header() {
                             <span className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-cyan-500 animate-pulse shadow-[0_0_5px_rgba(34,211,238,0.8)]' : 'bg-gray-500'}`} />
                             {isOnline ? 'Awake' : 'Asleep'}
                         </span>
+                    </div>
+                </div>
+
+                {/* Mobile Time Display (Absolute Center) */}
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:hidden flex flex-col items-center pointer-events-none">
+                    <div className="text-[8px] text-cyan-600 font-mono tracking-widest uppercase opacity-70">SYSTEM TIME</div>
+                    <div className="text-lg font-bold text-cyan-400 font-mono tracking-widest drop-shadow-[0_0_5px_rgba(0,255,255,0.8)]">
+                        {formatTime(time)}
                     </div>
                 </div>
 

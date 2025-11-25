@@ -90,7 +90,7 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
 
     const resetDefaults = () => {
         const isMobile = window.innerWidth < 768;
-        setTime(DEFAULT_TIME);
+        // setTime(DEFAULT_TIME); // Time is preserved
         setFogDensity(DEFAULT_FOG);
         setTrafficLevel(DEFAULT_TRAFFIC);
         setZoom(isMobile ? 0.6 : 1.0);
