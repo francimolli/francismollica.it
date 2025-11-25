@@ -111,8 +111,7 @@ export function About() {
 
                 <div className="w-full border-b border-cyan-900/50 mb-12 pb-2 flex items-center justify-between text-xs font-mono text-cyan-600/60 uppercase tracking-widest">
                     <div className="flex gap-4">
-                        <span>SYS.BIO.V2</span>
-                        <span>// FRANCESCO MOLLICA</span>
+                        <span>FRANCESCO MOLLICA, 30 years old</span>
                     </div>
                     <div className="animate-pulse">● ONLINE</div>
                 </div>

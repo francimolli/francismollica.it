@@ -22,11 +22,11 @@ const targetMap: Record<string, { x: number, z: number }> = {
 };
 
 const colorMap: Record<string, string> = {
-    "Home": "cyan",
-    "Who am I?": "emerald",
-    "Projects": "violet",
-    "Contact": "rose",
-    "Music": "amber",
+    "Home": "#00ffff",      // Cyan (Default/Active)
+    "Who am I?": "#ff00ff", // Magenta (North Artifact)
+    "Projects": "#ffaa00",  // Orange (East Artifact)
+    "Contact": "#00aaff",   // Light Blue (West Artifact)
+    "Music": "#00ffff",     // Cyan (South Artifact)
 };
 
 export default function SectionCard({
@@ -204,7 +204,7 @@ export default function SectionCard({
     if (isExpanded) {
         return (
             <div
-                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300 pointer-events-none"
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300 pointer-events-auto"
                 onClick={handleClick}
             >
                 <div
@@ -213,21 +213,22 @@ export default function SectionCard({
                 >
                     <div className="sticky top-0 z-10 flex items-center justify-between mb-2 border-b border-white/10 pb-2 pt-8 px-8 -mx-4 -mt-8 bg-black/90 backdrop-blur-md">
                         {title && (
-                            <h2 className="text-3xl font-bold text-white drop-shadow-[0_0_10px_rgba(0,255,255,0.6)] flex items-center gap-3">
-                                <Icon className="w-8 h-8 text-cyan-400" />
+                            <h2 className="text-3xl font-bold drop-shadow-[0_0_10px_rgba(0,255,255,0.6)] flex items-center gap-3" style={{ color: colorMap[title] || "#00ffff" }}>
+                                <Icon className="w-8 h-8" />
                                 {title}
                             </h2>
                         )}
                         <button
                             onClick={handleClick}
-                            className="ml-auto text-cyan-400 hover:text-cyan-300 transition-colors p-2 rounded-lg hover:bg-white/10"
+                            className="ml-auto hover:text-white transition-colors p-2 rounded-lg hover:bg-white/10"
+                            style={{ color: (title && colorMap[title]) || "#00ffff" }}
                         >
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
                     </div>
-                    <div className="text-white px-8 pb-8">
+                    <div className="text-white px-8 pb-8" style={{ color: (title && colorMap[title]) ? `${colorMap[title]}dd` : 'rgba(255,255,255,0.9)' }}>
                         {children}
                     </div>
                 </div>
@@ -236,26 +237,19 @@ export default function SectionCard({
     }
 
     // --- ICONA FLUTTUANTE (NODE STYLE) ---
-    const color = title ? colorMap[title] || "cyan" : "cyan";
+    const color = title ? colorMap[title] || "#00ffff" : "#00ffff";
 
-    // Mappe colori Tailwind dinamici (per evitare problemi con JIT, idealmente dovrebbero essere safelistati o usati style inline per colori arbitrari, qui usiamo classi standard)
-    // Nota: Tailwind non supporta interpolazione stringhe dinamiche completa tipo `bg-${color}-500` se non sono scansionabili.
-    // Usiamo un oggetto di stile o classi condizionali. Per semplicità e sicurezza, usiamo style inline per i colori principali.
-
-    const getColor = (shade: number, alpha = 1) => {
-        const colors: Record<string, string> = {
-            cyan: `rgba(6,182,212,${alpha})`,
-            emerald: `rgba(16,185,129,${alpha})`,
-            violet: `rgba(139,92,246,${alpha})`,
-            rose: `rgba(244,63,94,${alpha})`,
-            amber: `rgba(245,158,11,${alpha})`,
-        };
-        return colors[color] || colors.cyan;
+    // Helper per convertire hex a rgba
+    const hexToRgba = (hex: string, alpha: number) => {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     };
 
-    const mainColor = getColor(500);
-    const glowColor = getColor(400, 0.4);
-    const ringColor = getColor(500, 0.3);
+    const mainColor = hexToRgba(color, 1);
+    const glowColor = hexToRgba(color, 0.4);
+    const ringColor = hexToRgba(color, 0.3);
 
     return (
         <div
@@ -274,9 +268,9 @@ export default function SectionCard({
             <div className="relative flex items-center justify-center">
                 {/* Connecting Line (Fake) - Visual connector to "network" */}
                 <div className="absolute w-[200px] h-[1px] rotate-45 animate-pulse pointer-events-none"
-                    style={{ background: `linear-gradient(90deg, transparent, ${getColor(500, 0.2)}, transparent)` }} />
+                    style={{ background: `linear-gradient(90deg, transparent, ${hexToRgba(color, 0.2)}, transparent)` }} />
                 <div className="absolute w-[1px] h-[200px] rotate-45 animate-pulse pointer-events-none"
-                    style={{ background: `linear-gradient(180deg, transparent, ${getColor(500, 0.2)}, transparent)` }} />
+                    style={{ background: `linear-gradient(180deg, transparent, ${hexToRgba(color, 0.2)}, transparent)` }} />
 
                 {/* Rotating Outer Ring */}
                 <div className="absolute inset-[-8px] rounded-full border border-dashed animate-[spin_10s_linear_infinite] pointer-events-none"
@@ -284,17 +278,17 @@ export default function SectionCard({
 
                 {/* Counter-Rotating Inner Ring */}
                 <div className="absolute inset-[-4px] rounded-full border animate-[spin_7s_linear_infinite_reverse] pointer-events-none"
-                    style={{ borderColor: getColor(400, 0.2) }} />
+                    style={{ borderColor: hexToRgba(color, 0.2) }} />
 
                 {/* Glow effect */}
                 <div className={`absolute inset-0 rounded-full blur-xl animate-pulse ${isDragging ? 'blur-2xl' : ''}`}
-                    style={{ backgroundColor: isDragging ? getColor(400, 0.6) : getColor(400, 0.1) }} />
+                    style={{ backgroundColor: isDragging ? hexToRgba(color, 0.6) : hexToRgba(color, 0.1) }} />
 
                 {/* Icon container - Glassmorphism */}
                 <div className={`relative w-16 h-16 md:w-20 md:h-20 rounded-full border bg-black/40 backdrop-blur-sm flex items-center justify-center transition-all duration-300`}
                     style={{
-                        borderColor: isDragging ? mainColor : getColor(500, 0.3),
-                        boxShadow: isDragging ? `0 0 50px ${getColor(500, 0.9)}` : `0 0 15px ${getColor(500, 0.3)}`
+                        borderColor: isDragging ? mainColor : hexToRgba(color, 0.3),
+                        boxShadow: isDragging ? `0 0 50px ${hexToRgba(color, 0.9)}` : `0 0 15px ${hexToRgba(color, 0.3)}`
                     }}
                 >
                     <Icon className="w-8 h-8 md:w-10 md:h-10 transition-colors" style={{ color: mainColor }} />
@@ -302,18 +296,18 @@ export default function SectionCard({
 
                 {/* Tech Decorators */}
                 <div className="absolute -top-2 -right-2 w-2 h-2 rounded-full animate-ping" style={{ backgroundColor: mainColor }} />
-                <div className="absolute -bottom-2 -left-2 w-1 h-1 rounded-full" style={{ backgroundColor: getColor(600) }} />
+                <div className="absolute -bottom-2 -left-2 w-1 h-1 rounded-full" style={{ backgroundColor: hexToRgba(color, 0.8) }} />
 
                 {/* Label tooltip (Holographic style) */}
                 {title && !isDragging && (
                     <div className="absolute top-full mt-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
                         <div className="flex flex-col items-center">
-                            <div className="w-[1px] h-4 mb-1" style={{ backgroundColor: getColor(500, 0.5) }}></div>
+                            <div className="w-[1px] h-4 mb-1" style={{ backgroundColor: hexToRgba(color, 0.5) }}></div>
                             <div className="px-4 py-1 bg-black/80 backdrop-blur-md border rounded-none text-xs font-mono tracking-widest uppercase"
                                 style={{
-                                    borderColor: getColor(500, 0.5),
-                                    color: getColor(300),
-                                    boxShadow: `0 0 20px ${getColor(500, 0.2)}`
+                                    borderColor: hexToRgba(color, 0.5),
+                                    color: hexToRgba(color, 0.8),
+                                    boxShadow: `0 0 20px ${hexToRgba(color, 0.2)}`
                                 }}>
                                 {title}
                             </div>

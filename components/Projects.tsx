@@ -155,7 +155,7 @@ export function Projects() {
                 </div>
 
                 {/* CTA - Link to Contact */}
-                <div className="mt-16 flex justify-center opacity-0 animate-[fadeInUp_0.5s_ease-out_2s_backwards]">
+                <div className="mt-16 flex justify-center animate-[fadeInUp_0.5s_ease-out_2s_both]">
                     <button
                         onClick={() => setExpandedSection('contact')}
                         className="group relative px-12 py-4 bg-black/60 border border-cyan-500/30 overflow-hidden transition-all duration-300 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)]"
