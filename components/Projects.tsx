@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { ExternalLink, Github, Terminal, Folder, Database, Cpu } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/language-context";
+import { useFloatingSection } from "@/components/FloatingSectionContext";
 
 // --- Utility: Typewriter (Riutilizzato per coerenza) ---
 function TypewriterText({ text, delay = 0, speed = 30 }: { text: string; delay?: number; speed?: number }) {
@@ -28,6 +29,7 @@ function TypewriterText({ text, delay = 0, speed = 30 }: { text: string; delay?:
 
 export function Projects() {
     const { t } = useLanguage();
+    const { setExpandedSection } = useFloatingSection();
 
     // Dati dei progetti
     // Dati dei progetti dinamici dalle traduzioni
@@ -151,6 +153,31 @@ export function Projects() {
                         </div>
                     ))}
                 </div>
+
+                {/* CTA - Link to Contact */}
+                <div className="mt-16 flex justify-center opacity-0 animate-[fadeInUp_0.5s_ease-out_2s_backwards]">
+                    <button
+                        onClick={() => setExpandedSection('contact')}
+                        className="group relative px-12 py-4 bg-black/60 border border-cyan-500/30 overflow-hidden transition-all duration-300 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)]"
+                    >
+                        {/* Hover Fill Effect */}
+                        <div className="absolute inset-0 bg-cyan-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+
+                        {/* Glitch Lines */}
+                        <div className="absolute top-0 left-0 w-full h-[1px] bg-cyan-400/50 -translate-x-full group-hover:animate-[glitch-slide_1s_infinite_linear]" />
+                        <div className="absolute bottom-0 right-0 w-full h-[1px] bg-cyan-400/50 translate-x-full group-hover:animate-[glitch-slide_1s_infinite_linear_reverse]" />
+
+                        <div className="relative z-10 flex items-center gap-3">
+                            <span className="font-mono font-bold text-cyan-400 tracking-widest group-hover:text-cyan-200 transition-colors">
+                                INITIALIZE_UPLINK
+                            </span>
+                        </div>
+
+                        {/* Corner Accents */}
+                        <div className="absolute top-0 left-0 w-2 h-2 border-l-2 border-t-2 border-cyan-500 opacity-50 group-hover:opacity-100 transition-opacity" />
+                        <div className="absolute bottom-0 right-0 w-2 h-2 border-r-2 border-b-2 border-cyan-500 opacity-50 group-hover:opacity-100 transition-opacity" />
+                    </button>
+                </div>
             </div>
 
             <style jsx>{`
@@ -158,7 +185,11 @@ export function Projects() {
                     from { opacity: 0; transform: translateY(20px); }
                     to { opacity: 1; transform: translateY(0); }
                 }
+                @keyframes glitch-slide {
+                    0% { transform: translateX(-100%); }
+                    100% { transform: translateX(100%); }
+                }
             `}</style>
-        </section>
+        </section >
     );
 }

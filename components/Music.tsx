@@ -1,11 +1,13 @@
 "use client";
 
 import { useLanguage } from "@/lib/language-context";
+import { useFloatingSection } from "@/components/FloatingSectionContext";
 import { ExternalLink, Music as MusicIcon, Disc, Mic2, Radio } from "lucide-react";
 import Image from "next/image";
 
 export function Music() {
     const { t } = useLanguage();
+    const { setExpandedSection } = useFloatingSection();
 
     const artists = [
         {
@@ -98,6 +100,42 @@ export function Music() {
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                 <span>AUDIO_DRIVER: ONLINE // BITRATE: 320KBPS</span>
             </div>
+
+            {/* CTA - Link to Contact */}
+            <div className="mt-8 flex justify-center opacity-0 animate-[fadeIn_0.5s_ease-in_1s_forwards]">
+                <button
+                    onClick={() => setExpandedSection('contact')}
+                    className="group relative px-12 py-4 bg-black/60 border border-cyan-500/30 overflow-hidden transition-all duration-300 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)]"
+                >
+                    {/* Hover Fill Effect */}
+                    <div className="absolute inset-0 bg-cyan-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+
+                    {/* Glitch Lines */}
+                    <div className="absolute top-0 left-0 w-full h-[1px] bg-cyan-400/50 -translate-x-full group-hover:animate-[glitch-slide_1s_infinite_linear]" />
+                    <div className="absolute bottom-0 right-0 w-full h-[1px] bg-cyan-400/50 translate-x-full group-hover:animate-[glitch-slide_1s_infinite_linear_reverse]" />
+
+                    <div className="relative z-10 flex items-center gap-3">
+                        <span className="font-mono font-bold text-cyan-400 tracking-widest group-hover:text-cyan-200 transition-colors">
+                            INITIALIZE_UPLINK
+                        </span>
+                    </div>
+
+                    {/* Corner Accents */}
+                    <div className="absolute top-0 left-0 w-2 h-2 border-l-2 border-t-2 border-cyan-500 opacity-50 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute bottom-0 right-0 w-2 h-2 border-r-2 border-b-2 border-cyan-500 opacity-50 group-hover:opacity-100 transition-opacity" />
+                </button>
+            </div>
+
+            <style jsx>{`
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                @keyframes glitch-slide {
+                    0% { transform: translateX(-100%); }
+                    100% { transform: translateX(100%); }
+                }
+            `}</style>
         </div>
     );
 }

@@ -50,6 +50,26 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
         } else {
             setZoom(1.0);
         }
+
+        // --- CALCOLO TEMPO INIZIALE BASATO SULLA SESSIONE ---
+        const cookieName = "galactic_session_start";
+        const match = document.cookie.match(new RegExp('(^| )' + cookieName + '=([^;]+)'));
+        if (match) {
+            const startTimestamp = parseInt(match[2]);
+            const now = Date.now();
+            const elapsedMs = now - startTimestamp;
+
+            // Calcolo ore simulate passate
+            // Base speed: 1 ora ogni 20000ms (20s)
+            // Ore passate = (elapsedMs / 20000) * timeSpeed
+            // Nota: timeSpeed qui è quello di default (1.0) perché lo stato non è ancora stato modificato dall'utente in questa sessione "fresca"
+            // Se volessimo persistere anche la velocità, dovremmo salvarla nei cookie/localStorage.
+            // Per ora assumiamo che al reload la velocità torni a 1.0 o usiamo quella corrente se fosse persistita.
+
+            const hoursPassed = (elapsedMs / 20000) * 1.0;
+            const newTime = (DEFAULT_TIME + hoursPassed) % 24;
+            setTime(newTime);
+        }
     }, []);
 
     // --- 3. AUTOMATIC TIME PROGRESSION ---

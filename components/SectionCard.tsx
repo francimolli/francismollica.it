@@ -21,6 +21,14 @@ const targetMap: Record<string, { x: number, z: number }> = {
     // "Home" removed - handled by resetView
 };
 
+const colorMap: Record<string, string> = {
+    "Home": "cyan",
+    "Who am I?": "emerald",
+    "Projects": "violet",
+    "Contact": "rose",
+    "Music": "amber",
+};
+
 export default function SectionCard({
     children,
     title,
@@ -228,6 +236,27 @@ export default function SectionCard({
     }
 
     // --- ICONA FLUTTUANTE (NODE STYLE) ---
+    const color = title ? colorMap[title] || "cyan" : "cyan";
+
+    // Mappe colori Tailwind dinamici (per evitare problemi con JIT, idealmente dovrebbero essere safelistati o usati style inline per colori arbitrari, qui usiamo classi standard)
+    // Nota: Tailwind non supporta interpolazione stringhe dinamiche completa tipo `bg-${color}-500` se non sono scansionabili.
+    // Usiamo un oggetto di stile o classi condizionali. Per semplicità e sicurezza, usiamo style inline per i colori principali.
+
+    const getColor = (shade: number, alpha = 1) => {
+        const colors: Record<string, string> = {
+            cyan: `rgba(6,182,212,${alpha})`,
+            emerald: `rgba(16,185,129,${alpha})`,
+            violet: `rgba(139,92,246,${alpha})`,
+            rose: `rgba(244,63,94,${alpha})`,
+            amber: `rgba(245,158,11,${alpha})`,
+        };
+        return colors[color] || colors.cyan;
+    };
+
+    const mainColor = getColor(500);
+    const glowColor = getColor(400, 0.4);
+    const ringColor = getColor(500, 0.3);
+
     return (
         <div
             // Usiamo un div wrapper invece di button per gestire meglio drag vs click
@@ -244,37 +273,48 @@ export default function SectionCard({
         >
             <div className="relative flex items-center justify-center">
                 {/* Connecting Line (Fake) - Visual connector to "network" */}
-                <div className="absolute w-[200px] h-[1px] bg-gradient-to-r from-cyan-500/0 via-cyan-500/20 to-cyan-500/0 rotate-45 animate-pulse pointer-events-none" />
-                <div className="absolute w-[1px] h-[200px] bg-gradient-to-b from-cyan-500/0 via-cyan-500/20 to-cyan-500/0 rotate-45 animate-pulse pointer-events-none" />
+                <div className="absolute w-[200px] h-[1px] rotate-45 animate-pulse pointer-events-none"
+                    style={{ background: `linear-gradient(90deg, transparent, ${getColor(500, 0.2)}, transparent)` }} />
+                <div className="absolute w-[1px] h-[200px] rotate-45 animate-pulse pointer-events-none"
+                    style={{ background: `linear-gradient(180deg, transparent, ${getColor(500, 0.2)}, transparent)` }} />
 
                 {/* Rotating Outer Ring */}
-                <div className="absolute inset-[-8px] rounded-full border border-cyan-500/30 border-dashed animate-[spin_10s_linear_infinite] pointer-events-none" />
+                <div className="absolute inset-[-8px] rounded-full border border-dashed animate-[spin_10s_linear_infinite] pointer-events-none"
+                    style={{ borderColor: ringColor }} />
 
                 {/* Counter-Rotating Inner Ring */}
-                <div className="absolute inset-[-4px] rounded-full border border-cyan-400/20 animate-[spin_7s_linear_infinite_reverse] pointer-events-none" />
+                <div className="absolute inset-[-4px] rounded-full border animate-[spin_7s_linear_infinite_reverse] pointer-events-none"
+                    style={{ borderColor: getColor(400, 0.2) }} />
 
                 {/* Glow effect */}
-                <div className={`absolute inset-0 bg-cyan-400/10 rounded-full blur-xl animate-pulse ${isDragging ? 'bg-cyan-400/40 blur-2xl' : ''}`} />
+                <div className={`absolute inset-0 rounded-full blur-xl animate-pulse ${isDragging ? 'blur-2xl' : ''}`}
+                    style={{ backgroundColor: isDragging ? getColor(400, 0.6) : getColor(400, 0.1) }} />
 
                 {/* Icon container - Glassmorphism */}
-                <div className={`relative w-16 h-16 md:w-20 md:h-20 rounded-full border bg-black/40 backdrop-blur-sm flex items-center justify-center transition-all duration-300
-                    ${isDragging
-                        ? 'border-cyan-400 shadow-[0_0_50px_rgba(6,182,212,0.9)]'
-                        : 'border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.3)] group-hover:border-cyan-400 group-hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] group-hover:bg-black/60'}
-                `}>
-                    <Icon className="w-8 h-8 md:w-10 md:h-10 text-cyan-400/80 group-hover:text-cyan-300 transition-colors" />
+                <div className={`relative w-16 h-16 md:w-20 md:h-20 rounded-full border bg-black/40 backdrop-blur-sm flex items-center justify-center transition-all duration-300`}
+                    style={{
+                        borderColor: isDragging ? mainColor : getColor(500, 0.3),
+                        boxShadow: isDragging ? `0 0 50px ${getColor(500, 0.9)}` : `0 0 15px ${getColor(500, 0.3)}`
+                    }}
+                >
+                    <Icon className="w-8 h-8 md:w-10 md:h-10 transition-colors" style={{ color: mainColor }} />
                 </div>
 
                 {/* Tech Decorators */}
-                <div className="absolute -top-2 -right-2 w-2 h-2 bg-cyan-400 rounded-full animate-ping" />
-                <div className="absolute -bottom-2 -left-2 w-1 h-1 bg-cyan-600 rounded-full" />
+                <div className="absolute -top-2 -right-2 w-2 h-2 rounded-full animate-ping" style={{ backgroundColor: mainColor }} />
+                <div className="absolute -bottom-2 -left-2 w-1 h-1 rounded-full" style={{ backgroundColor: getColor(600) }} />
 
                 {/* Label tooltip (Holographic style) */}
                 {title && !isDragging && (
                     <div className="absolute top-full mt-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
                         <div className="flex flex-col items-center">
-                            <div className="w-[1px] h-4 bg-cyan-500/50 mb-1"></div>
-                            <div className="px-4 py-1 bg-black/80 backdrop-blur-md border border-cyan-500/50 rounded-none text-cyan-300 text-xs font-mono tracking-widest shadow-[0_0_20px_rgba(0,255,255,0.2)] uppercase">
+                            <div className="w-[1px] h-4 mb-1" style={{ backgroundColor: getColor(500, 0.5) }}></div>
+                            <div className="px-4 py-1 bg-black/80 backdrop-blur-md border rounded-none text-xs font-mono tracking-widest uppercase"
+                                style={{
+                                    borderColor: getColor(500, 0.5),
+                                    color: getColor(300),
+                                    boxShadow: `0 0 20px ${getColor(500, 0.2)}`
+                                }}>
                                 {title}
                             </div>
                         </div>
