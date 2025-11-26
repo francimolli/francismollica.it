@@ -1051,12 +1051,6 @@ export function FuturisticOrbit() {
                         onMove={(x, y) => handleMove(x, -y, 0, 0)} // y inverted because screen y is down
                     />
                 </div>
-                <div className="absolute bottom-8 right-8 md:hidden pointer-events-auto z-50">
-                    <Joystick
-                        label={t.hud.lookFly}
-                        onMove={(x, y) => handleMove(0, 0, 0, x, invertYAxis ? -y : y)} // Invert Look Y support
-                    />
-                </div>
             </div>
 
             {/* Loading Screen */}

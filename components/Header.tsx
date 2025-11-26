@@ -89,7 +89,8 @@ export function Header() {
         timeSpeed, setTimeSpeed,
         resetView,
         coordinates, regenerateSimulation,
-        triggerEscape, invertYAxis, setInvertYAxis
+        triggerEscape, invertYAxis, setInvertYAxis,
+        triggerSystemReboot
     } = useCityControls();
 
     const { setExpandedSection } = useFloatingSection();
@@ -134,6 +135,7 @@ export function Header() {
         setTimeSpeed(randomSpeed);
         setTrafficLevel(randomTraffic);
         regenerateSimulation();
+        triggerSystemReboot(); // Trigger blackout effect
         setCooldown(145);
         setIsOpen(false);
     };
@@ -314,7 +316,7 @@ export function Header() {
                                                 <RotateCcw className="mr-2 h-4 w-4" /> Reset
                                             </Button>
                                             <Button variant="outline" onClick={() => { handleRegenerate(); setIsOpen(false); }} disabled={cooldown > 0} className="h-12 border-cyan-500/30 text-cyan-400 bg-cyan-950/20 hover:bg-cyan-900/40 hover:border-cyan-400 uppercase text-xs tracking-widest font-mono">
-                                                <Zap className="mr-2 h-4 w-4" /> {cooldown > 0 ? `${cooldown}s` : "Reload"}
+                                                <Zap className="mr-2 h-4 w-4" /> {cooldown > 0 ? `${cooldown}s` : t.header.controls.reloadUniverse}
                                             </Button>
                                         </div>
                                     </div>

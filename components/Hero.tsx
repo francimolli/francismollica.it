@@ -125,7 +125,7 @@ export function Hero() {
                                 <div className="relative z-10 flex items-center gap-3">
                                     <Terminal className="w-5 h-5 text-cyan-500 group-hover:text-cyan-300 transition-colors" />
                                     <span className="font-mono font-bold text-cyan-400 tracking-widest group-hover:text-cyan-200 transition-colors">
-                                        CONTACT_ME
+                                        {t.contact.labelCTA}
                                     </span>
                                     <ChevronRight className="w-4 h-4 text-cyan-600 group-hover:translate-x-1 transition-transform duration-300" />
                                 </div>

@@ -3,7 +3,7 @@ export const translations = {
         nav: {
             home: "Home",
             about: "Profilo",
-            work: "Carriera",
+            work: "Lavoro",
             contact: "Contatti",
             music: "Musica",
         },
@@ -18,10 +18,12 @@ export const translations = {
         about: {
             title: "Profilo",
             headline: "Ingegnere del software focalizzato su",
-            headlineSuffix: "Dati, Software & AI",
-            bio1: "Professionista IT con 5 anni di esperienza e Laurea in Informatica. Unisco lo sviluppo software (Python/JS) all'analisi dati per costruire soluzioni tecniche efficienti e misurarne l'impatto.",
+            headlineSuffix: "Software, Dati & AI",
+            bio1: "Professionista IT con 5 anni di esperienza e Laurea in Informatica presso l'Università di Bologna ottenuta nel 2021. Unisco lo sviluppo software (Python/JS) all'analisi dati per costruire soluzioni tecniche efficienti e misurarne l'impatto.",
             bio2: "Attualmente Web Analyst in BitBang. Il mio background spazia dal training di Reti Neurali (AI) allo sviluppo Frontend avanzato, permettendomi di colmare il divario tra ingegneria e business insights.",
             techStack: "Stack Tecnologico",
+            techStackLoading: "TECH STACK...",
+            ageLabel: "anni",
             imageAlt: "Francesco Mollica - Data Driven Engineer",
         },
         projects: {
@@ -30,6 +32,7 @@ export const translations = {
             preview: "Ruolo",
             demo: "Azienda",
             code: "Dettagli",
+            totalObjects: "Progetti Totali",
             items: [
                 {
                     title: "Enterprise Web Analyst",
@@ -42,7 +45,7 @@ export const translations = {
                 {
                     title: "Freelance Full Stack Dev",
                     company: "Libero Professionista",
-                    period: "2021 - Presente",
+                    period: "2017 - Presente",
                     description: "Sviluppo di web application scalabili (React/Next.js) con focus su 'Strict Type Safety' (TypeScript) e architetture robuste per clienti internazionali.",
                     tags: ["React", "Next.js", "TypeScript", "Scalable Architecture", "Python", "Node.js", ""],
                     url: "https://github.com/francimolli",
@@ -82,6 +85,7 @@ export const translations = {
             ],
         },
         contact: {
+            labelCTA: "CONTATTAMI",
             sectionTitle: "Creiamo",
             sectionTitleSuffix: "valore.",
             subtitle: "Contatti",
@@ -114,7 +118,7 @@ export const translations = {
                 timeSpeed: "Velocità Tempo",
                 trafficDensity: "Densità Traffico",
                 restoreDefaults: "Ripristina Default",
-                reloadUniverse: "Aggiungi entropia",
+                reloadUniverse: "Aumenta entropia",
                 cooldown: "Cooldown",
                 localization: "Localizzazione",
                 escapeTooltip: "Teletrasporto a coordinate casuali",
@@ -131,6 +135,9 @@ export const translations = {
             move: "MUOVI",
             lookFly: "GUARDA/VOLA",
             initializing: "INIZIALIZZAZIONE NUCLEO GALATTICO...",
+        },
+        logbook: {
+            title: "Diario di Bordo",
         },
     },
     en: {
@@ -152,10 +159,12 @@ export const translations = {
         about: {
             title: "Profile",
             headline: "IT Professional focused on",
-            headlineSuffix: "Data, Software & AI",
+            headlineSuffix: "Software, Data & AI",
             bio1: "IT Professional with 5 years of experience and a Computer Science degree. I merge software development (Python/JS) with data analysis to build efficient technical solutions and measure their impact.",
             bio2: "Currently a Web Analyst at BitBang. My background ranges from Neural Network training (AI) to advanced Frontend development, bridging the gap between engineering and business insights.",
             techStack: "Tech Stack",
+            techStackLoading: "TECH STACK...",
+            ageLabel: "years old",
             imageAlt: "Francesco Mollica - Data Driven Engineer",
         },
         projects: {
@@ -164,6 +173,7 @@ export const translations = {
             preview: "Role",
             demo: "Company",
             code: "Details",
+            totalObjects: "Total Objects",
             items: [
                 {
                     title: "Enterprise Web Analyst",
@@ -176,7 +186,7 @@ export const translations = {
                 {
                     title: "Freelance Full Stack Dev",
                     company: "Freelance",
-                    period: "2021 - Present",
+                    period: "2017 - Present",
                     description: "Developing scalable web applications (React/Next.js) focusing on Strict Type Safety (TypeScript) and robust architectures for international clients.",
                     tags: ["React", "Next.js", "TypeScript", "Scalable Architecture"],
                     url: "https://github.com/francimolli",
@@ -216,6 +226,7 @@ export const translations = {
             ],
         },
         contact: {
+            labelCTA: "CONTACT ME",
             sectionTitle: "Let's create",
             sectionTitleSuffix: "value.",
             subtitle: "Contact",
@@ -248,7 +259,7 @@ export const translations = {
                 timeSpeed: "Time Speed",
                 trafficDensity: "Traffic Density",
                 restoreDefaults: "Restore Defaults",
-                reloadUniverse: "Add Entropy",
+                reloadUniverse: "Increase entropy",
                 cooldown: "Cooldown",
                 localization: "Localization",
                 escapeTooltip: "Teleport to random coordinates",
@@ -267,6 +278,9 @@ export const translations = {
             initializing: "INITIALIZING GALACTIC CORE...",
             warpSequence: "WARP SEQUENCE INITIATED",
             entropyInjection: "ENTROPY INJECTION",
+        },
+        logbook: {
+            title: "Logbook",
         },
     },
 };

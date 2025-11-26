@@ -30,6 +30,7 @@ interface CityControls {
     setCoordinates: (coords: { lat: number, long: number }) => void;
     invertYAxis: boolean;
     setInvertYAxis: (v: boolean) => void;
+    triggerSystemReboot: () => void;
 }
 
 const CityControlsContext = createContext<CityControls | undefined>(undefined);
@@ -106,6 +107,23 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
         setTime(v);
     };
 
+    const triggerSystemReboot = () => {
+        if (systemStatus !== 'NORMAL') return;
+
+        // Trigger Blackout
+        setSystemStatus('BLACKOUT');
+
+        // After 1.5s -> Reboot
+        setTimeout(() => {
+            setSystemStatus('REBOOTING');
+
+            // After 1.5s -> Back to Normal
+            setTimeout(() => {
+                setSystemStatus('NORMAL');
+            }, 1500);
+        }, 1500);
+    };
+
     const resetDefaults = () => {
         const isMobile = window.innerWidth < 768;
         // setTime(DEFAULT_TIME); // Time is preserved
@@ -155,7 +173,8 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
                 regenerationTrigger, regenerateSimulation,
                 escapeTrigger, triggerEscape,
                 coordinates, setCoordinates,
-                invertYAxis, setInvertYAxis
+                invertYAxis, setInvertYAxis,
+                triggerSystemReboot
             }}
         >
             {children}

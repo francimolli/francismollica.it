@@ -49,7 +49,7 @@ export function Contact() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
 
                     {/* --- LEFT COLUMN: DIRECT CONTACT (Primary) --- */}
-                    <div className="space-y-4">
+                    <div className="flex flex-col gap-4">
                         <div className="text-xs text-cyan-600 uppercase tracking-widest font-bold mb-2 flex items-center gap-2">
                             <Terminal className="w-4 h-4" />
                             {t.contact.directUplink}
@@ -68,8 +68,8 @@ export function Contact() {
                                 </div>
                                 <div>
                                     <span className="block text-xs text-gray-500 group-hover:text-cyan-400 mb-1">{t.contact.primaryEmail}</span>
-                                    <span className="block text-lg font-bold text-white tracking-wide break-all">
-                                        francesco@mollica.dev
+                                    <span className="block text-xs font-bold text-white tracking-wide break-all">
+                                        francesco.mollica@outlook.com
                                     </span>
                                 </div>
                             </div>

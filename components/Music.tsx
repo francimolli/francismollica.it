@@ -3,7 +3,6 @@
 import { useLanguage } from "@/lib/language-context";
 import { useFloatingSection } from "@/components/FloatingSectionContext";
 import { ExternalLink, Music as MusicIcon, Disc, Mic2, Radio } from "lucide-react";
-import Image from "next/image";
 
 export function Music() {
     const { t } = useLanguage();
@@ -47,7 +46,7 @@ export function Music() {
             {/* Header Section */}
             <div className="relative border-l-2 border-cyan-500 pl-6 py-2">
                 <h3 className="text-2xl font-bold text-white uppercase tracking-widest mb-2">
-                    Audio_Input_Stream
+                    QUALCHE ARTISTA CHE ASCOLTO
                 </h3>
             </div>
 
@@ -95,11 +94,7 @@ export function Music() {
                 ))}
             </div>
 
-            {/* Footer Status */}
-            <div className="flex items-center gap-2 text-xs font-mono text-cyan-600/50 border-t border-cyan-900/30 pt-4">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                <span>AUDIO_DRIVER: ONLINE // BITRATE: 320KBPS</span>
-            </div>
+
 
             {/* CTA - Link to Contact */}
             <div className="mt-8 flex justify-center opacity-0 animate-[fadeIn_0.5s_ease-in_1s_forwards]">
@@ -116,7 +111,7 @@ export function Music() {
 
                     <div className="relative z-10 flex items-center gap-3">
                         <span className="font-mono font-bold text-cyan-400 tracking-widest group-hover:text-cyan-200 transition-colors">
-                            CONTACT_ME
+                            {t.contact.labelCTA}
                         </span>
                     </div>
 

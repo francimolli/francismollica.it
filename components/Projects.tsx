@@ -71,87 +71,108 @@ export function Projects() {
                         </h2>
                     </div>
                     <div className="text-xs text-right text-cyan-700 uppercase tracking-widest hidden md:block">
-                        <p>Total Objects: {projects.length}</p>
-                        <p>Memory Usage: 42MB</p>
+                        <p>{t.projects.totalObjects}: {projects.length}</p>
                     </div>
                 </div>
 
-                {/* --- GRID PROGETTI --- */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 md:gap-8">
-                    {projects.map((project, index) => (
-                        <div
-                            key={index}
-                            className="group relative flex flex-col h-full bg-black/40 border border-cyan-900/60 hover:border-cyan-400/80 transition-all duration-300 rounded-sm overflow-hidden"
-                            style={{
-                                animation: `fadeInUp 0.5s ease-out ${0.5 + (index * 0.2)}s backwards`
-                            }}
-                        >
-                            {/* Overlay Hover Glitch */}
-                            <div className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-0" />
+                {/* --- TIMELINE CONTAINER --- */}
+                <div className="relative flex flex-col gap-12 md:gap-24">
+                    {/* Central Neon Line */}
+                    <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-cyan-500/0 via-cyan-500/50 to-cyan-500/0 md:-translate-x-1/2" />
 
-                            {/* Card Header: Fake Window Bar */}
-                            <div className="relative z-10 flex items-center justify-between px-4 py-2 bg-cyan-950/20 border-b border-cyan-900/50 group-hover:bg-cyan-900/30 transition-colors">
-                                <div className="flex items-center gap-2 text-xs text-cyan-400">
-                                    <project.icon className="w-4 h-4" />
-                                    <span className="tracking-widest opacity-70">{project.id}</span>
+                    {projects.map((project, index) => {
+                        const isEven = index % 2 === 0;
+                        return (
+                            <div
+                                key={index}
+                                className={`relative flex flex-col md:flex-row items-center gap-8 ${isEven ? "md:flex-row-reverse" : ""}`}
+                                style={{
+                                    animation: `fadeInUp 0.5s ease-out ${0.2 + (index * 0.1)}s backwards`
+                                }}
+                            >
+                                {/* Timeline Node */}
+                                <div className="absolute left-4 md:left-1/2 w-3 h-3 bg-black border border-cyan-400 rounded-full z-20 md:-translate-x-1/2 shadow-[0_0_10px_rgba(34,211,238,0.8)]">
+                                    <div className="absolute inset-0 bg-cyan-400 animate-ping opacity-75 rounded-full" />
                                 </div>
-                                <div className="flex gap-1.5">
-                                    <div className="w-2 h-2 rounded-full bg-cyan-900 group-hover:bg-cyan-500/50" />
-                                    <div className="w-2 h-2 rounded-full bg-cyan-900 group-hover:bg-cyan-500/50" />
+
+                                {/* Spacer for Desktop Alignment */}
+                                <div className="hidden md:block flex-1" />
+
+                                {/* Project Card */}
+                                <div className="w-full md:w-[calc(50%-2rem)] pl-12 md:pl-0">
+                                    <div className="group relative bg-black/60 border border-cyan-900/60 hover:border-cyan-400/80 transition-all duration-500 rounded-sm overflow-hidden hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] hover:-translate-y-1">
+
+                                        {/* Holographic Scan Effect */}
+                                        <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 translate-y-[-100%] group-hover:translate-y-[100%] transition-transform duration-1000 ease-in-out pointer-events-none z-0" />
+
+                                        {/* Background Grid */}
+                                        <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.03)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
+
+                                        {/* Card Header */}
+                                        <div className="relative z-10 flex items-center justify-between px-6 py-3 bg-cyan-950/20 border-b border-cyan-900/50 group-hover:bg-cyan-900/30 transition-colors">
+                                            <div className="flex items-center gap-3">
+                                                <div className={`p-1.5 rounded bg-cyan-900/30 border border-cyan-800 text-cyan-400 group-hover:text-white group-hover:border-cyan-400 transition-colors`}>
+                                                    <project.icon className="w-4 h-4" />
+                                                </div>
+                                                <span className="text-xs font-mono text-cyan-500/70 tracking-widest">{project.id}</span>
+                                            </div>
+                                            <div className="flex gap-1">
+                                                {[...Array(3)].map((_, i) => (
+                                                    <div key={i} className={`w-1 h-1 rounded-full ${i === 0 ? 'bg-cyan-500 animate-pulse' : 'bg-cyan-900'}`} />
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* Card Body */}
+                                        <div className="relative z-10 p-6 md:p-8">
+                                            <div className="flex flex-col gap-1 mb-4">
+                                                <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-cyan-600">
+                                                    <span>{project.company}</span>
+                                                    <span className="px-2 py-0.5 bg-cyan-950/30 rounded border border-cyan-900/50 text-cyan-500">{project.period}</span>
+                                                </div>
+                                                <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-cyan-300 transition-colors group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]">
+                                                    {project.title}
+                                                </h3>
+                                            </div>
+
+                                            <p className="text-gray-400 text-sm leading-relaxed mb-6 border-l-2 border-cyan-900/50 pl-4 group-hover:border-cyan-500/50 transition-colors">
+                                                {project.description}
+                                            </p>
+
+                                            {/* Tags */}
+                                            <div className="flex flex-wrap gap-2 mb-8">
+                                                {project.tags.map((tag) => (
+                                                    <span
+                                                        key={tag}
+                                                        className="px-2 py-1 text-[10px] uppercase tracking-wider text-cyan-400 border border-cyan-900/50 bg-cyan-950/10 rounded hover:bg-cyan-900/30 hover:border-cyan-500/50 transition-colors"
+                                                    >
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+
+                                            {/* Action Button */}
+                                            <div className="flex justify-end">
+                                                <Link
+                                                    href={project.demoUrl}
+                                                    target="_blank"
+                                                    className={`group/btn relative inline-flex items-center gap-2 px-6 py-2 text-xs font-bold uppercase tracking-widest text-cyan-400 border border-cyan-800 hover:text-black hover:bg-cyan-400 hover:border-cyan-400 transition-all overflow-hidden ${project.demoUrl === "#" ? "opacity-50 cursor-not-allowed pointer-events-none" : ""}`}
+                                                >
+                                                    <span className="relative z-10 flex items-center gap-2">
+                                                        DETAILS <ExternalLink className="w-3 h-3" />
+                                                    </span>
+                                                </Link>
+                                            </div>
+                                        </div>
+
+                                        {/* Decorative Corners */}
+                                        <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-cyan-500/30 group-hover:border-cyan-400 transition-colors" />
+                                        <div className="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-cyan-500/30 group-hover:border-cyan-400 transition-colors" />
+                                    </div>
                                 </div>
                             </div>
-
-                            {/* Card Body */}
-                            <div className="relative z-10 p-6 flex flex-col flex-grow">
-                                <h3 className="text-2xl text-cyan-100 font-bold mb-1 group-hover:text-cyan-300 transition-colors group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]">
-                                    {project.title}
-                                </h3>
-                                <div className="flex justify-between items-center text-xs text-cyan-600 mb-3 font-bold uppercase tracking-wider">
-                                    <span>{project.company}</span>
-                                    <span>{project.period}</span>
-                                </div>
-
-                                <p className="text-cyan-400/70 text-sm leading-relaxed mb-6 flex-grow">
-                                    {project.description}
-                                </p>
-
-                                {/* Tags */}
-                                <div className="flex flex-wrap gap-2 mb-6">
-                                    {project.tags.map((tag) => (
-                                        <span
-                                            key={tag}
-                                            className="px-2 py-1 text-[10px] uppercase tracking-wider text-cyan-300 border border-cyan-800/50 bg-cyan-950/10 rounded-sm"
-                                        >
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
-
-                                {/* Action Buttons (Terminal Style) */}
-                                <div className="grid grid-cols-2 gap-3 mt-auto pt-4 border-t border-cyan-900/30">
-                                    {/* <Link
-                                        href={project.repoUrl}
-                                        target="_blank"
-                                        className="flex items-center justify-center gap-2 py-2 text-xs border border-dashed border-cyan-800 text-cyan-600 hover:text-cyan-200 hover:border-cyan-400 hover:bg-cyan-900/20 transition-all"
-                                    >
-                                        <Github className="w-3 h-3" />
-                                        <span>./source_code</span>
-                                    </Link> */}
-                                    <Link
-                                        href={project.demoUrl}
-                                        target="_blank"
-                                        className={`flex items-center justify-center gap-2 py-2 text-xs border border-cyan-700 bg-cyan-950/20 text-cyan-400 hover:text-white hover:bg-cyan-600/20 hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all ${project.demoUrl === "#" ? "opacity-50 cursor-not-allowed" : ""}`}
-                                    >
-                                        <ExternalLink className="w-3 h-3" />
-                                        <span>./lookup.exe</span>
-                                    </Link>
-                                </div>
-                            </div>
-
-                            {/* Decorative Corner */}
-                            <div className="absolute bottom-0 right-0 w-4 h-4 border-r border-b border-cyan-600 opacity-30 group-hover:opacity-100 transition-opacity" />
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 {/* CTA - Link to Contact */}
@@ -169,7 +190,7 @@ export function Projects() {
 
                         <div className="relative z-10 flex items-center gap-3">
                             <span className="font-mono font-bold text-cyan-400 tracking-widest group-hover:text-cyan-200 transition-colors">
-                                CONTACT_ME
+                                {t.contact.labelCTA}
                             </span>
                         </div>
 

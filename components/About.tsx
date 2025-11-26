@@ -68,6 +68,20 @@ export function About() {
     const { t } = useLanguage();
     const { setExpandedSection } = useFloatingSection();
 
+    // Calculate age based on birthdate (04/12/1994)
+    const calculateAge = () => {
+        const birthDate = new Date(1994, 11, 4); // Month is 0-indexed (11 = December)
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    };
+
+    const age = calculateAge();
+
     const skills = [
         // Core Web & Frontend
         { name: "JavaScript", url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", icon: SiJavascript },
@@ -111,7 +125,7 @@ export function About() {
 
                 <div className="w-full border-b border-cyan-900/50 mb-12 pb-2 flex items-center justify-between text-xs font-mono text-cyan-600/60 uppercase tracking-widest">
                     <div className="flex gap-4">
-                        <span>FRANCESCO MOLLICA, 30 years old</span>
+                        <span>FRANCESCO MOLLICA, {age} {t.about.ageLabel}</span>
                     </div>
                 </div>
                 {/* <div className="flex items-center gap-3 text-sm md:text-base text-cyan-500/80 mb-6">
@@ -165,7 +179,7 @@ export function About() {
                         {/* Sottotitolo / Commento */}
                         <div className="text-lg text-cyan-600/80 italic border-l-2 border-cyan-800 pl-4">
                             <TypewriterText
-                                text={`// ${t.about.headlineSuffix}`}
+                                text={t.about.headlineSuffix}
                                 speed={30}
                                 delay={2000}
                             />
@@ -184,7 +198,7 @@ export function About() {
                         {/* Sezione Skills */}
                         <div className="pt-8 opacity-0 animate-[fadeIn_1s_ease-out_7s_forwards]">
                             <div className="flex items-center gap-2 mb-4 text-xs font-bold text-cyan-500 uppercase tracking-widest">
-                                <span>{">"} MOUNTING MODULES...</span>
+                                <span>{">"} {t.about.techStackLoading}</span>
                                 <span className="w-full h-[1px] bg-cyan-900/50 block" />
                             </div>
 
@@ -222,7 +236,7 @@ export function About() {
 
                                 <div className="relative z-10 flex items-center justify-center gap-3">
                                     <span className="font-mono font-bold text-cyan-400 tracking-widest group-hover:text-cyan-200 transition-colors">
-                                        CONTACT_ME
+                                        {t.contact.labelCTA}
                                     </span>
                                 </div>
 
