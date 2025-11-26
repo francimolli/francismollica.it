@@ -12,7 +12,6 @@ import { useCityControls } from "@/components/CityControlsContext";
 import { useFloatingSection } from "@/components/FloatingSectionContext";
 import { useLanguage } from "@/lib/language-context";
 import { translations } from "@/lib/translations";
-import { motion, AnimatePresence } from "framer-motion";
 
 // --- COMPONENT: VIRTUAL JOYSTICK ---
 function Joystick({ onMove, label, className }: { onMove: (x: number, y: number) => void, label?: string, className?: string }) {
@@ -932,7 +931,10 @@ export function FuturisticOrbit() {
                             Math.pow(camera.position.z - section.z, 2)
                         );
                         // Reduced distance to 15 (must enter it)
-                        if (dist < 15) {
+                        // Reduced distance to 15 (must enter it)
+                        // Only trigger if user is actively interacting (prevents auto-rotate triggers)
+                        const isInteracting = (now - lastInteractionRef.current) < 2000;
+                        if (dist < 15 && isInteracting) {
                             pendingSectionOpen.current = {
                                 id: section.id,
                                 startTime: elapsed,

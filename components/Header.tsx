@@ -178,7 +178,7 @@ export function Header() {
 
                         <div className="flex flex-col justify-center">
                             <span className="font-bold text-base text-white tracking-tight group-hover:text-cyan-400 transition-colors">
-                                francesco@mollica.dev
+                                Francesco Mollica
                             </span>
                             <div className="flex items-center gap-2">
                                 <span className={`w-2 h-2 rounded-full ${isOnline ? 'bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,1)] animate-pulse' : 'bg-gray-600'}`} />
@@ -196,11 +196,11 @@ export function Header() {
 
                         {/* Sliders */}
                         <div className="flex items-center gap-6">
-                            <ControlSlider label="Local Time" value={time} displayValue={formatTime(time)} min={0} max={24} step={0.25} onChange={manualSetTime} unit="" width="w-36" />
+                            <ControlSlider label={t.header.controls.localTime} value={time} displayValue={formatTime(time)} min={0} max={24} step={0.25} onChange={manualSetTime} unit="" width="w-36" />
                             <VerticalDivider />
-                            <ControlSlider label="Time Warp" value={timeSpeed} min={-5} max={5} step={0.25} onChange={setTimeSpeed} unit="x" width="w-24" />
+                            <ControlSlider label={t.header.controls.timeWarp} value={timeSpeed} min={-5} max={5} step={0.25} onChange={setTimeSpeed} unit="x" width="w-24" />
                             <VerticalDivider />
-                            <ControlSlider label="Density" value={trafficLevel} min={0} max={100} step={1} onChange={setTrafficLevel} unit="%" width="w-24" />
+                            <ControlSlider label={t.header.controls.traffic} value={trafficLevel} min={0} max={100} step={1} onChange={setTrafficLevel} unit="%" width="w-24" />
                         </div>
 
                         {/* Integrated Reset */}
@@ -300,7 +300,7 @@ export function Header() {
                                             <ControlSlider label={t.header.controls.timeOfDay || "Time of Day"} value={time} displayValue={formatTime(time)} min={0} max={24} step={0.25} onChange={manualSetTime} unit="" width="w-full" />
 
                                             {/* Invert Y Toggle */}
-                                            <div className="flex items-center justify-between pt-2">
+                                            {/* <div className="flex items-center justify-between pt-2">
                                                 <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-600 font-bold">Invert Look Y</span>
                                                 <button
                                                     onClick={() => setInvertYAxis(!invertYAxis)}
@@ -308,10 +308,10 @@ export function Header() {
                                                 >
                                                     <div className={`absolute top-1 left-1 w-3 h-3 bg-white rounded-full shadow-sm transition-transform duration-300 ${invertYAxis ? 'translate-x-5' : 'translate-x-0'}`} />
                                                 </button>
-                                            </div>
+                                            </div> */}
                                         </div>
 
-                                        <div className="grid grid-cols-2 gap-4 pt-4">
+                                        <div className="flex flex-col gap-4 pt-4">
                                             <Button variant="outline" onClick={resetDefaults} className="h-12 border-white/20 text-cyan-400/70 hover:text-cyan-400 hover:border-cyan-400 hover:bg-white/5 uppercase text-xs tracking-widest font-mono">
                                                 <RotateCcw className="mr-2 h-4 w-4" /> Reset
                                             </Button>

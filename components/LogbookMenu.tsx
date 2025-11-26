@@ -148,11 +148,11 @@ export function LogbookMenu() {
 
                                             // Color scheme per section
                                             const colors = [
-                                                { border: 'border-cyan-500/50', bg: 'bg-cyan-500/10', text: 'text-cyan-400', glow: 'shadow-[0_0_20px_rgba(6,182,212,0.3)]' },
-                                                { border: 'border-purple-500/50', bg: 'bg-purple-500/10', text: 'text-purple-400', glow: 'shadow-[0_0_20px_rgba(168,85,247,0.3)]' },
-                                                { border: 'border-yellow-500/50', bg: 'bg-yellow-500/10', text: 'text-yellow-400', glow: 'shadow-[0_0_20px_rgba(250,204,21,0.3)]' },
-                                                { border: 'border-green-500/50', bg: 'bg-green-500/10', text: 'text-green-400', glow: 'shadow-[0_0_20px_rgba(34,197,94,0.3)]' },
-                                                { border: 'border-pink-500/50', bg: 'bg-pink-500/10', text: 'text-pink-400', glow: 'shadow-[0_0_20px_rgba(236,72,153,0.3)]' },
+                                                { border: 'border-cyan-500/50', bg: 'bg-cyan-500/10', text: 'text-cyan-400', glow: 'shadow-[0_0_20px_rgba(6,182,212,0.3)]', line: 'bg-cyan-500' },
+                                                { border: 'border-purple-500/50', bg: 'bg-purple-500/10', text: 'text-purple-400', glow: 'shadow-[0_0_20px_rgba(168,85,247,0.3)]', line: 'bg-purple-500' },
+                                                { border: 'border-yellow-500/50', bg: 'bg-yellow-500/10', text: 'text-yellow-400', glow: 'shadow-[0_0_20px_rgba(250,204,21,0.3)]', line: 'bg-yellow-500' },
+                                                { border: 'border-green-500/50', bg: 'bg-green-500/10', text: 'text-green-400', glow: 'shadow-[0_0_20px_rgba(34,197,94,0.3)]', line: 'bg-green-500' },
+                                                { border: 'border-pink-500/50', bg: 'bg-pink-500/10', text: 'text-pink-400', glow: 'shadow-[0_0_20px_rgba(236,72,153,0.3)]', line: 'bg-pink-500' },
                                             ];
                                             const color = colors[index % colors.length];
 
@@ -191,13 +191,13 @@ export function LogbookMenu() {
 
                                                         {/* Status Indicator */}
                                                         <div className="flex items-center gap-1 text-xs font-mono text-gray-500">
-                                                            <div className={`w-1.5 h-1.5 rounded-full ${color.bg.replace('/10', '')} animate-pulse`} />
+                                                            <div className={`w-1.5 h-1.5 rounded-full ${color.line} animate-pulse`} />
                                                             <span>online</span>
                                                         </div>
                                                     </div>
 
                                                     {/* Hover Effect Line */}
-                                                    <div className={`absolute bottom-0 left-0 right-0 h-1 ${color.bg.replace('/10', '')} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`} />
+                                                    <div className={`absolute bottom-0 left-0 right-0 h-1 ${color.line} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`} />
                                                 </motion.button>
                                             );
                                         })}

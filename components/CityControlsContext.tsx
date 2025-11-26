@@ -37,7 +37,7 @@ const CityControlsContext = createContext<CityControls | undefined>(undefined);
 
 export function CityControlsProvider({ children }: { children: ReactNode }) {
     // --- 1. IMPOSTA QUI I TUOI VALORI DI DEFAULT ---
-    const DEFAULT_TIME = 7.4;       // Ore 07:24
+    const DEFAULT_TIME = 18.25;       // Ore 18:15
     const DEFAULT_FOG = 20;        // 30% Nebbia
     const DEFAULT_TRAFFIC = 80;    // 80% Traffico
 

@@ -124,6 +124,9 @@ export const translations = {
                 escapeTooltip: "Teletrasporto a coordinate casuali",
                 timeOfDay: "Orario Locale",
                 systemControls: "Controlli Sistema",
+                localTime: "Ora Locale",
+                timeWarp: "Scorrere del tempo",
+                traffic: "Traffico",
             },
         },
         hud: {
@@ -265,6 +268,9 @@ export const translations = {
                 escapeTooltip: "Teleport to random coordinates",
                 timeOfDay: "Local Time",
                 systemControls: "System Controls",
+                localTime: "Local Time",
+                timeWarp: "Time Warp",
+                traffic: "Traffic",
             },
         },
         hud: {

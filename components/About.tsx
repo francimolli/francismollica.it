@@ -22,7 +22,7 @@ import {
 } from "react-icons/si";
 import Link from "next/link";
 
-// --- 1. Componente Typewriter (Identico a quello della Hero) ---
+// --- Componente Typewriter ---
 function TypewriterText({
     text,
     delay = 0,
@@ -68,7 +68,7 @@ export function About() {
     const { t } = useLanguage();
     const { setExpandedSection } = useFloatingSection();
 
-    // Calculate age based on birthdate (04/12/1994)
+    // Calculate age based on birthdate
     const calculateAge = () => {
         const birthDate = new Date(1994, 11, 4); // Month is 0-indexed (11 = December)
         const today = new Date();
