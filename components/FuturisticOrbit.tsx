@@ -7,10 +7,13 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
+import { RGBShiftShader } from "three/examples/jsm/shaders/RGBShiftShader.js";
 import { SimplexNoise } from "three/examples/jsm/math/SimplexNoise.js";
 import { useCityControls } from "@/components/CityControlsContext";
 import { useFloatingSection } from "@/components/FloatingSectionContext";
 import { useLanguage } from "@/lib/language-context";
+import { motion, AnimatePresence } from "framer-motion";
 import { translations } from "@/lib/translations";
 
 // --- COMPONENT: VIRTUAL JOYSTICK ---
@@ -197,10 +200,19 @@ export function FuturisticOrbit() {
         { id: "music", x: 0, y: 110, z: 200 },
     ];
 
-    const { time, timeSpeed, fogDensity, trafficLevel, zoom, setZoom, systemStatus, cameraTarget, setCameraTarget, resetTrigger, regenerationTrigger, escapeTrigger, setCoordinates, invertYAxis } = useCityControls();
+    const { time, timeSpeed, fogDensity, trafficLevel, zoom, setZoom, systemStatus, cameraTarget, setCameraTarget, resetTrigger, regenerationTrigger, escapeTrigger, setCoordinates, invertYAxis, boostActive } = useCityControls();
     const pendingSectionOpen = useRef<{ id: string, startTime: number, startPos: THREE.Vector3 } | null>(null);
-    const stateRef = useRef({ time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger });
-    useEffect(() => { stateRef.current = { time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger }; }, [time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger]);
+    const stateRef = useRef({ time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger, boostActive });
+    useEffect(() => { stateRef.current = { time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger, boostActive }; }, [time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger, boostActive]);
+
+    // --- NAVIGATION POIs ---
+    const pois = [
+        { id: 'home', label: 'HOME SECTOR', pos: new THREE.Vector3(0, 0, 0), color: '#06b6d4' },
+        { id: 'nova', label: 'NOVA PRIME', pos: new THREE.Vector3(-2500, 500, -2500), color: '#ffffff' },
+        { id: 'cyber', label: 'CYBER PRIME', pos: new THREE.Vector3(800, 200, -800), color: '#4400ff' },
+        { id: 'magma', label: 'MAGMA GIANT', pos: new THREE.Vector3(-900, -300, 500), color: '#ff0055' },
+        { id: 'toxic', label: 'TOXIC MOON', pos: new THREE.Vector3(400, 600, 900), color: '#00ffaa' },
+    ];
 
     // --- INTERACTION TRACKING ---
     const lastInteractionRef = useRef(Date.now());
@@ -274,8 +286,9 @@ export function FuturisticOrbit() {
         // Galactic Fog: Sparse, deep color
         scene.fog = new THREE.FogExp2(CONFIG.colors.bg, 0.002);
 
-        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 1, 3000);
-        camera.position.set(-140, 110, 140);
+        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 1, 20000);
+        // Coordinates: -314.47 lon (x), -244.97 lat (z) -> x10 scale
+        camera.position.set(-3144.7, 110, -2449.7);
 
         const renderer = new THREE.WebGLRenderer({
             antialias: false,
@@ -302,6 +315,12 @@ export function FuturisticOrbit() {
         bloomPass.strength = 1.2;  // Stronger glow
         bloomPass.radius = 0.5;
         composer.addPass(bloomPass);
+
+        // --- NEW: RGB SHIFT PASS (Speed Distortion) ---
+        const rgbShiftPass = new ShaderPass(RGBShiftShader);
+        rgbShiftPass.uniforms['amount'].value = 0.0015; // Base subtle shift
+        composer.addPass(rgbShiftPass);
+
         composer.addPass(new OutputPass());
 
         // --- MATERIALS ---
@@ -479,7 +498,540 @@ export function FuturisticOrbit() {
 
         setLoading(false);
 
-        // --- ANIMATION LOOP ---
+        // --- NEW: COMET SYSTEM ---
+        const cometVertexShader = `
+            attribute float aSize;
+            attribute float aSpeed;
+            attribute float aOffset;
+            varying float vAlpha;
+            uniform float uTime;
+            void main() {
+                vec3 pos = position;
+                // Animate along Z axis
+                float zPos = mod(pos.z + uTime * aSpeed + aOffset, 2000.0) - 1000.0;
+                pos.z = zPos;
+                
+                // Fade in/out based on Z position
+                float dist = abs(zPos);
+                vAlpha = 1.0 - smoothstep(0.0, 800.0, dist);
+                
+                vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+                gl_PointSize = aSize * (300.0 / -mvPosition.z);
+                gl_Position = projectionMatrix * mvPosition;
+            }
+        `;
+
+        const cometFragmentShader = `
+            uniform vec3 uColor;
+            varying float vAlpha;
+            void main() {
+                // Soft particle
+                vec2 coord = gl_PointCoord - vec2(0.5);
+                float dist = length(coord);
+                if (dist > 0.5) discard;
+                
+                float strength = 1.0 - (dist * 2.0);
+                strength = pow(strength, 2.0);
+                
+                gl_FragColor = vec4(uColor, strength * vAlpha);
+            }
+        `;
+
+        const cometCount = 20;
+        const cometGeo = new THREE.BufferGeometry();
+        const cometPos = new Float32Array(cometCount * 3);
+        const cometSizes = new Float32Array(cometCount);
+        const cometSpeeds = new Float32Array(cometCount);
+        const cometOffsets = new Float32Array(cometCount);
+
+        for (let i = 0; i < cometCount; i++) {
+            cometPos[i * 3] = (Math.random() - 0.5) * 1500; // Wide spread X
+            cometPos[i * 3 + 1] = (Math.random() - 0.5) * 600; // Spread Y
+            cometPos[i * 3 + 2] = (Math.random() - 0.5) * 2000; // Spread Z
+            cometSizes[i] = Math.random() * 5 + 2; // Size 2-7
+            cometSpeeds[i] = Math.random() * 100 + 50; // Speed 50-150
+            cometOffsets[i] = Math.random() * 2000;
+        }
+
+        cometGeo.setAttribute('position', new THREE.BufferAttribute(cometPos, 3));
+        cometGeo.setAttribute('aSize', new THREE.BufferAttribute(cometSizes, 1));
+        cometGeo.setAttribute('aSpeed', new THREE.BufferAttribute(cometSpeeds, 1));
+        cometGeo.setAttribute('aOffset', new THREE.BufferAttribute(cometOffsets, 1));
+
+        const cometMat = new THREE.ShaderMaterial({
+            vertexShader: cometVertexShader,
+            fragmentShader: cometFragmentShader,
+            uniforms: {
+                uTime: { value: 0 },
+                uColor: { value: new THREE.Color(0xaaddff) } // Cyan-ish white
+            },
+            transparent: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+
+        const comets = new THREE.Points(cometGeo, cometMat);
+        scene.add(comets);
+
+        // --- NEW: REACTIVE SPACE DUST (Replacing old Stardust) ---
+        // We'll reuse the existing dust system but make it denser and reactive
+        // Removing old dust logic to avoid duplication if we were to just add new one
+        // But since I can't easily delete the old block without context, I will MODIFY the existing dust parameters below
+        // Actually, let's just add a SECOND layer of "Close Dust" for the reactive effect
+
+        const reactiveDustCount = 2000;
+        const reactiveDustGeo = new THREE.BufferGeometry();
+        const reactiveDustPos = new Float32Array(reactiveDustCount * 3);
+        const reactiveDustSizes = new Float32Array(reactiveDustCount);
+
+        for (let i = 0; i < reactiveDustCount; i++) {
+            reactiveDustPos[i * 3] = (Math.random() - 0.5) * 400; // Closer box
+            reactiveDustPos[i * 3 + 1] = (Math.random() - 0.5) * 200;
+            reactiveDustPos[i * 3 + 2] = (Math.random() - 0.5) * 400;
+            reactiveDustSizes[i] = Math.random() * 1.5;
+        }
+
+        reactiveDustGeo.setAttribute('position', new THREE.BufferAttribute(reactiveDustPos, 3));
+        reactiveDustGeo.setAttribute('size', new THREE.BufferAttribute(reactiveDustSizes, 1));
+        // Reuse star shaders but with different uniforms if needed, or just standard points
+        // Let's use standard PointsMaterial for performance and simplicity on this layer
+        const reactiveDustMat = new THREE.PointsMaterial({
+            color: 0xffffff,
+            size: 0.5,
+            transparent: true,
+            opacity: 0.4,
+            blending: THREE.AdditiveBlending,
+            sizeAttenuation: true
+        });
+
+        const reactiveDust = new THREE.Points(reactiveDustGeo, reactiveDustMat);
+        scene.add(reactiveDust);
+
+        // --- NEW: DISTANT STELLAR SYSTEM "NOVA PRIME" ---
+        // A completely separate system far away to test scale and performance
+        const novaSystemGroup = new THREE.Group();
+        novaSystemGroup.position.set(-2500, 500, -2500); // Far away
+        scene.add(novaSystemGroup);
+
+        // 1. Central Star (White Dwarf / Neutron Star)
+        const novaStarGeo = new THREE.SphereGeometry(80, 64, 64);
+        const novaStarMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const novaStar = new THREE.Mesh(novaStarGeo, novaStarMat);
+
+        // Star Glow (Sprite)
+        const spriteMat = new THREE.SpriteMaterial({
+            map: new THREE.TextureLoader().load('/lensflare0.png'), // Fallback or procedural if no texture
+            color: 0xaaddff,
+            blending: THREE.AdditiveBlending
+        });
+        // Since we don't have the texture loaded, let's use a simple glow mesh instead
+        const novaGlowGeo = new THREE.SphereGeometry(120, 32, 32);
+        const novaGlowMat = new THREE.ShaderMaterial({
+            uniforms: {
+                c: { value: 0.2 },
+                p: { value: 4.0 },
+                glowColor: { value: new THREE.Color(0x88ccff) },
+                viewVector: { value: camera.position }
+            },
+            vertexShader: `
+                uniform vec3 viewVector;
+                uniform float c;
+                uniform float p;
+                varying float intensity;
+                void main() {
+                    vec3 vNormal = normalize(normalMatrix * normal);
+                    vec3 vNormel = normalize(normalMatrix * viewVector);
+                    // FIX: Clamp base to 0 to avoid NaN from pow(negative) which corrupts screen
+                    intensity = pow(max(0.0, c - dot(vNormal, vNormel)), p);
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform vec3 glowColor;
+                varying float intensity;
+                void main() {
+                    vec3 glow = glowColor * intensity;
+                    gl_FragColor = vec4(glow, 1.0);
+                }
+            `,
+            side: THREE.BackSide,
+            blending: THREE.AdditiveBlending,
+            transparent: true
+        });
+        const novaGlow = new THREE.Mesh(novaGlowGeo, novaGlowMat);
+        novaStar.add(novaGlow);
+        novaSystemGroup.add(novaStar);
+
+        // 2. Orbiting Planets (Nova System)
+        const novaPlanets: THREE.Mesh[] = [];
+        const novaPlanetConfigs = [
+            { dist: 300, size: 20, color: 0xffaa00, speed: 0.02 },
+            { dist: 500, size: 40, color: 0xff0055, speed: 0.015 },
+            { dist: 800, size: 30, color: 0x00ffaa, speed: 0.01 }
+        ];
+
+        novaPlanetConfigs.forEach(conf => {
+            // Planet Mesh
+            const geo = new THREE.IcosahedronGeometry(conf.size, 1);
+            const mat = new THREE.MeshStandardMaterial({
+                color: conf.color,
+                emissive: conf.color,
+                emissiveIntensity: 0.5,
+                roughness: 0.4,
+                metalness: 0.8
+            });
+            const mesh = new THREE.Mesh(geo, mat);
+
+            // Orbit container for rotation
+            const orbitContainer = new THREE.Group();
+            orbitContainer.userData = { speed: conf.speed };
+
+            mesh.position.set(conf.dist, 0, 0);
+            orbitContainer.add(mesh);
+            novaSystemGroup.add(orbitContainer);
+            novaPlanets.push(orbitContainer as any); // Store container to rotate it
+
+            // Orbit Line
+            const lineGeo = new THREE.RingGeometry(conf.dist - 1, conf.dist + 1, 64);
+            const lineMat = new THREE.MeshBasicMaterial({
+                color: conf.color,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.1
+            });
+            const line = new THREE.Mesh(lineGeo, lineMat);
+            line.rotation.x = Math.PI / 2;
+            novaSystemGroup.add(line);
+        });
+
+        // 3. Nova System Debris Field (Instanced)
+        const novaDebrisCount = 1000;
+        const novaDebrisGeo = new THREE.TetrahedronGeometry(2, 0);
+        const novaDebrisMat = new THREE.MeshBasicMaterial({ color: 0x88ccff, transparent: true, opacity: 0.6 });
+        const novaDebris = new THREE.InstancedMesh(novaDebrisGeo, novaDebrisMat, novaDebrisCount);
+        const debrisDummy = new THREE.Object3D();
+
+        for (let i = 0; i < novaDebrisCount; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const radius = 200 + Math.random() * 800;
+            const y = (Math.random() - 0.5) * 100;
+            debrisDummy.position.set(Math.cos(angle) * radius, y, Math.sin(angle) * radius);
+            debrisDummy.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+            const s = Math.random() * 2 + 0.5;
+            debrisDummy.scale.set(s, s, s);
+            debrisDummy.updateMatrix();
+            novaDebris.setMatrixAt(i, debrisDummy.matrix);
+        }
+        novaDebris.instanceMatrix.needsUpdate = true;
+        novaSystemGroup.add(novaDebris);
+
+        // --- NEW: PROCEDURAL PLANET SHADER ---
+        const planetVertexShader = `
+            varying vec2 vUv;
+            varying vec3 vNormal;
+            varying vec3 vWorldPos;
+            void main() {
+                vUv = uv;
+                vNormal = normalize(normalMatrix * normal);
+                vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+                vWorldPos = worldPosition.xyz;
+                gl_Position = projectionMatrix * viewMatrix * worldPosition;
+            }
+        `;
+
+        const planetFragmentShader = `
+            varying vec2 vUv;
+            varying vec3 vNormal;
+            varying vec3 vWorldPos;
+            uniform float uTime;
+            uniform vec3 uColorA;
+            uniform vec3 uColorB;
+            uniform vec3 uColorC;
+            uniform float uSeed;
+
+            // Simplex Noise (Reuse for consistency)
+            vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+            vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+
+            float snoise(vec3 v) {
+                const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
+                const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
+                vec3 i  = floor(v + dot(v, C.yyy) );
+                vec3 x0 = v - i + dot(i, C.xxx) ;
+                vec3 g = step(x0.yzx, x0.xyz);
+                vec3 l = 1.0 - g;
+                vec3 i1 = min( g.xyz, l.zxy );
+                vec3 i2 = max( g.xyz, l.zxy );
+                vec3 x1 = x0 - i1 + C.xxx;
+                vec3 x2 = x0 - i2 + C.yyy;
+                vec3 x3 = x0 - D.yyy;
+                i = mod289(i);
+                vec4 p = permute( permute( permute(
+                            i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
+                        + i.y + vec4(0.0, i1.y, i2.y, 1.0 ))
+                        + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
+                float n_ = 0.142857142857;
+                vec3  ns = n_ * D.wyz - D.xzx;
+                vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+                vec4 x_ = floor(j * ns.z);
+                vec4 y_ = floor(j - 7.0 * x_ );
+                vec4 x = x_ *ns.x + ns.yyyy;
+                vec4 y = y_ *ns.x + ns.yyyy;
+                vec4 h = 1.0 - abs(x) - abs(y);
+                vec4 b0 = vec4( x.xy, y.xy );
+                vec4 b1 = vec4( x.zw, y.zw );
+                vec4 s0 = floor(b0)*2.0 + 1.0;
+                vec4 s1 = floor(b1)*2.0 + 1.0;
+                vec4 sh = -step(h, vec4(0.0));
+                vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
+                vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
+                vec3 p0 = vec3(a0.xy,h.x);
+                vec3 p1 = vec3(a0.zw,h.y);
+                vec3 p2 = vec3(a1.xy,h.z);
+                vec3 p3 = vec3(a1.zw,h.w);
+                vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+                p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+                vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+                m = m * m;
+                return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3) ) );
+            }
+
+            void main() {
+                // Gas Giant Bands
+                float noise = snoise(vec3(vWorldPos.x * 0.02, vWorldPos.y * 0.05 + uSeed, vWorldPos.z * 0.02 + uTime * 0.05));
+                float bands = sin(vUv.y * 20.0 + noise * 5.0);
+                
+                // Color Mixing
+                vec3 color = mix(uColorA, uColorB, smoothstep(-1.0, 1.0, bands));
+                color = mix(color, uColorC, smoothstep(0.0, 1.0, noise));
+
+                // Atmosphere / Fresnel
+                vec3 viewDir = normalize(cameraPosition - vWorldPos);
+                float fresnel = pow(1.0 - max(dot(vNormal, viewDir), 0.0), 4.0);
+                
+                gl_FragColor = vec4(color + fresnel * uColorC * 2.0, 1.0);
+            }
+        `;
+
+        // --- PLANET CREATION ---
+        const planets: THREE.Mesh[] = [];
+        const planetConfigs = [
+            { pos: new THREE.Vector3(800, 200, -800), size: 120, colorA: 0x4400ff, colorB: 0x00ffff, colorC: 0xffffff, seed: 1.0 }, // Cyber Prime
+            { pos: new THREE.Vector3(-900, -300, 500), size: 180, colorA: 0xff0055, colorB: 0xffaa00, colorC: 0xffddaa, seed: 2.0 }, // Magma Giant
+            { pos: new THREE.Vector3(400, 600, 900), size: 90, colorA: 0x00ffaa, colorB: 0x004433, colorC: 0xaaffff, seed: 3.0 }   // Toxic Moon
+        ];
+
+        const planetGeo = new THREE.SphereGeometry(1, 64, 64);
+
+        planetConfigs.forEach(config => {
+            const mat = new THREE.ShaderMaterial({
+                vertexShader: planetVertexShader,
+                fragmentShader: planetFragmentShader,
+                uniforms: {
+                    uTime: { value: 0 },
+                    uColorA: { value: new THREE.Color(config.colorA) },
+                    uColorB: { value: new THREE.Color(config.colorB) },
+                    uColorC: { value: new THREE.Color(config.colorC) },
+                    uSeed: { value: config.seed }
+                }
+            });
+            const mesh = new THREE.Mesh(planetGeo, mat);
+            mesh.position.copy(config.pos);
+            mesh.scale.set(config.size, config.size, config.size);
+            scene.add(mesh);
+            planets.push(mesh);
+        });
+
+        // --- NEW: PROCEDURAL NEBULA (Background) ---
+        const nebulaVertexShader = `
+            varying vec2 vUv;
+            varying vec3 vWorldPos;
+            void main() {
+                vUv = uv;
+                vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+                vWorldPos = worldPosition.xyz;
+                gl_Position = projectionMatrix * viewMatrix * worldPosition;
+            }
+        `;
+
+        const nebulaFragmentShader = `
+            varying vec2 vUv;
+            varying vec3 vWorldPos;
+            uniform float uTime;
+            uniform vec3 uColor1;
+            uniform vec3 uColor2;
+            uniform vec3 uColor3;
+
+            // Simplex Noise 3D
+            vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+            vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+
+            float snoise(vec3 v) {
+                const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
+                const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
+
+                // First corner
+                vec3 i  = floor(v + dot(v, C.yyy) );
+                vec3 x0 = v - i + dot(i, C.xxx) ;
+
+                // Other corners
+                vec3 g = step(x0.yzx, x0.xyz);
+                vec3 l = 1.0 - g;
+                vec3 i1 = min( g.xyz, l.zxy );
+                vec3 i2 = max( g.xyz, l.zxy );
+
+                //   x0 = x0 - 0.0 + 0.0 * C.xxx;
+                //   x1 = x0 - i1  + 1.0 * C.xxx;
+                //   x2 = x0 - i2  + 2.0 * C.xxx;
+                //   x3 = x0 - 1.0 + 3.0 * C.xxx;
+                vec3 x1 = x0 - i1 + C.xxx;
+                vec3 x2 = x0 - i2 + C.yyy; // 2.0*C.x = 1/3 = C.y
+                vec3 x3 = x0 - D.yyy;      // -1.0+3.0*C.x = -0.5 = -D.y
+
+                // Permutations
+                i = mod289(i);
+                vec4 p = permute( permute( permute(
+                            i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
+                        + i.y + vec4(0.0, i1.y, i2.y, 1.0 ))
+                        + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
+
+                // Gradients: 7x7 points over a square, mapped onto an octahedron.
+                // The ring size 17*17 = 289 is close to a multiple of 49 (49*6 = 294)
+                float n_ = 0.142857142857; // 1.0/7.0
+                vec3  ns = n_ * D.wyz - D.xzx;
+
+                vec4 j = p - 49.0 * floor(p * ns.z * ns.z);  //  mod(p,7*7)
+
+                vec4 x_ = floor(j * ns.z);
+                vec4 y_ = floor(j - 7.0 * x_ );    // mod(j,N)
+
+                vec4 x = x_ *ns.x + ns.yyyy;
+                vec4 y = y_ *ns.x + ns.yyyy;
+                vec4 h = 1.0 - abs(x) - abs(y);
+
+                vec4 b0 = vec4( x.xy, y.xy );
+                vec4 b1 = vec4( x.zw, y.zw );
+
+                //vec4 s0 = vec4(lessThan(b0,0.0))*2.0 - 1.0;
+                //vec4 s1 = vec4(lessThan(b1,0.0))*2.0 - 1.0;
+                vec4 s0 = floor(b0)*2.0 + 1.0;
+                vec4 s1 = floor(b1)*2.0 + 1.0;
+                vec4 sh = -step(h, vec4(0.0));
+
+                vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
+                vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
+
+                vec3 p0 = vec3(a0.xy,h.x);
+                vec3 p1 = vec3(a0.zw,h.y);
+                vec3 p2 = vec3(a1.xy,h.z);
+                vec3 p3 = vec3(a1.zw,h.w);
+
+                //Normalise gradients
+                vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+                p0 *= norm.x;
+                p1 *= norm.y;
+                p2 *= norm.z;
+                p3 *= norm.w;
+
+                // Mix final noise value
+                vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+                m = m * m;
+                return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),
+                                            dot(p2,x2), dot(p3,x3) ) );
+            }
+
+            void main() {
+                // Slow moving noise
+                float n1 = snoise(vWorldPos * 0.002 + uTime * 0.05);
+                float n2 = snoise(vWorldPos * 0.005 - uTime * 0.02);
+                
+                float noise = n1 * 0.5 + n2 * 0.5;
+                
+                // Color mixing
+                vec3 color = mix(uColor1, uColor2, n1 * 0.5 + 0.5);
+                color = mix(color, uColor3, n2 * 0.5 + 0.5);
+                
+                // Fade out based on noise (transparency)
+                float alpha = smoothstep(-0.2, 0.8, noise) * 0.4;
+                
+                gl_FragColor = vec4(color, alpha);
+            }
+        `;
+
+        const nebulaMat = new THREE.ShaderMaterial({
+            vertexShader: nebulaVertexShader,
+            fragmentShader: nebulaFragmentShader,
+            uniforms: {
+                uTime: { value: 0 },
+                uColor1: { value: new THREE.Color(0x000000) },
+                uColor2: { value: new THREE.Color(0x000000) },
+                uColor3: { value: new THREE.Color(0x000000) }
+            },
+            transparent: true,
+            side: THREE.BackSide, // Render on inside of sphere
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+            fog: false // Ignore scene fog so it doesn't turn black
+        });
+
+        const nebulaGeo = new THREE.SphereGeometry(1200, 64, 64);
+        const nebulaMesh = new THREE.Mesh(nebulaGeo, nebulaMat);
+        nebulaMesh.frustumCulled = false; // Prevent disappearing when camera moves inside/outside bounds
+        scene.add(nebulaMesh);
+
+        // --- NEW: GIANT ORBITAL RINGS ---
+        const ringGroup = new THREE.Group();
+        const giantRingGeo = new THREE.TorusGeometry(800, 2, 64, 200);
+        const giantRingMat = new THREE.MeshBasicMaterial({
+            color: 0x444444,
+            transparent: true,
+            opacity: 0.3,
+            blending: THREE.AdditiveBlending
+        });
+
+        const ring1 = new THREE.Mesh(giantRingGeo, giantRingMat);
+        ring1.rotation.x = Math.PI / 2;
+        ringGroup.add(ring1);
+
+        const ring2 = new THREE.Mesh(giantRingGeo, giantRingMat);
+        ring2.rotation.x = Math.PI / 2.2;
+        ring2.rotation.y = Math.PI / 6;
+        ring2.scale.set(1.2, 1.2, 1.2);
+        ringGroup.add(ring2);
+
+        scene.add(ringGroup);
+
+        // --- NEW: ASTEROID BELT (InstancedMesh) ---
+        const asteroidCount = 2000;
+        const asteroidGeo = new THREE.IcosahedronGeometry(1, 0);
+        const asteroidMat = new THREE.MeshStandardMaterial({
+            color: 0x888888,
+            roughness: 0.8,
+            metalness: 0.2
+        });
+        const asteroidBelt = new THREE.InstancedMesh(asteroidGeo, asteroidMat, asteroidCount);
+        const asteroidDummy = new THREE.Object3D();
+
+        for (let i = 0; i < asteroidCount; i++) {
+            const angle = (i / asteroidCount) * Math.PI * 2;
+            const radius = 600 + Math.random() * 200; // Belt between 600 and 800
+            const x = Math.cos(angle) * radius;
+            const z = Math.sin(angle) * radius;
+            const y = (Math.random() - 0.5) * 40; // Flat belt
+
+            asteroidDummy.position.set(x, y, z);
+            const scale = Math.random() * 3 + 1;
+            asteroidDummy.scale.set(scale, scale, scale);
+            asteroidDummy.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+            asteroidDummy.updateMatrix();
+            asteroidBelt.setMatrixAt(i, asteroidDummy.matrix);
+        }
+        asteroidBelt.instanceMatrix.needsUpdate = true;
+        scene.add(asteroidBelt);
         const clock = new THREE.Clock();
         let animationId: number;
         const moveRef = { x: 0, z: 0, y: 0, yaw: 0, pitch: 0 };
@@ -746,10 +1298,28 @@ export function FuturisticOrbit() {
                     .addScaledVector(right, moveRef.x)
                     .addScaledVector(forward, moveRef.z)
                     .normalize()
-                    .multiplyScalar(moveSpeed);
+                    .multiplyScalar(moveSpeed * (stateRef.current.boostActive ? 5.0 : 1.0)); // Increased to 5x
 
                 controls.target.add(moveVec);
                 camera.position.add(moveVec);
+
+                // --- NEW: DYNAMIC FOV & WARP EFFECT ---
+                // Calculate speed factor (0 to 1)
+                const isMoving = moveRef.z !== 0 || moveRef.x !== 0;
+                const baseFOV = 45;
+                const targetFOV = isMoving ? (moveRef.z > 0 ? (stateRef.current.boostActive ? 85 : 60) : 50) : baseFOV; // Extreme FOV on boost
+                camera.fov = THREE.MathUtils.lerp(camera.fov, targetFOV, 0.05);
+                camera.updateProjectionMatrix();
+
+                // RGB Shift based on speed
+                const targetShift = isMoving ? (stateRef.current.boostActive ? 0.008 : 0.004) : 0.0015; // Double shift on boost
+                rgbShiftPass.uniforms['amount'].value = THREE.MathUtils.lerp(rgbShiftPass.uniforms['amount'].value, targetShift, 0.05);
+
+                // Shake effect on boost
+                if (stateRef.current.boostActive && isMoving) {
+                    camera.position.x += (Math.random() - 0.5) * 0.5;
+                    camera.position.y += (Math.random() - 0.5) * 0.5;
+                }
 
                 // 2. Rotation (Look - FPS Style)
                 if (moveRef.yaw !== 0 || moveRef.pitch !== 0) {
@@ -772,9 +1342,14 @@ export function FuturisticOrbit() {
                     controls.target.copy(camera.position).add(offset);
                 }
 
-                camera.rotation.z = THREE.MathUtils.lerp(camera.rotation.z, -moveRef.x * 0.05, 0.1);
+                // Enhanced Banking (More aggressive roll)
+                camera.rotation.z = THREE.MathUtils.lerp(camera.rotation.z, -moveRef.x * 0.15, 0.1);
             } else {
+                // Reset Effects
                 camera.rotation.z = THREE.MathUtils.lerp(camera.rotation.z, 0, 0.1);
+                camera.fov = THREE.MathUtils.lerp(camera.fov, 45, 0.05);
+                camera.updateProjectionMatrix();
+                rgbShiftPass.uniforms['amount'].value = THREE.MathUtils.lerp(rgbShiftPass.uniforms['amount'].value, 0.0015, 0.05);
             }
 
             // --- ARTIFACTS ANIMATION ---
@@ -837,6 +1412,162 @@ export function FuturisticOrbit() {
                 packetLines.visible = true;
                 packetMat.opacity = 0.6;
                 bloomPass.strength = 1.2;
+            }
+
+            // --- NEW: UPDATE NEBULA COLORS (WITH HEARTBEAT) ---
+            // Use the same targetFog color logic but brighter for nebula
+            const nebulaColor1 = crystalMat.uniforms.colorActive.value.clone().multiplyScalar(0.2);
+            const nebulaColor2 = scene.fog instanceof THREE.FogExp2 ? scene.fog.color.clone().multiplyScalar(2.0) : new THREE.Color(0x000000);
+            const nebulaColor3 = new THREE.Color(0x000000).lerp(nebulaColor1, 0.5);
+
+            // Heartbeat Pulse (Slow, organic breathing)
+            const heartbeat = (Math.sin(elapsed * 0.5) * 0.5 + 0.5) * 0.2 + 0.8; // Oscillates between 0.8 and 1.0
+
+            nebulaMat.uniforms.uColor1.value.lerp(nebulaColor1.multiplyScalar(heartbeat), 0.05);
+            nebulaMat.uniforms.uColor2.value.lerp(nebulaColor2.multiplyScalar(heartbeat), 0.05);
+            nebulaMat.uniforms.uColor3.value.lerp(nebulaColor3.multiplyScalar(heartbeat), 0.05);
+            nebulaMat.uniforms.uTime.value = elapsed;
+
+            // --- NEW: NEBULA FOLLOWS CAMERA (Infinite Skybox) ---
+            nebulaMesh.position.copy(camera.position);
+
+            // Apply heartbeat to crystals too (Subtle glow pulse)
+            crystalMat.uniforms.colorActive.value.multiplyScalar(heartbeat);
+
+            // --- NEW: ANIMATE RINGS & ASTEROIDS ---
+            ringGroup.rotation.y = elapsed * 0.02;
+            ringGroup.rotation.z = Math.sin(elapsed * 0.1) * 0.05;
+            asteroidBelt.rotation.y = elapsed * 0.01;
+
+            // --- NEW: ANIMATE PLANETS ---
+            planets.forEach((planet, i) => {
+                planet.rotation.y = elapsed * 0.05;
+                (planet.material as THREE.ShaderMaterial).uniforms.uTime.value = elapsed;
+            });
+
+            // --- NEW: ANIMATE COMETS ---
+            cometMat.uniforms.uTime.value = elapsed;
+
+            // --- NEW: ANIMATE REACTIVE DUST ---
+            // Move dust opposite to camera movement to simulate speed
+            // We need to access the positions array
+            const dustPositions = reactiveDustGeo.attributes.position.array as Float32Array;
+            // Calculate camera velocity (simple diff)
+            // For simplicity, we just drift them slowly + react to camera position modulo
+            for (let i = 0; i < reactiveDustCount; i++) {
+                // Wrap around camera
+                let x = dustPositions[i * 3];
+                let y = dustPositions[i * 3 + 1];
+                let z = dustPositions[i * 3 + 2];
+
+                // Relative to camera
+                const range = 400;
+                // Check distance from camera
+                const dx = x - camera.position.x;
+                const dy = y - camera.position.y;
+                const dz = z - camera.position.z;
+
+                // Wrap logic
+                if (dx > range / 2) dustPositions[i * 3] -= range;
+                if (dx < -range / 2) dustPositions[i * 3] += range;
+                if (dy > range / 2) dustPositions[i * 3 + 1] -= range;
+                if (dy < -range / 2) dustPositions[i * 3 + 1] += range;
+                if (dz > range / 2) dustPositions[i * 3 + 2] -= range;
+                if (dz < -range / 2) dustPositions[i * 3 + 2] += range;
+            }
+            reactiveDustGeo.attributes.position.needsUpdate = true;
+
+            // --- NEW: ANIMATE NOVA SYSTEM ---
+            novaPlanets.forEach((planetGroup) => {
+                planetGroup.rotation.y += planetGroup.userData.speed;
+            });
+            novaDebris.rotation.y -= 0.002; // Slow counter-rotation
+            novaGlowMat.uniforms.viewVector.value = camera.position; // Update glow to face camera
+
+            // --- FIX: RESIZE & SCISSOR HANDLING ---
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            // Check if resize needed (Robust handling)
+            const canvas = renderer.domElement;
+            if (canvas.width !== width || canvas.height !== height) {
+                renderer.setSize(width, height, false);
+                composer.setSize(width, height);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+            }
+
+            // Ensure full screen rendering
+            renderer.setScissorTest(false);
+
+            // --- NEW: UPDATE HUD WAYPOINTS ---
+            pois.forEach(poi => {
+                const el = document.getElementById(`waypoint-${poi.id}`);
+                if (el) {
+                    // Clone to avoid modifying original
+                    const pos = poi.pos.clone();
+
+                    // Project to 2D screen space
+                    pos.project(camera);
+
+                    // Check if behind camera
+                    const isBehind = pos.z > 1;
+
+                    // Map to screen pixels
+                    // Use current width/height from above
+                    const widthHalf = width / 2;
+                    const heightHalf = height / 2;
+
+                    let x = (pos.x * widthHalf) + widthHalf;
+                    let y = -(pos.y * heightHalf) + heightHalf;
+
+                    // Handle off-screen / behind camera
+                    if (isBehind || x < 0 || x > width || y < 0 || y > height) {
+                        // Invert if behind
+                        if (isBehind) {
+                            x = width - x;
+                            y = height - y;
+                        }
+
+                        // Clamp to edges
+                        const padding = 40;
+                        // Find angle to center
+                        const dx = x - widthHalf;
+                        const dy = y - heightHalf;
+                        const angle = Math.atan2(dy, dx);
+
+                        // Push to edge
+                        // Simple box clamping
+                        x = Math.max(padding, Math.min(width - padding, x));
+                        y = Math.max(padding, Math.min(height - padding, y));
+
+                        el.classList.add('opacity-50'); // Dim when off-screen
+                    } else {
+                        el.classList.remove('opacity-50');
+                    }
+
+                    // Update Position
+                    el.style.transform = `translate(${x}px, ${y}px)`;
+
+                    // Update Distance
+                    const dist = camera.position.distanceTo(poi.pos);
+                    const distEl = document.getElementById(`dist-${poi.id}`);
+                    if (distEl) distEl.textContent = `${Math.round(dist / 10)} AU`; // Scale down for "AU" feel
+
+                    // Hide if very close (< 100 units)
+                    el.style.display = dist < 100 ? 'none' : 'flex';
+                }
+            });
+
+            // Update "Return to Sector 0" Warning
+            const distFromCenter = camera.position.length();
+            const returnWarning = document.getElementById('return-warning');
+            if (returnWarning) {
+                if (distFromCenter > 2500) {
+                    returnWarning.style.opacity = '1';
+                } else {
+                    returnWarning.style.opacity = '0';
+                }
             }
 
             // --- INTERACTION SPEED ---
@@ -1061,6 +1792,77 @@ export function FuturisticOrbit() {
                     <div className="text-cyan-500 font-mono text-xl animate-pulse">{t.hud.initializing}</div>
                 </div>
             )}
+
+            {/* --- NEW: HUD WAYPOINTS --- */}
+            {pois.map(poi => (
+                <div
+                    key={poi.id}
+                    id={`waypoint-${poi.id}`}
+                    className="absolute top-0 left-0 flex flex-col items-center justify-center pointer-events-none transition-opacity duration-300"
+                    style={{ transform: 'translate(-50%, -50%)', willChange: 'transform' }}
+                >
+                    {/* Marker */}
+                    <div className="w-4 h-4 border-2 border-current rounded-full flex items-center justify-center" style={{ color: poi.color }}>
+                        <div className="w-1 h-1 bg-current rounded-full animate-pulse" />
+                    </div>
+                    {/* Label */}
+                    <div className="mt-1 flex flex-col items-center">
+                        <span className="text-[10px] font-mono font-bold tracking-widest text-white/80 whitespace-nowrap drop-shadow-md bg-black/50 px-1 rounded">
+                            {poi.label}
+                        </span>
+                        <span id={`dist-${poi.id}`} className="text-[9px] font-mono text-cyan-400/80">
+                            0 AU
+                        </span>
+                    </div>
+                </div>
+            ))}
+
+            {/* --- NEW: RETURN WARNING --- */}
+            <div
+                id="return-warning"
+                className="absolute top-64 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none transition-opacity duration-500 opacity-0"
+            >
+                <div className="text-red-500 font-black tracking-widest text-xl animate-pulse bg-black/50 px-4 py-1 border border-red-500/50 rounded">
+                    WARNING: LEAVING SECTOR 0
+                </div>
+                <div className="text-red-400/80 font-mono text-xs">
+                    SIGNAL INTEGRITY DROPPING
+                </div>
+            </div>
+
+            {/* --- COLLISION WARNING OVERLAY (Rebooting) --- */}
+            <AnimatePresence>
+                {systemStatus === 'REBOOTING' && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute inset-0 z-[100] bg-red-900/40 backdrop-blur-sm flex flex-col items-center justify-center pointer-events-none overflow-hidden"
+                    >
+                        {/* Glitch Background */}
+                        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay animate-pulse" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-red-900/50 via-transparent to-red-900/50" />
+
+                        {/* Warning Text */}
+                        <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: [1, 1.1, 1], opacity: 1 }}
+                            transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
+                            className="relative z-10 flex flex-col items-center gap-4 p-12 bg-black/30 rounded-xl border border-red-500/30 backdrop-blur-md"
+                        >
+                            <div className="text-6xl md:text-9xl font-black text-red-500 tracking-tighter uppercase glitch-text" data-text="COLLISION">
+                                COLLISION
+                            </div>
+                            <div className="text-2xl md:text-4xl font-mono font-bold text-red-400 tracking-[1em] uppercase animate-pulse">
+                                DETECTED
+                            </div>
+                        </motion.div>
+
+                        {/* Scanlines */}
+                        <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] pointer-events-none" />
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }

@@ -90,7 +90,8 @@ export function Header() {
         resetView,
         coordinates, regenerateSimulation,
         triggerEscape, invertYAxis, setInvertYAxis,
-        triggerSystemReboot
+        triggerSystemReboot,
+        activateBoost, boostActive, boostCooldown
     } = useCityControls();
 
     const { setExpandedSection } = useFloatingSection();
@@ -253,16 +254,57 @@ export function Header() {
                         >
                             {escapeCooldown > 0 ? <span className="text-[9px] font-mono">{escapeCooldown}</span> : <Rocket size={16} className="-rotate-45" />}
                         </button>
+
+                        {/* BOOST BUTTON (Green Lightning) */}
+                        <button
+                            onClick={activateBoost}
+                            disabled={boostCooldown > 0 || boostActive}
+                            className={`
+                                relative group p-2 rounded-full transition-all duration-300
+                                ${boostActive ? 'bg-green-400 text-black shadow-[0_0_15px_rgba(74,222,128,0.8)] animate-pulse scale-110' :
+                                    boostCooldown > 0 ? 'bg-gray-800 text-gray-600 cursor-not-allowed' :
+                                        'bg-green-900/20 text-green-400 hover:bg-green-800/40 hover:scale-110 hover:shadow-[0_0_10px_rgba(74,222,128,0.4)]'}
+                            `}
+                            title={boostActive ? "HYPER BOOST ACTIVE" : boostCooldown > 0 ? `RECHARGING ${Math.ceil(boostCooldown)}s` : "ACTIVATE HYPER BOOST"}
+                        >
+                            <Zap size={20} className={boostActive ? "fill-current" : ""} />
+
+                            {/* Cooldown Number Overlay */}
+                            {boostCooldown > 0 && (
+                                <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold font-mono text-white">
+                                    {Math.ceil(boostCooldown)}
+                                </span>
+                            )}
+                        </button>
                     </div>
 
                     {/* --- MOBILE ICONS (ALWAYS VISIBLE ON MOBILE) --- */}
                     <div className="flex md:hidden items-center gap-3">
 
+                        {/* MOBILE BOOST (Left of Rocket) */}
+                        <button
+                            onClick={activateBoost}
+                            disabled={boostCooldown > 0 || boostActive}
+                            className={`
+                                relative p-3 rounded-full transition-all duration-300
+                                ${boostActive ? 'bg-green-400 text-black shadow-[0_0_15px_rgba(74,222,128,0.8)] animate-pulse' :
+                                    boostCooldown > 0 ? 'bg-gray-800 text-gray-600' :
+                                        'bg-green-900/20 text-green-400 border border-green-500/30'}
+                            `}
+                        >
+                            <Zap size={20} className={boostActive ? "fill-current" : ""} />
+                            {boostCooldown > 0 && (
+                                <span className="absolute -top-1 -right-1 w-5 h-5 bg-gray-700 rounded-full flex items-center justify-center text-[10px] text-white border border-black">
+                                    {Math.ceil(boostCooldown)}
+                                </span>
+                            )}
+                        </button>
+
                         {/* 1. Razzo Mobile - Visibile */}
                         <button
                             onClick={handleEscape}
                             disabled={escapeCooldown > 0}
-                            className={`w-10 h-10 flex items-center justify-center rounded-full border bg-black/40 backdrop-blur-md transition-all 
+                            className={`w-10 h-10 flex items-center justify-center rounded-full border bg-black/40 backdrop-blur-md transition-all
                             ${escapeCooldown > 0
                                     ? 'border-yellow-900/50 text-yellow-500 opacity-50'
                                     : 'border-purple-500/30 text-purple-400 hover:bg-purple-900/20 shadow-[0_0_10px_rgba(168,85,247,0.2)]'

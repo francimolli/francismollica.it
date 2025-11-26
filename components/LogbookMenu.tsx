@@ -207,7 +207,7 @@ export function LogbookMenu() {
                                 {/* Footer Status */}
                                 <div className="border-t border-yellow-500/30 bg-black/50 px-6 py-3">
                                     <div className="flex items-center justify-between text-xs font-mono text-gray-500">
-                                        <span>GIT v2.1</span>
+                                        <span>GIT v2.2</span>
                                         <span className="text-yellow-400">francismollica.it</span>
                                     </div>
                                 </div>

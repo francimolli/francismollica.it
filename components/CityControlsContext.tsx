@@ -31,6 +31,9 @@ interface CityControls {
     invertYAxis: boolean;
     setInvertYAxis: (v: boolean) => void;
     triggerSystemReboot: () => void;
+    boostActive: boolean;
+    activateBoost: () => void;
+    boostCooldown: number;
 }
 
 const CityControlsContext = createContext<CityControls | undefined>(undefined);
@@ -54,6 +57,30 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
     const [escapeTrigger, setEscapeTrigger] = useState(0);
     const [coordinates, setCoordinates] = useState({ lat: 41.90, long: 12.49 });
     const [invertYAxis, setInvertYAxis] = useState(false);
+
+    // Boost Logic
+    const [boostActive, setBoostActive] = useState(false);
+    const [boostCooldown, setBoostCooldown] = useState(0);
+
+    const activateBoost = () => {
+        if (boostCooldown > 0 || boostActive) return;
+        setBoostActive(true);
+        setBoostCooldown(20); // 20 seconds cooldown
+
+        // Deactivate after 12s
+        setTimeout(() => setBoostActive(false), 12000);
+
+        // Cooldown countdown
+        const interval = setInterval(() => {
+            setBoostCooldown(prev => {
+                if (prev <= 1) {
+                    clearInterval(interval);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+    };
 
     // --- 2. RILEVAMENTO MOBILE (ZOOM DEFAULT) ---
     useEffect(() => {
@@ -173,10 +200,13 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
                 regenerationTrigger, regenerateSimulation,
                 escapeTrigger, triggerEscape,
                 coordinates, setCoordinates,
-                invertYAxis, setInvertYAxis,
-                triggerSystemReboot
-            }}
-        >
+                invertYAxis,
+                setInvertYAxis,
+                triggerSystemReboot,
+                boostActive,
+                activateBoost,
+                boostCooldown
+            }}>
             {children}
         </CityControlsContext.Provider>
     );
