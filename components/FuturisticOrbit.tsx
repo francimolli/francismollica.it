@@ -9,8 +9,10 @@ import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPa
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 import { SimplexNoise } from "three/examples/jsm/math/SimplexNoise.js";
 import { useCityControls } from "@/components/CityControlsContext";
+import { useFloatingSection } from "@/components/FloatingSectionContext";
 import { useLanguage } from "@/lib/language-context";
 import { translations } from "@/lib/translations";
+import { motion, AnimatePresence } from "framer-motion";
 
 // --- COMPONENT: VIRTUAL JOYSTICK ---
 function Joystick({ onMove, label, className }: { onMove: (x: number, y: number) => void, label?: string, className?: string }) {
@@ -183,13 +185,23 @@ export function FuturisticOrbit() {
     const containerRef = useRef<HTMLDivElement>(null);
     const [loading, setLoading] = useState(true);
     const [coordinates, setCoordinatesLocal] = useState({ lat: 0, long: 0 });
+    const [isEscaping, setIsEscaping] = useState(false);
+    const [isResetting, setIsResetting] = useState(false);
     const { language } = useLanguage();
     const t = translations[language];
+    const { setExpandedSection } = useFloatingSection();
+    const lastTriggerMap = useRef<Record<string, number>>({});
+    const sectionTargets = [
+        { id: "about", x: 0, y: 110, z: -200 },
+        { id: "projects", x: 200, y: 110, z: 0 },
+        { id: "contact", x: -200, y: 110, z: 0 },
+        { id: "music", x: 0, y: 110, z: 200 },
+    ];
 
-    const { time, fogDensity, trafficLevel, zoom, setZoom, systemStatus, cameraTarget, resetTrigger, regenerationTrigger, setCoordinates } = useCityControls();
-
-    const stateRef = useRef({ time, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger });
-    useEffect(() => { stateRef.current = { time, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger }; }, [time, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger]);
+    const { time, timeSpeed, fogDensity, trafficLevel, zoom, setZoom, systemStatus, cameraTarget, setCameraTarget, resetTrigger, regenerationTrigger, escapeTrigger, setCoordinates, invertYAxis } = useCityControls();
+    const pendingSectionOpen = useRef<{ id: string, startTime: number, startPos: THREE.Vector3 } | null>(null);
+    const stateRef = useRef({ time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger });
+    useEffect(() => { stateRef.current = { time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger }; }, [time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger]);
 
     // --- INTERACTION TRACKING ---
     const lastInteractionRef = useRef(Date.now());
@@ -361,10 +373,10 @@ export function FuturisticOrbit() {
         // --- ARTIFACTS (Beacons) ---
         const artifacts: THREE.Mesh[] = [];
         const beaconCoords = [
-            { x: 0, z: -120, color: CONFIG.colors.poi1 }, // North
-            { x: 120, z: 0, color: CONFIG.colors.poi2 },  // East
-            { x: -120, z: 0, color: CONFIG.colors.poi3 }, // West
-            { x: 0, z: 120, color: CONFIG.colors.active } // South
+            { x: 0, z: -200, color: CONFIG.colors.poi1 }, // North
+            { x: 200, z: 0, color: CONFIG.colors.poi2 },  // East
+            { x: -200, z: 0, color: CONFIG.colors.poi3 }, // West
+            { x: 0, z: 200, color: CONFIG.colors.active } // South
         ];
 
         const beaconGeo = new THREE.IcosahedronGeometry(6, 1);
@@ -376,6 +388,7 @@ export function FuturisticOrbit() {
 
             const mesh = new THREE.Mesh(beaconGeo, mat);
             mesh.position.set(coord.x, 0, coord.z); // Float at 0 plane
+            mesh.scale.set(1.5, 1.5, 1.5); // 1.5x Size
 
             // Orbital Rings
             const ringGeo = new THREE.TorusGeometry(15, 0.2, 16, 100);
@@ -449,8 +462,8 @@ export function FuturisticOrbit() {
             dustAlphas[i] = Math.random() * 0.5 + 0.1;
         }
         dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
-        dustGeo.setAttribute('size', new THREE.BufferAttribute(dustSizes, 1));
-        dustGeo.setAttribute('aAlpha', new THREE.BufferAttribute(dustAlphas, 1));
+        dustGeo.setAttribute('size', new THREE.InstancedBufferAttribute(dustSizes, 1));
+        dustGeo.setAttribute('aAlpha', new THREE.InstancedBufferAttribute(dustAlphas, 1));
 
         const dustMat = new THREE.ShaderMaterial({
             vertexShader: starVertexShader,
@@ -470,14 +483,160 @@ export function FuturisticOrbit() {
         // --- ANIMATION LOOP ---
         const clock = new THREE.Clock();
         let animationId: number;
-        const moveRef = { x: 0, z: 0, y: 0, rot: 0 };
-        let lastResetTrigger = resetTrigger;
-        const resetAnimation = { active: false, startTime: 0, startPos: new THREE.Vector3(), startTarget: new THREE.Vector3() };
+        const moveRef = { x: 0, z: 0, y: 0, yaw: 0, pitch: 0 };
+        const resetAnimation = { active: false, startTime: 0, startPos: new THREE.Vector3(), startTarget: new THREE.Vector3(), endPos: new THREE.Vector3(), lastTrigger: resetTrigger };
+        const escapeAnimation = { active: false, startTime: 0, startPos: new THREE.Vector3(), startTarget: new THREE.Vector3(), targetPos: new THREE.Vector3(), approachPos: new THREE.Vector3(), reEntryColor: new THREE.Color(), lastTrigger: escapeTrigger };
 
         function animate() {
             animationId = requestAnimationFrame(animate);
             const elapsed = clock.getElapsedTime();
-            const { time, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger } = stateRef.current;
+            const delta = clock.getDelta();
+            const { time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger } = stateRef.current;
+
+            // --- ESCAPE ANIMATION ---
+            if (escapeTrigger > escapeAnimation.lastTrigger) {
+                escapeAnimation.active = true;
+                setIsEscaping(true);
+                escapeAnimation.startTime = elapsed;
+                escapeAnimation.startPos.copy(camera.position);
+                escapeAnimation.startTarget.copy(controls.target);
+                escapeAnimation.reEntryColor.setHSL(Math.random(), 1.0, 0.5); // Random vibrant color
+                if (cameraTarget) {
+                    escapeAnimation.targetPos.set(cameraTarget.x, cameraTarget.y || 110, cameraTarget.z);
+                    // Calculate approach position (Dynamic distance for realism)
+                    const dist = escapeAnimation.startPos.distanceTo(escapeAnimation.targetPos);
+                    const approachDist = Math.min(dist * 0.3, 400); // Stop 400 units away or 30% of trip
+                    const dir = new THREE.Vector3().subVectors(escapeAnimation.startPos, escapeAnimation.targetPos).normalize();
+                    if (dir.lengthSq() === 0) dir.set(0, 0, 1);
+                    escapeAnimation.approachPos.copy(escapeAnimation.targetPos).add(dir.multiplyScalar(approachDist));
+                }
+                escapeAnimation.lastTrigger = escapeTrigger;
+                controls.autoRotate = false;
+                controls.enablePan = false;
+            }
+
+            if (escapeAnimation.active) {
+                const duration = 8.5; // Extended for Re-entry phase
+                const t = (elapsed - escapeAnimation.startTime) / duration;
+
+                if (t >= 1.0) {
+                    escapeAnimation.active = false;
+                    setIsEscaping(false);
+                    bloomPass.strength = 1.5;
+                    bloomPass.radius = 0.4;
+                    camera.fov = 75;
+                    camera.updateProjectionMatrix();
+                    // Snap to target
+                    camera.position.copy(escapeAnimation.targetPos);
+                    controls.target.set(0, 0, 0); // Look at Galactic Core
+                    // Clear target to release control
+                    if ((containerRef.current as any)._clearTarget) {
+                        (containerRef.current as any)._clearTarget();
+                    }
+                    controls.autoRotate = true;
+                    controls.enablePan = true;
+
+                    // Reset Fog immediately to be safe
+                    if (scene.fog instanceof THREE.FogExp2) {
+                        scene.fog.color.setHex(0x000000);
+                        scene.fog.density = 0.002;
+                    }
+                } else {
+                    // 1. Charge (0 - 12%) -> 1s
+                    if (t < 0.12) {
+                        const charge = t / 0.12;
+                        // Shake - INTENSIFIED
+                        camera.position.x = escapeAnimation.startPos.x + (Math.random() - 0.5) * charge * 10;
+                        camera.position.y = escapeAnimation.startPos.y + (Math.random() - 0.5) * charge * 10;
+                        camera.position.z = escapeAnimation.startPos.z + (Math.random() - 0.5) * charge * 10;
+                        // Bloom buildup
+                        bloomPass.strength = 1.5 + charge * 10.0;
+                    }
+                    // 2. Explosion (12% - 14%) -> 0.2s
+                    else if (t < 0.14) {
+                        bloomPass.strength = 50.0; // BLINDING WHITE
+                        bloomPass.radius = 3.0;
+                        camera.position.copy(escapeAnimation.startPos); // Reset shake
+                    }
+                    // 3. Travel (14% - 53%) -> 3.3s -> To Approach Pos
+                    else if (t < 0.53) {
+                        const travelT = (t - 0.14) / (0.53 - 0.14);
+                        // Ease in out cubic
+                        const ease = travelT < 0.5 ? 4 * travelT * travelT * travelT : 1 - Math.pow(-2 * travelT + 2, 3) / 2;
+
+                        camera.position.lerpVectors(escapeAnimation.startPos, escapeAnimation.approachPos, ease);
+                        controls.target.lerpVectors(escapeAnimation.startTarget, new THREE.Vector3(0, 0, 0), ease); // Look at Core
+
+                        // Warp effect - INTENSIFIED
+                        bloomPass.strength = 5.0 + Math.sin(travelT * 20) * 2.0;
+                        camera.fov = 75 + Math.sin(travelT * Math.PI) * 85; // Extreme FOV warp (up to 160)
+                        camera.updateProjectionMatrix();
+                    }
+                    // 4. Re-entry (53% - 82%) -> 2.5s -> Colored Fog
+                    else if (t < 0.82) {
+                        const reEntryT = (t - 0.53) / (0.82 - 0.53);
+
+                        // Fog Color: Lerp to random vibrant color
+                        if (scene.fog instanceof THREE.FogExp2) {
+                            scene.fog.color.lerp(escapeAnimation.reEntryColor, 0.1);
+                            scene.fog.density = THREE.MathUtils.lerp(scene.fog.density, 0.02, 0.1); // Thick colored fog
+                        }
+
+                        // Bloom: High and pulsing
+                        bloomPass.strength = 10.0 + Math.sin(reEntryT * 10) * 5.0;
+
+                        // Camera: Slow drift from ApproachPos (10% progress)
+                        const subTarget = new THREE.Vector3().lerpVectors(escapeAnimation.approachPos, escapeAnimation.targetPos, 0.2);
+                        camera.position.lerpVectors(escapeAnimation.approachPos, subTarget, reEntryT);
+
+                        // FOV: High turbulence
+                        camera.fov = 140 + Math.sin(reEntryT * 5) * 10;
+                        camera.updateProjectionMatrix();
+                    }
+                    // 5. Clear (82% - 100%) -> 1.5s -> Gyroscopic Spin & Fade
+                    else {
+                        const clearT = (t - 0.82) / (1.0 - 0.82);
+                        const ease = 1 - Math.pow(1 - clearT, 3);
+
+                        // Fog: Opaque -> Clear
+                        if (scene.fog instanceof THREE.FogExp2) {
+                            scene.fog.color.lerp(new THREE.Color(0x000000), 0.1);
+                            // Start very dense (0.5) and clear up
+                            scene.fog.density = 0.5 * (1 - ease) + 0.002;
+                        }
+
+                        // Bloom: Fade
+                        bloomPass.strength = 5.0 * (1 - clearT) + 1.5;
+
+                        // FOV: Restore
+                        camera.fov = 140 - (clearT * 65); // 140 -> 75
+                        camera.updateProjectionMatrix();
+
+                        // Gyroscopic Rotation
+                        const speed = 15.0 * (1 - clearT); // Decaying speed
+
+                        // Rotate around multiple axes (Tumbling)
+                        camera.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), speed * delta); // Y (Yaw)
+                        camera.position.applyAxisAngle(new THREE.Vector3(1, 0, 0), speed * delta * 0.5); // X (Pitch)
+
+                        // Drift to Target Radius/Height
+                        const targetRadius = new THREE.Vector3(escapeAnimation.targetPos.x, 0, escapeAnimation.targetPos.z).length();
+                        const currentRadius = new THREE.Vector3(camera.position.x, 0, camera.position.z).length();
+                        const newRadius = THREE.MathUtils.lerp(currentRadius, targetRadius, 0.05);
+                        const newY = THREE.MathUtils.lerp(camera.position.y, escapeAnimation.targetPos.y, 0.05);
+
+                        const flat = new THREE.Vector3(camera.position.x, 0, camera.position.z).normalize().multiplyScalar(newRadius);
+                        camera.position.set(flat.x, newY, flat.z);
+
+                        camera.lookAt(0, 0, 0);
+                        controls.target.set(0, 0, 0);
+                    }
+                }
+
+                // Skip normal navigation
+                composer.render();
+                return;
+            }
 
             // Update Coordinates
             const lat = (camera.position.z / 10).toFixed(2);
@@ -487,26 +646,47 @@ export function FuturisticOrbit() {
             setCoordinatesLocal(coords);
 
             // --- RESET LOGIC ---
-            if (resetTrigger > lastResetTrigger) {
+            if (resetTrigger > resetAnimation.lastTrigger) {
                 resetAnimation.active = true;
+                setIsResetting(true);
                 resetAnimation.startTime = elapsed;
                 resetAnimation.startPos.copy(camera.position);
                 resetAnimation.startTarget.copy(controls.target);
-                moveRef.x = 0; moveRef.z = 0; moveRef.y = 0; moveRef.rot = 0;
+                moveRef.x = 0; moveRef.z = 0; moveRef.y = 0; moveRef.yaw = 0; moveRef.pitch = 0;
                 setMoveDirection({ x: 0, z: 0 }); // Keep for compatibility, though less used now
                 controls.autoRotate = false;
                 controls.enablePan = false;
-                lastResetTrigger = resetTrigger;
+                resetAnimation.lastTrigger = resetTrigger;
             }
 
             if (resetAnimation.active) {
                 const duration = 2.0;
                 const t = Math.min((elapsed - resetAnimation.startTime) / duration, 1.0);
                 const ease = 1 - Math.pow(1 - t, 3);
+
                 camera.position.lerpVectors(resetAnimation.startPos, new THREE.Vector3(-140, 110, 140), ease);
                 controls.target.lerpVectors(resetAnimation.startTarget, new THREE.Vector3(0, 0, 0), ease);
+
+                // Entropy Explosion Effect
+                if (t < 0.5) {
+                    const explosionT = t / 0.5;
+                    // Flash
+                    bloomPass.strength = 20.0 * (1 - explosionT) + 1.5;
+                    bloomPass.radius = 1.0 * (1 - explosionT) + 0.4;
+
+                    // Shake
+                    const shake = (1 - explosionT) * 2.0;
+                    camera.position.x += (Math.random() - 0.5) * shake;
+                    camera.position.y += (Math.random() - 0.5) * shake;
+                    camera.position.z += (Math.random() - 0.5) * shake;
+                } else {
+                    bloomPass.strength = 1.5;
+                    bloomPass.radius = 0.4;
+                }
+
                 if (t >= 1.0) {
                     resetAnimation.active = false;
+                    setIsResetting(false);
                     controls.autoRotate = true;
                     controls.enablePan = true;
                 }
@@ -517,31 +697,48 @@ export function FuturisticOrbit() {
                 controls.autoRotate = false;
                 controls.enablePan = false;
                 const targetX = cameraTarget.x;
+                const targetY = cameraTarget.y || 110; // Use provided Y or default
                 const targetZ = cameraTarget.z;
 
-                // Space Flight: Smoother, floatier
-                camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetX, 0.03);
-                camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetZ, 0.03);
-                // Float up/down based on distance
-                const dist = Math.sqrt(Math.pow(targetX - camera.position.x, 2) + Math.pow(targetZ - camera.position.z, 2));
-                const targetY = 20 + Math.min(dist * 0.5, 100);
-                camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetY, 0.03);
+                // Calculate distance to target
+                const dist = Math.sqrt(
+                    Math.pow(targetX - camera.position.x, 2) +
+                    Math.pow(targetY - camera.position.y, 2) +
+                    Math.pow(targetZ - camera.position.z, 2)
+                );
 
-                controls.target.x = THREE.MathUtils.lerp(controls.target.x, targetX, 0.03);
-                controls.target.z = THREE.MathUtils.lerp(controls.target.z, targetZ, 0.03);
+                // If we're very close to the target, release control
+                if (dist < 5) {
+                    controls.autoRotate = true;
+                    controls.enablePan = true;
+                    // Clear target to allow user control
+                    if ((containerRef.current as any)._clearTarget) {
+                        (containerRef.current as any)._clearTarget();
+                    }
+                } else {
+                    // Space Flight: Smoother, floatier
+                    camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetX, 0.03);
+                    camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetY, 0.03);
+                    camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetZ, 0.03);
 
-                // Roll
-                const bankAngle = (targetX - camera.position.x) * -0.001;
-                camera.rotation.z = THREE.MathUtils.lerp(camera.rotation.z, bankAngle, 0.05);
+                    controls.target.x = THREE.MathUtils.lerp(controls.target.x, targetX, 0.03);
+                    controls.target.z = THREE.MathUtils.lerp(controls.target.z, targetZ, 0.03);
 
-            } else if (moveRef.x !== 0 || moveRef.z !== 0 || moveRef.y !== 0 || moveRef.rot !== 0) {
+                    // Roll
+                    const bankAngle = (targetX - camera.position.x) * -0.001;
+                    camera.rotation.z = THREE.MathUtils.lerp(camera.rotation.z, bankAngle, 0.05);
+                }
+
+
+            } else if (moveRef.x !== 0 || moveRef.z !== 0 || moveRef.y !== 0 || moveRef.yaw !== 0 || moveRef.pitch !== 0) {
                 controls.autoRotate = false;
                 controls.enablePan = true;
 
-                // 1. Movement (X/Z)
+                // 1. Movement (X/Z - 3D Flight)
                 const forward = new THREE.Vector3();
                 camera.getWorldDirection(forward);
-                forward.y = 0; forward.normalize();
+                // forward.y = 0; // REMOVED: Allow 3D flight (fly where you look)
+                forward.normalize();
 
                 const right = new THREE.Vector3();
                 right.crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
@@ -552,20 +749,28 @@ export function FuturisticOrbit() {
                     .normalize()
                     .multiplyScalar(moveSpeed);
 
-                // 2. Vertical Movement (Y)
-                moveVec.y = moveRef.y * moveSpeed;
-
                 controls.target.add(moveVec);
                 camera.position.add(moveVec);
 
-                // 3. Rotation
-                if (moveRef.rot !== 0) {
-                    // Rotate camera around target
-                    const offset = new THREE.Vector3().subVectors(camera.position, controls.target);
-                    const rotSpeed = 0.03;
-                    offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), -moveRef.rot * rotSpeed);
-                    camera.position.copy(controls.target).add(offset);
-                    camera.lookAt(controls.target);
+                // 2. Rotation (Look - FPS Style)
+                if (moveRef.yaw !== 0 || moveRef.pitch !== 0) {
+                    const lookSpeed = 0.03;
+
+                    // Rotate TARGET around CAMERA
+                    const offset = new THREE.Vector3().subVectors(controls.target, camera.position);
+
+                    // Yaw (World Y)
+                    if (moveRef.yaw !== 0) {
+                        offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), -moveRef.yaw * lookSpeed);
+                    }
+
+                    // Pitch (Local Right)
+                    if (moveRef.pitch !== 0) {
+                        const localRight = new THREE.Vector3().crossVectors(offset, new THREE.Vector3(0, 1, 0)).normalize();
+                        offset.applyAxisAngle(localRight, moveRef.pitch * lookSpeed);
+                    }
+
+                    controls.target.copy(camera.position).add(offset);
                 }
 
                 camera.rotation.z = THREE.MathUtils.lerp(camera.rotation.z, -moveRef.x * 0.05, 0.1);
@@ -639,16 +844,22 @@ export function FuturisticOrbit() {
             const now = Date.now();
             const idleSeconds = (now - lastInteractionRef.current) / 1000;
             const speedMultiplier = Math.min(50.0, Math.exp(idleSeconds / 10.0));
-            const delta = clock.getDelta();
+            // delta is already defined at top of animate
             ledTimeRef.current += delta * 0.05 * speedMultiplier;
 
             crystalMat.uniforms.uLedTime.value = ledTimeRef.current;
             crystalMat.uniforms.uTime.value = elapsed;
 
-            // Fog Density
-            const targetFogDensity = 0.0005 + (fogDensity / 100) * 0.005; // Much less fog in space
-            if (scene.fog instanceof THREE.FogExp2) {
-                scene.fog.density = THREE.MathUtils.lerp(scene.fog.density, targetFogDensity, 0.1);
+            // Fog Density & Color
+            if (!escapeAnimation.active) {
+                const targetFogDensity = 0.0005 + (fogDensity / 100) * 0.005; // Much less fog in space
+                if (scene.fog instanceof THREE.FogExp2) {
+                    scene.fog.density = THREE.MathUtils.lerp(scene.fog.density, targetFogDensity, 0.1);
+                    // Ensure color is black
+                    if (scene.fog.color.getHex() !== 0x000000) {
+                        scene.fog.color.lerp(new THREE.Color(0x000000), 0.05);
+                    }
+                }
             }
 
             // --- PHOTON STREAMS ANIMATION ---
@@ -678,16 +889,77 @@ export function FuturisticOrbit() {
             camera.zoom = THREE.MathUtils.lerp(camera.zoom, zoom, 0.05);
             camera.updateProjectionMatrix();
 
+            // Sync rotation with time speed
+            if (!escapeAnimation.active && !resetAnimation.active) {
+                controls.autoRotateSpeed = 0.2 * timeSpeed;
+
+                // --- PROXIMITY TRIGGERS ---
+                // --- PROXIMITY TRIGGERS ---
+                const now = Date.now();
+
+                if (pendingSectionOpen.current) {
+                    // COLLAPSE ANIMATION
+                    const { id, startTime, startPos } = pendingSectionOpen.current;
+                    const progress = (elapsed - startTime) / 0.8; // 0.8s duration
+
+                    if (progress >= 1) {
+                        setExpandedSection(id);
+                        pendingSectionOpen.current = null;
+                        bloomPass.strength = 1.2; // Reset bloom
+                        camera.rotation.z = 0; // Reset roll
+                    } else {
+                        // Suck into the black hole (artifact center)
+                        const target = sectionTargets.find(s => s.id === id);
+                        if (target) {
+                            const t = progress * progress; // Ease in
+                            // Move towards center
+                            camera.position.lerpVectors(startPos, new THREE.Vector3(target.x, target.y, target.z), t * 0.05);
+                            // Spin effect
+                            camera.rotation.z += 0.2;
+                            // Flash
+                            bloomPass.strength = 1.2 + progress * 3.0;
+                        }
+                    }
+                } else {
+                    for (const section of sectionTargets) {
+                        // Check cooldown (45s)
+                        const lastTrigger = lastTriggerMap.current[section.id] || 0;
+                        if (now - lastTrigger < 45000) continue;
+
+                        const dist = Math.sqrt(
+                            Math.pow(camera.position.x - section.x, 2) +
+                            Math.pow(camera.position.y - section.y, 2) +
+                            Math.pow(camera.position.z - section.z, 2)
+                        );
+                        // Reduced distance to 15 (must enter it)
+                        if (dist < 15) {
+                            pendingSectionOpen.current = {
+                                id: section.id,
+                                startTime: elapsed,
+                                startPos: camera.position.clone()
+                            };
+                            lastTriggerMap.current[section.id] = now;
+                            break;
+                        }
+                    }
+                }
+            }
+
             controls.update();
             composer.render();
         }
         animate();
 
-        (container as any)._updateMove = (x: number, z: number, y: number = 0, rot: number = 0) => {
+        (container as any)._updateMove = (x: number, z: number, y: number = 0, yaw: number = 0, pitch: number = 0) => {
             moveRef.x = x;
             moveRef.z = z;
             moveRef.y = y;
-            moveRef.rot = rot;
+            moveRef.yaw = yaw;
+            moveRef.pitch = pitch;
+        };
+
+        (container as any)._clearTarget = () => {
+            setCameraTarget(null);
         };
 
         const handleResize = () => {
@@ -731,10 +1003,10 @@ export function FuturisticOrbit() {
         };
     }, [regenerationTrigger]); // Re-run when regenerationTrigger changes
 
-    const handleMove = (x: number, z: number, y: number = 0, rot: number = 0) => {
+    const handleMove = (x: number, z: number, y: number = 0, yaw: number = 0, pitch: number = 0) => {
         // setMoveDirection({ x, z }); // Optional update for React state if needed
         if (containerRef.current && (containerRef.current as any)._updateMove) {
-            (containerRef.current as any)._updateMove(x, z, y, rot);
+            (containerRef.current as any)._updateMove(x, z, y, yaw, pitch);
         }
     };
 
@@ -751,13 +1023,13 @@ export function FuturisticOrbit() {
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_50%,rgba(0,0,0,0.8)_100%)]" />
 
                 {/* Mobile Coordinates (Top-Left) */}
-                <div className="absolute top-24 left-8 lg:hidden flex items-center gap-2 text-xs text-cyan-400 bg-black/40 backdrop-blur-sm p-2 rounded border border-cyan-900/30">
+                <div className="absolute top-32 left-8 lg:hidden flex items-center gap-2 text-xs text-cyan-400 bg-black/40 backdrop-blur-sm p-2 rounded border border-cyan-900/30">
                     <span>{coordinates.lat.toFixed(2)}°N</span>
                     <span>{coordinates.long.toFixed(2)}°E</span>
                 </div>
 
                 {/* Session Timer */}
-                <div className="absolute top-24 right-8 flex flex-col items-end gap-1 pointer-events-none z-20">
+                <div className="absolute top-32 right-8 flex flex-col items-end gap-1 pointer-events-none z-20">
                     <div className="text-[10px] text-cyan-600 font-mono tracking-widest uppercase">{t.hud.missionTime}</div>
                     <div className="text-xl font-bold text-cyan-400 font-mono tracking-widest drop-shadow-[0_0_5px_rgba(0,255,255,0.8)]">
                         {sessionDuration}
@@ -765,7 +1037,7 @@ export function FuturisticOrbit() {
                 </div>
 
                 {/* Status Indicator */}
-                <div className="absolute top-24 left-8 hidden md:flex items-center gap-3 bg-black/40 backdrop-blur-sm p-3 rounded border border-cyan-900/30">
+                <div className="absolute top-32 left-8 hidden md:flex items-center gap-3 bg-black/40 backdrop-blur-sm p-3 rounded border border-cyan-900/30">
                     <div className={`w-2 h-2 rounded-full ${systemStatus === 'NORMAL' ? 'bg-green-500 animate-pulse' : 'bg-red-500 animate-ping'}`} />
                     <span className={`text-xs font-mono tracking-widest ${systemStatus === 'NORMAL' ? 'text-cyan-400' : 'text-red-500'}`}>
                         {t.hud.systemStatus}: {systemStatus}
@@ -782,7 +1054,7 @@ export function FuturisticOrbit() {
                 <div className="absolute bottom-8 right-8 md:hidden pointer-events-auto z-50">
                     <Joystick
                         label={t.hud.lookFly}
-                        onMove={(x, y) => handleMove(0, 0, -y, x)} // y inverted for up/down, x for rotation
+                        onMove={(x, y) => handleMove(0, 0, 0, x, invertYAxis ? -y : y)} // Invert Look Y support
                     />
                 </div>
             </div>

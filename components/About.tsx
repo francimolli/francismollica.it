@@ -113,13 +113,12 @@ export function About() {
                     <div className="flex gap-4">
                         <span>FRANCESCO MOLLICA, 30 years old</span>
                     </div>
-                    <div className="animate-pulse">● AVAILABLE</div>
                 </div>
-                <div className="flex items-center gap-3 text-sm md:text-base text-cyan-500/80 mb-6">
+                {/* <div className="flex items-center gap-3 text-sm md:text-base text-cyan-500/80 mb-6">
                     <span>francesco@portfolio:~/about</span>
                     <span className="text-cyan-300">$</span>
                     <span className="text-white">cat profile_summary.md</span>
-                </div>
+                </div> */}
                 <div className="grid lg:grid-cols-2 gap-16 items-start">
 
                     {/* --- COLONNA SX: VISUAL / AVATAR DIGITALE --- */}
@@ -142,8 +141,6 @@ export function About() {
                                     <SiReact />
                                 </div>
                                 <div className="font-mono text-xs text-cyan-500/70 text-center space-y-1">
-                                    <p>IDENTITY CONFIRMED</p>
-                                    <p>ACCESS LEVEL: ADMIN</p>
                                     <p className="animate-pulse mt-2 text-cyan-300">PROCESSING DATA...</p>
                                 </div>
                             </div>
@@ -225,7 +222,7 @@ export function About() {
 
                                 <div className="relative z-10 flex items-center justify-center gap-3">
                                     <span className="font-mono font-bold text-cyan-400 tracking-widest group-hover:text-cyan-200 transition-colors">
-                                        INITIALIZE_UPLINK
+                                        CONTACT_ME
                                     </span>
                                 </div>
 

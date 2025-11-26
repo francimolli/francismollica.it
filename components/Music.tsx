@@ -116,7 +116,7 @@ export function Music() {
 
                     <div className="relative z-10 flex items-center gap-3">
                         <span className="font-mono font-bold text-cyan-400 tracking-widest group-hover:text-cyan-200 transition-colors">
-                            INITIALIZE_UPLINK
+                            CONTACT_ME
                         </span>
                     </div>
 

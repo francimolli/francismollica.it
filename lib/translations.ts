@@ -1,9 +1,11 @@
 export const translations = {
     it: {
         nav: {
-            about: "Profile",
+            home: "Home",
+            about: "Profilo",
             work: "Carriera",
             contact: "Contatti",
+            music: "Musica",
         },
         hero: {
             role: "Web Engineer",
@@ -83,7 +85,16 @@ export const translations = {
             sectionTitle: "Creiamo",
             sectionTitleSuffix: "valore.",
             subtitle: "Contatti",
-            description: "Interessato a collaborare su strategie dati o sviluppo web? Scrivimi direttamente.",
+            description: "Interessato a collaborare? Scrivimi direttamente.",
+            openForOpportunities: "APERTO A OPPORTUNITÀ",
+            lets: "Avviamo",
+            initialize: "un progetto insieme!",
+            directUplink: "Contatto Diretto",
+            primaryEmail: "Email Principale",
+            instantMessaging: "Messaggistica Istantanea",
+            publicNodes: "Nodi Pubblici",
+            followUpdates: "Segui Aggiornamenti",
+            location: "Vivo in Italia",
             name: "Nome",
             email: "Email",
             message: "Messaggio",
@@ -94,8 +105,8 @@ export const translations = {
         },
         header: {
             status: {
-                awake: "Sveglio",
-                asleep: "Dormendo",
+                awake: "Libero",
+                asleep: "Occupato",
             },
             controls: {
                 systemConfiguration: "Configurazione Sistema",
@@ -103,9 +114,12 @@ export const translations = {
                 timeSpeed: "Velocità Tempo",
                 trafficDensity: "Densità Traffico",
                 restoreDefaults: "Ripristina Default",
-                reloadUniverse: "Ricarica Universo",
+                reloadUniverse: "Aggiungi entropia",
                 cooldown: "Cooldown",
                 localization: "Localizzazione",
+                escapeTooltip: "Teletrasporto a coordinate casuali",
+                timeOfDay: "Orario Locale",
+                systemControls: "Controlli Sistema",
             },
         },
         hud: {
@@ -121,9 +135,11 @@ export const translations = {
     },
     en: {
         nav: {
+            home: "Home",
             about: "Profile",
             work: "Career",
             contact: "Contact",
+            music: "Music",
         },
         hero: {
             role: "Web Engineer",
@@ -204,6 +220,15 @@ export const translations = {
             sectionTitleSuffix: "value.",
             subtitle: "Contact",
             description: "Interested in collaborating on data strategies or web development? Email me directly.",
+            openForOpportunities: "OPEN FOR OPPORTUNITIES",
+            lets: "Let's",
+            initialize: "Initialize",
+            directUplink: "Direct Uplink",
+            primaryEmail: "Primary Email",
+            instantMessaging: "Instant Messaging",
+            publicNodes: "Public Nodes",
+            followUpdates: "Follow Updates",
+            location: "Based in Italy, Available Globally",
             name: "Name",
             email: "Email",
             message: "Message",
@@ -214,8 +239,8 @@ export const translations = {
         },
         header: {
             status: {
-                awake: "Awake",
-                asleep: "Asleep",
+                awake: "Free",
+                asleep: "Busy",
             },
             controls: {
                 systemConfiguration: "System Configuration",
@@ -223,9 +248,12 @@ export const translations = {
                 timeSpeed: "Time Speed",
                 trafficDensity: "Traffic Density",
                 restoreDefaults: "Restore Defaults",
-                reloadUniverse: "Reload Universe",
+                reloadUniverse: "Add Entropy",
                 cooldown: "Cooldown",
                 localization: "Localization",
+                escapeTooltip: "Teleport to random coordinates",
+                timeOfDay: "Local Time",
+                systemControls: "System Controls",
             },
         },
         hud: {
@@ -237,6 +265,8 @@ export const translations = {
             move: "MOVE",
             lookFly: "LOOK/FLY",
             initializing: "INITIALIZING GALACTIC CORE...",
+            warpSequence: "WARP SEQUENCE INITIATED",
+            entropyInjection: "ENTROPY INJECTION",
         },
     },
 };

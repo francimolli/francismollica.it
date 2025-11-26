@@ -61,11 +61,11 @@ export function Projects() {
                 {/* --- HEADER TERMINALE --- */}
                 <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 border-b border-cyan-900/50 pb-4 gap-4">
                     <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-xs text-cyan-600">
+                        {/* <div className="flex items-center gap-2 text-xs text-cyan-600">
                             <span>root@portfolio:~/projects</span>
                             <span className="text-cyan-400">$</span>
                             <span className="text-cyan-100 animate-pulse">ls -la --color=auto</span>
-                        </div>
+                        </div> */}
                         <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tighter drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">
                             <TypewriterText text={t.projects.sectionTitle} speed={50} delay={200} />
                         </h2>
@@ -129,21 +129,21 @@ export function Projects() {
 
                                 {/* Action Buttons (Terminal Style) */}
                                 <div className="grid grid-cols-2 gap-3 mt-auto pt-4 border-t border-cyan-900/30">
-                                    <Link
+                                    {/* <Link
                                         href={project.repoUrl}
                                         target="_blank"
                                         className="flex items-center justify-center gap-2 py-2 text-xs border border-dashed border-cyan-800 text-cyan-600 hover:text-cyan-200 hover:border-cyan-400 hover:bg-cyan-900/20 transition-all"
                                     >
                                         <Github className="w-3 h-3" />
                                         <span>./source_code</span>
-                                    </Link>
+                                    </Link> */}
                                     <Link
                                         href={project.demoUrl}
                                         target="_blank"
                                         className={`flex items-center justify-center gap-2 py-2 text-xs border border-cyan-700 bg-cyan-950/20 text-cyan-400 hover:text-white hover:bg-cyan-600/20 hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all ${project.demoUrl === "#" ? "opacity-50 cursor-not-allowed" : ""}`}
                                     >
                                         <ExternalLink className="w-3 h-3" />
-                                        <span>./run_demo.exe</span>
+                                        <span>./lookup.exe</span>
                                     </Link>
                                 </div>
                             </div>
@@ -169,7 +169,7 @@ export function Projects() {
 
                         <div className="relative z-10 flex items-center gap-3">
                             <span className="font-mono font-bold text-cyan-400 tracking-widest group-hover:text-cyan-200 transition-colors">
-                                INITIALIZE_UPLINK
+                                CONTACT_ME
                             </span>
                         </div>
 

@@ -16,15 +16,20 @@ interface CityControls {
     manualSetTime: (v: number) => void;
     timeSpeed: number;
     setTimeSpeed: (v: number) => void;
-    flyTo: (x: number, z: number) => void;
+    flyTo: (x: number, z: number, y?: number) => void;
     stopFlying: () => void;
     resetView: () => void;
     resetTrigger: number; // Counter to trigger reset effect
-    cameraTarget: { x: number, z: number } | null;
+    cameraTarget: { x: number, y: number, z: number } | null;
+    setCameraTarget: (target: { x: number, y: number, z: number } | null) => void;
     regenerationTrigger: number;
     regenerateSimulation: () => void;
+    escapeTrigger: number;
+    triggerEscape: (target: { x: number, y: number, z: number }) => void;
     coordinates: { lat: number, long: number };
     setCoordinates: (coords: { lat: number, long: number }) => void;
+    invertYAxis: boolean;
+    setInvertYAxis: (v: boolean) => void;
 }
 
 const CityControlsContext = createContext<CityControls | undefined>(undefined);
@@ -32,7 +37,7 @@ const CityControlsContext = createContext<CityControls | undefined>(undefined);
 export function CityControlsProvider({ children }: { children: ReactNode }) {
     // --- 1. IMPOSTA QUI I TUOI VALORI DI DEFAULT ---
     const DEFAULT_TIME = 7.4;       // Ore 07:24
-    const DEFAULT_FOG = 30;        // 30% Nebbia
+    const DEFAULT_FOG = 20;        // 30% Nebbia
     const DEFAULT_TRAFFIC = 80;    // 80% Traffico
 
     // Lo zoom lo gestiamo dinamicamente
@@ -42,10 +47,12 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
     const [trafficLevel, setTrafficLevel] = useState(DEFAULT_TRAFFIC);
     const [systemStatus, setSystemStatus] = useState<'NORMAL' | 'BLACKOUT' | 'REBOOTING'>('NORMAL');
     const [timeSpeed, setTimeSpeed] = useState(3.0);
-    const [cameraTarget, setCameraTarget] = useState<{ x: number, z: number } | null>(null);
+    const [cameraTarget, setCameraTarget] = useState<{ x: number, y: number, z: number } | null>(null);
     const [resetTrigger, setResetTrigger] = useState(0);
     const [regenerationTrigger, setRegenerationTrigger] = useState(0);
+    const [escapeTrigger, setEscapeTrigger] = useState(0);
     const [coordinates, setCoordinates] = useState({ lat: 41.90, long: 12.49 });
+    const [invertYAxis, setInvertYAxis] = useState(false);
 
     // --- 2. RILEVAMENTO MOBILE (ZOOM DEFAULT) ---
     useEffect(() => {
@@ -94,24 +101,9 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
     }, [systemStatus, timeSpeed]);
 
     // --- 4. JAILBREAK SEQUENCE (User attempts to change time) ---
+    // --- 4. MANUAL TIME CONTROL ---
     const manualSetTime = (v: number) => {
-        if (systemStatus !== 'NORMAL') return;
-
-        // Trigger Blackout
-        setSystemStatus('BLACKOUT');
-        setTime(0); // 00:00
-
-        // After 1.5s -> Reboot
-        setTimeout(() => {
-            setSystemStatus('REBOOTING');
-            // Random time start
-            setTime(Math.floor(Math.random() * 24));
-
-            // After 1.5s -> Back to Normal
-            setTimeout(() => {
-                setSystemStatus('NORMAL');
-            }, 1500);
-        }, 1500);
+        setTime(v);
     };
 
     const resetDefaults = () => {
@@ -125,8 +117,8 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
         setCameraTarget(null); // Reset camera target
     };
 
-    const flyTo = (x: number, z: number) => {
-        setCameraTarget({ x, z });
+    const flyTo = (x: number, z: number, y: number = 110) => {
+        setCameraTarget({ x, y, z });
     };
 
     const stopFlying = () => {
@@ -142,6 +134,11 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
         setRegenerationTrigger(prev => prev + 1);
     };
 
+    const triggerEscape = (target: { x: number, y: number, z: number }) => {
+        setCameraTarget(target);
+        setEscapeTrigger(prev => prev + 1);
+    };
+
     return (
         <CityControlsContext.Provider
             value={{
@@ -153,10 +150,12 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
                 systemStatus,
                 manualSetTime,
                 timeSpeed, setTimeSpeed,
-                cameraTarget, flyTo, stopFlying,
+                cameraTarget, setCameraTarget, flyTo, stopFlying,
                 resetView, resetTrigger,
                 regenerationTrigger, regenerateSimulation,
-                coordinates, setCoordinates
+                escapeTrigger, triggerEscape,
+                coordinates, setCoordinates,
+                invertYAxis, setInvertYAxis
             }}
         >
             {children}

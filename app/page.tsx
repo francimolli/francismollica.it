@@ -8,6 +8,7 @@ import { Contact } from "@/components/Contact";
 import { Music } from "@/components/Music";
 import { CityControlsProvider } from "@/components/CityControlsContext";
 import { FloatingSectionProvider } from "@/components/FloatingSectionContext";
+import { LogbookMenu } from "@/components/LogbookMenu";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <FloatingSectionProvider>
         <Layout>
           <Header />
+          <LogbookMenu />
           <SectionCard id="home" title="Home">
             <Hero />
           </SectionCard>

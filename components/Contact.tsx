@@ -4,13 +4,12 @@ import { useLanguage } from "@/lib/language-context";
 import { Mail, Send, MapPin, Linkedin, Github, Terminal, Wifi, Phone, Instagram, Copy, Check, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { cn } from "@/lib/utils"; // Assicurati di avere questa utility, o usa semplicemente string interpolation
 
 export function Contact() {
     const { t } = useLanguage();
     const [copied, setCopied] = useState(false);
 
-    const email = "francesco.mollica@outlook.com"; // O la tua mail preferita
+    const email = "francesco.mollica@outlook.com";
 
     const handleCopyEmail = () => {
         navigator.clipboard.writeText(email);
@@ -36,14 +35,14 @@ export function Contact() {
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
                         </span>
-                        SYSTEM ONLINE: OPEN FOR OPPORTUNITIES
+                        {t.contact.openForOpportunities || "OPEN FOR OPPORTUNITIES"}
                     </div>
 
                     <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
-                        Let's <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-cyan-600">Initialize</span>
+                        {t.contact.lets || "Let's"} <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-cyan-600">{t.contact.initialize || "Initialize"}</span>
                     </h2>
                     <p className="text-gray-400 max-w-lg mx-auto">
-                        {t.contact?.description || "Sei pronto a collaborare? Scegli il tuo protocollo di comunicazione preferito qui sotto."}
+                        {t.contact.description}
                     </p>
                 </div>
 
@@ -53,7 +52,7 @@ export function Contact() {
                     <div className="space-y-4">
                         <div className="text-xs text-cyan-600 uppercase tracking-widest font-bold mb-2 flex items-center gap-2">
                             <Terminal className="w-4 h-4" />
-                            Direct Uplink
+                            {t.contact.directUplink}
                         </div>
 
                         {/* EMAIL - BIG CARD (Copy functionality) */}
@@ -68,7 +67,7 @@ export function Contact() {
                                     <Mail className="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <span className="block text-xs text-gray-500 group-hover:text-cyan-400 mb-1">Primary Email</span>
+                                    <span className="block text-xs text-gray-500 group-hover:text-cyan-400 mb-1">{t.contact.primaryEmail}</span>
                                     <span className="block text-lg font-bold text-white tracking-wide break-all">
                                         francesco@mollica.dev
                                     </span>
@@ -91,7 +90,7 @@ export function Contact() {
                                     <Send className="w-6 h-6 -rotate-45 translate-x-0.5" />
                                 </div>
                                 <div>
-                                    <span className="block text-xs text-gray-500 group-hover:text-[#0088cc] mb-1">Instant Messaging</span>
+                                    <span className="block text-xs text-gray-500 group-hover:text-[#0088cc] mb-1">{t.contact.instantMessaging}</span>
                                     <span className="block text-lg font-bold text-white">Telegram</span>
                                 </div>
                             </div>
@@ -113,7 +112,7 @@ export function Contact() {
                     <div className="flex flex-col h-full gap-4">
                         <div className="text-xs text-cyan-600 uppercase tracking-widest font-bold mb-2 flex items-center gap-2">
                             <Wifi className="w-4 h-4" />
-                            Public Nodes
+                            {t.contact.publicNodes}
                         </div>
 
                         <div className="grid grid-cols-2 gap-4 flex-1">
@@ -145,7 +144,7 @@ export function Contact() {
                             >
                                 <div className="flex items-center gap-3">
                                     <Instagram className="w-5 h-5 text-gray-400 group-hover:text-pink-500 transition-colors" />
-                                    <span className="text-sm font-medium text-gray-300 group-hover:text-white">Follow Updates</span>
+                                    <span className="text-sm font-medium text-gray-300 group-hover:text-white">{t.contact.followUpdates}</span>
                                 </div>
                                 <span className="text-xs text-gray-500 font-mono">@franci_molli</span>
                             </Link>
@@ -155,7 +154,7 @@ export function Contact() {
                         <div className="mt-auto pt-6 flex items-center justify-center md:justify-end gap-2 text-xs text-gray-500 font-mono">
                             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                             <MapPin className="w-3 h-3" />
-                            Based in Italy, Available Globally
+                            {t.contact.location}
                         </div>
                     </div>
 
