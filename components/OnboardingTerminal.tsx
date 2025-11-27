@@ -52,7 +52,7 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
     const classicModeActive = false; // Flag per disattivare la modalità Classic (Standard)
 
     return (
-        <div className="fixed inset-0 z-[100] bg-gray-950 flex flex-col items-center justify-center text-white p-4 font-sans">
+        <div className="fixed inset-0 z-[100] bg-[#020410] flex flex-col items-center justify-center text-white p-4 font-sans h-[100dvh] w-full overflow-hidden">
 
             {/* SELETTORE LINGUA (Aggiunto in alto a destra) */}
             <div className="absolute top-4 right-4 z-10">
