@@ -54,7 +54,7 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
     return (
         <div className="fixed inset-0 z-[100] bg-[#020410] flex flex-col items-center justify-center text-white p-4 font-sans h-[100dvh] w-full overflow-hidden">
 
-            {/* SELETTORE LINGUA (Aggiunto in alto a destra) */}
+            {/* SELETTORE LINGUA */}
             <div className="absolute top-4 right-4 z-10">
                 <div className="relative">
                     <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
@@ -74,7 +74,7 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
 
             <div className="max-w-4xl w-full space-y-16">
 
-                {/* TITOLO/TESTO DI CARICAMENTO (Tema: Analisi dati spaziali) */}
+                {/* TITOLO/TESTO DI CARICAMENTO */}
                 <div className="min-h-[60px] flex flex-col items-center justify-center relative">
                     {/* Background Glow */}
                     <div className="absolute inset-0 bg-cyan-500/10 blur-3xl rounded-full opacity-20 animate-pulse" />
@@ -127,7 +127,7 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
                                 </div>
                             </div>
 
-                            {/* IMMERSIVE / CURIOUS MODE - ATTIVO (Tema: Esplorazione Spaziale) */}
+                            {/* IMMERSIVE / CURIOUS MODE - ATTIVO */}
                             <button
                                 onClick={() => onComplete("immersive")}
                                 className={`${buttonBaseStyle} border-cyan-700 hover:border-cyan-500 bg-cyan-950/20 hover:bg-cyan-900/30 shadow-cyan-500/10 hover:shadow-cyan-500/30`}
