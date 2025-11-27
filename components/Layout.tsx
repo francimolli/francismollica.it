@@ -32,7 +32,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             {/* z-10 porta questo livello sopra tutto.
                 'pointer-events-none' sul contenitore principale significa che se clicchi
                 nel vuoto tra una card e l'altra, il click scende alla città. */}
-            <div className="relative z-10 h-full w-full overflow-y-auto pointer-events-none">
+            <div className="relative z-10 h-full w-full pointer-events-none">
 
                 {/* NOTA: Poiché il genitore è 'none', tutti i figli ereditano 'none'.
                     Dobbiamo assicurarci che i componenti interattivi (Header, Card, Bottoni)

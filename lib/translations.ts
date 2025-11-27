@@ -6,6 +6,7 @@ export const translations = {
             projects: "Area Lavoro",
             contact: "Contatti",
             music: "Musica",
+            roadmap: "Roadmap",
         },
         hero: {
             role: "Web",
@@ -97,7 +98,7 @@ export const translations = {
             primaryEmail: "Emails",
             instantMessaging: "Scrivimi qui, potrei doverti rispondere prima",
             publicNodes: "Altri canali",
-            followUpdates: "Ok",
+            followUpdates: "Instagram",
             location: "Vivo in Italia",
             //vedi se serve qui sotto
             name: "Nome",
@@ -110,8 +111,8 @@ export const translations = {
         },
         header: {
             status: {
-                awake: "Libero",
-                asleep: "Lavoro",
+                awake: "è giorno qui",
+                asleep: "è notte qui",
             },
             controls: {
                 systemConfiguration: "Configurazione Sistema",
@@ -126,6 +127,9 @@ export const translations = {
                 localTime: "Ora Locale",
                 timeWarp: "Scorrere del tempo",
                 traffic: "Densità",
+                invertX: "Inverti Controllo X",
+                invertY: "Inverti Controllo Y",
+                sound: "Suono di fondo",
             },
         },
         hud: {
@@ -139,10 +143,69 @@ export const translations = {
             initializing: "CARICAMENTO SISTEMA A0BK4TTO-14AKQO10-00G1A4D9-H1JPKF IN CORSO...",
             spaceExploration: "Esplorazione Spaziale",
             enjoyTheJourney: "La fuori c'è uno splendido panorama, godiamoci la veduta.",
+            tutorial: {
+                move: "USA I TASTI WASD OPPURE LE FRECCIE PER MUOVERTI",
+                dismiss: "PREMI SPAZIO PER CHIUDERE",
+                artifacts: {
+                    title: "ARTEFATTI & SEGRETI",
+                    description: "Esplora il cosmo per trovare antichi artefatti, sbloccare tecnologie e ottenere vantaggi segreti."
+                },
+                logbook: {
+                    title: "DIARIO DI BORDO",
+                    description: "Tieni traccia delle tue scoperte e analizza i dati raccolti nel menu Diario."
+                },
+                continue: "CLICCA O PREMI SPAZIO"
+            }
         },
         logbook: {
             title: "Diario di Bordo",
+            tab1: "Navigazione",
+            tab2: "Artefatti",
+            copy: "CONTATTA LA CASA MADRE",
+            copied: "COPIATO",
         },
+        onboarding: {
+            loadingText: "BENVENUTO IN ORBIT",
+            immersive: {
+                title: "Esploratore e Avventuriero",
+                description: "Esperienza 3D interattiva. Scopri segreti, naviga l'universo e trova easter egg nascosti.",
+                tag: "CURIOSO",
+                recommendation: "[ DIVERTENTE MA PIù COMPLICATO ]"
+            },
+            classic: {
+                title: "Minimalista (vado di fretta)",
+                description: "Interfaccia pulita e veloce. Vai dritto al punto senza distrazioni.",
+                tag: "ESSENZIALE",
+                recommendation: "[ PIACEVOLE ALLA VISTA E ALLA FRUIZIONE ]"
+            }
+        },
+        secrets: {
+            alert: {
+                wow: "Rilevazione avvenuta",
+            },
+            satellite: {
+                title: "Satellite Antico",
+                description: "Progetto Prototipo Trovato",
+                message: "SEGNALE RILEVATO: BLUEPRINT PROTOTIPO TROVATO",
+                copyText: "Ho trovato il Satellite Antico nelle coordinate profonde. Codice: PROTO-SAT-23"
+            },
+            monolith: {
+                title: "Monolite Nero",
+                description: "Codice Sconto: PWA-ID-15",
+                message: "ARTEFATTO ANALIZZATO: SCONTO 15% [PWA-ID-15]",
+                copyText: "Ho analizzato il Monolite. Codice Sconto: PWA-ID-15"
+            },
+            void_ship: {
+                title: "Nave Abbandonata",
+                description: "Accesso Progetto Segreto",
+                message: "LOG RECUPERATO: ACCESSO PROGETTO SEGRETO",
+                copyText: "Ho scoperto la Nave Abbandonata. Richiedo Accesso: VOID-SHIP-X"
+            }
+        },
+        roadmap: {
+            title: "IN FASE DI SVILUPPO",
+            description: "Calcolo traiettoria in corso...",
+        }
     },
     en: {
         nav: {
@@ -151,6 +214,7 @@ export const translations = {
             projects: "Work",
             contact: "Contact",
             music: "Music",
+            roadmap: "Roadmap",
         },
         hero: {
             role: "Web",
@@ -243,7 +307,7 @@ export const translations = {
             primaryEmail: "Emails",
             instantMessaging: "Write me here, I might have to answer you sooner",
             publicNodes: "Other channels",
-            followUpdates: "Ok",
+            followUpdates: "Instagram",
             location: "Based in Italy",
             name: "Name",
             email: "Email",
@@ -255,8 +319,8 @@ export const translations = {
         },
         header: {
             status: {
-                awake: "Free",
-                asleep: "Work",
+                awake: "daytime",
+                asleep: "nighttime",
             },
             controls: {
                 systemConfiguration: "System Configuration",
@@ -270,6 +334,9 @@ export const translations = {
                 localTime: "Local Time",
                 timeWarp: "Time Flow",
                 traffic: "Density",
+                invertX: "Invert Control X",
+                invertY: "Invert Control Y",
+                sound: "Background Sound",
             },
         },
         hud: {
@@ -285,9 +352,24 @@ export const translations = {
             entropyInjection: "ENTROPY INJECTION",
             spaceExploration: "Space Exploration",
             enjoyTheJourney: "There's a beautiful view outside, let's enjoy it.",
+            tutorial: {
+                move: "USE KEYS TO MOVE",
+                dismiss: "PRESS SPACE TO DISMISS",
+                artifacts: {
+                    title: "ARTIFACTS & SECRETS",
+                    description: "Explore the cosmos to find ancient artifacts, unlock technologies, and get secret discounts."
+                },
+                logbook: {
+                    title: "CAPTAIN'S LOG",
+                    description: "Track your discoveries and analyze collected data in the Logbook menu."
+                },
+                continue: "CLICK OR PRESS SPACE"
+            }
         },
         logbook: {
             title: "Captain's Log",
+            tab1: "Navigation",
+            tab2: "Artifacts",
             entry: "Entry",
             date: "Stardate",
             content: " System operating within normal parameters.",
@@ -296,7 +378,50 @@ export const translations = {
             distanceTraveled: "Distance Traveled",
             hyperjumps: "Hyperjumps",
             anomaliesDetected: "Anomalies",
-
+            copy: "COPY CODE",
+            copied: "COPIED",
+        },
+        onboarding: {
+            loadingText: "WELCOME TO ORBIT.",
+            immersive: {
+                title: "Explorer",
+                description: "Interactive 3D experience. Discover secrets, navigate the universe, and find hidden easter eggs.",
+                tag: "CURIOUS",
+                recommendation: "[ RECOMMENDED FOR DESKTOP ]"
+            },
+            classic: {
+                title: "Standard",
+                description: "Clean and fast interface. Get straight to the point without distractions.",
+                tag: "ESSENTIAL",
+                recommendation: "[ RECOMMENDED FOR MOBILE ]"
+            }
+        },
+        secrets: {
+            alert: {
+                wow: "Detection Confirmed",
+            },
+            satellite: {
+                title: "Ancient Satellite",
+                description: "Prototype Blueprint Found",
+                message: "SIGNAL DETECTED: PROTOTYPE BLUEPRINT FOUND",
+                copyText: "I found the Ancient Satellite in deep coordinates. Code: PROTO-SAT-23"
+            },
+            monolith: {
+                title: "Black Monolith",
+                description: "Discount Code: PWA-ID-15",
+                message: "ARTIFACT ANALYZED: 15% DISCOUNT CODE [PWA-ID-15]",
+                copyText: "I analyzed the Monolith. Discount Code: PWA-ID-15"
+            },
+            void_ship: {
+                title: "Derelict Ship",
+                description: "Secret Project Access",
+                message: "LOG RECOVERED: SECRET PROJECT ACCESS GRANTED",
+                copyText: "I discovered the Derelict Ship. Requesting Access: VOID-SHIP-X"
+            }
+        },
+        roadmap: {
+            title: "COMING SOON",
+            description: "Trajectory calculation in progress...",
         }
     },
 };

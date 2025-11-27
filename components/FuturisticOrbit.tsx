@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
@@ -189,7 +190,66 @@ export function FuturisticOrbit() {
     const [coordinates, setCoordinatesLocal] = useState({ lat: 0, long: 0 });
     const [isEscaping, setIsEscaping] = useState(false);
     const [isResetting, setIsResetting] = useState(false);
+    const [showTutorial, setShowTutorial] = useState(true);
+    const [showArtifactTutorial, setShowArtifactTutorial] = useState(false);
+    const [unlockEffect, setUnlockEffect] = useState(false);
+    const [pressedKeys, setPressedKeys] = useState<Record<string, boolean>>({});
     const { language } = useLanguage();
+    const { time, timeSpeed, fogDensity, trafficLevel, zoom, setZoom, systemStatus, cameraTarget, setCameraTarget, resetTrigger, regenerationTrigger, escapeTrigger, setCoordinates, invertYAxis, invertXAxis, boostActive, unlockSecret, unlockedSecrets, unlockVisualTrigger } = useCityControls();
+
+    // Mobile Tutorial Logic: Skip first tutorial and show second one after delay
+    useEffect(() => {
+        const isMobile = window.innerWidth < 768;
+        const seen = localStorage.getItem('orbit_tutorials_seen');
+        if (isMobile && !seen) {
+            setShowTutorial(false);
+            const timer = setTimeout(() => {
+                setShowArtifactTutorial(true);
+            }, 2000); // Show after 2s on mobile
+            return () => clearTimeout(timer);
+        }
+    }, []);
+
+    // Check for persistent tutorial dismissal (Cookie/LocalStorage)
+    useEffect(() => {
+        const seen = localStorage.getItem('orbit_tutorials_seen');
+        if (seen) {
+            setShowTutorial(false);
+            setShowArtifactTutorial(false);
+        }
+    }, []);
+
+    // Auto-dismiss Artifact Tutorial after 10 seconds
+    useEffect(() => {
+        if (showArtifactTutorial) {
+            const timer = setTimeout(() => {
+                setShowArtifactTutorial(false);
+            }, 10000);
+            return () => clearTimeout(timer);
+        }
+    }, [showArtifactTutorial]);
+
+    // Unlock visual effect trigger
+    useEffect(() => {
+        if (unlockVisualTrigger > 0) {
+            setUnlockEffect(true);
+            const timer = setTimeout(() => {
+                setUnlockEffect(false);
+            }, 1500); // Effect duration
+            return () => clearTimeout(timer);
+        }
+    }, [unlockVisualTrigger]);
+
+    // Persist tutorial dismissal when Artifact Tutorial is closed
+    const wasArtifactTutorialShown = useRef(false);
+    useEffect(() => {
+        if (showArtifactTutorial) {
+            wasArtifactTutorialShown.current = true;
+        } else if (wasArtifactTutorialShown.current) {
+            // It was shown, now it's hidden -> User dismissed it
+            localStorage.setItem('orbit_tutorials_seen', 'true');
+        }
+    }, [showArtifactTutorial]);
     const t = translations[language];
     const { setExpandedSection } = useFloatingSection();
     const lastTriggerMap = useRef<Record<string, number>>({});
@@ -199,24 +259,42 @@ export function FuturisticOrbit() {
         { id: "contact", x: -200, y: 110, z: 0 },
         { id: "music", x: 0, y: 110, z: 200 },
     ];
-
-    const { time, timeSpeed, fogDensity, trafficLevel, zoom, setZoom, systemStatus, cameraTarget, setCameraTarget, resetTrigger, regenerationTrigger, escapeTrigger, setCoordinates, invertYAxis, boostActive } = useCityControls();
     const pendingSectionOpen = useRef<{ id: string, startTime: number, startPos: THREE.Vector3 } | null>(null);
-    const stateRef = useRef({ time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger, boostActive });
-    useEffect(() => { stateRef.current = { time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger, boostActive }; }, [time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger, boostActive]);
+    const stateRef = useRef({ time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger, boostActive, unlockedSecrets });
+    useEffect(() => { stateRef.current = { time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger, boostActive, unlockedSecrets }; }, [time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger, boostActive, unlockedSecrets]);
 
     // --- NAVIGATION POIs ---
     const pois = [
         { id: 'home', label: 'F23A541289', pos: new THREE.Vector3(0, 0, 0), color: '#06b6d4' },
         { id: 'nova', label: 'Excelsa', pos: new THREE.Vector3(-2500, 500, -2500), color: '#ffffff' },
-        { id: 'cyber', label: 'GOLV10110010110101101001100-10110111001101111001000000110110001100101011100110111010001101111011100100110110001100001', pos: new THREE.Vector3(800, 200, -800), color: '#4400ff' },
-        { id: 'magma', label: 'M4GUNA', pos: new THREE.Vector3(-900, -300, 500), color: '#ff0055' },
-        { id: 'toxic', label: 'stash', pos: new THREE.Vector3(400, 600, 900), color: '#00ffaa' },
+        { id: 'cyber', label: 'GOLV10110010110101101001100', pos: new THREE.Vector3(1600, 400, -1600), color: '#4400ff' },
+        // { id: 'cyber', label: 'GOLV10110010110101101001100-10110111001101111001000000110110001100101011100110111010001101111011100100110110001100001', pos: new THREE.Vector3(1600, 400, -1600), color: '#4400ff' },
+        { id: 'magma', label: 'M4GUNA', pos: new THREE.Vector3(-1800, -600, 1000), color: '#ff0055' },
+        { id: 'toxic', label: 'stash', pos: new THREE.Vector3(800, 1200, 1800), color: '#00ffaa' },
     ];
+
+    // --- SECRETS (Gamification) ---
+    // Randomize positions near planets
+    // Randomize positions near planets (pushed out to avoid clipping)
+    const secretPositions = useRef([
+        new THREE.Vector3(1600 + 200 + (Math.random() - 0.5) * 100, 400 + (Math.random() - 0.5) * 100, -1600 + (Math.random() - 0.5) * 100), // Near Cyber Prime
+        new THREE.Vector3(-1800 - 250 + (Math.random() - 0.5) * 100, -600 + (Math.random() - 0.5) * 100, 1000 + (Math.random() - 0.5) * 100), // Near Magma Giant
+        new THREE.Vector3(800 + 150 + (Math.random() - 0.5) * 100, 1200 + (Math.random() - 0.5) * 100, 1800 + (Math.random() - 0.5) * 100)   // Near Toxic Moon
+    ]).current;
+
+    const secrets = [
+        { id: 'satellite', label: 'ANCIENT SATELLITE', pos: secretPositions[0], threshold: 300, message: (t as any).secrets.satellite.message },
+        { id: 'monolith', label: 'BLACK MONOLITH', pos: secretPositions[1], threshold: 300, message: (t as any).secrets.monolith.message },
+        { id: 'void_ship', label: 'DERELICT SHIP', pos: secretPositions[2], threshold: 350, message: (t as any).secrets.void_ship.message }
+    ];
+
+    const [toast, setToast] = useState<{ message: string, visible: boolean }>({ message: "", visible: false });
 
     // --- INTERACTION TRACKING ---
     const lastInteractionRef = useRef(Date.now());
     const ledTimeRef = useRef(0);
+    const locallyUnlockedRef = useRef<Set<string>>(new Set());
+    const tutorialTransitionRef = useRef(false);
 
     useEffect(() => {
         const updateInteraction = () => { lastInteractionRef.current = Date.now(); };
@@ -268,6 +346,8 @@ export function FuturisticOrbit() {
         const baseColor = new THREE.Color().setHSL(Math.random(), 0.5, 0.1);
         const activeColor = new THREE.Color().setHSL((Math.random() + 0.5) % 1, 1.0, 0.5);
 
+        const isMobile = window.innerWidth < 768;
+
         const CONFIG = {
             colors: {
                 bg: 0x000000, // Deep Space
@@ -277,8 +357,8 @@ export function FuturisticOrbit() {
                 poi2: new THREE.Color().setHSL(Math.random(), 1.0, 0.5),
                 poi3: new THREE.Color().setHSL(Math.random(), 1.0, 0.5),
             },
-            starCount: 3000 + Math.floor(Math.random() * 2000),
-            packetCount: 3000
+            starCount: isMobile ? 1000 : 3000 + Math.floor(Math.random() * 2000),
+            packetCount: isMobile ? 800 : 3000
         };
 
         const scene = new THREE.Scene();
@@ -818,9 +898,9 @@ export function FuturisticOrbit() {
         // --- PLANET CREATION ---
         const planets: THREE.Mesh[] = [];
         const planetConfigs = [
-            { pos: new THREE.Vector3(800, 200, -800), size: 120, colorA: 0x4400ff, colorB: 0x00ffff, colorC: 0xffffff, seed: 1.0 }, // Cyber Prime
-            { pos: new THREE.Vector3(-900, -300, 500), size: 180, colorA: 0xff0055, colorB: 0xffaa00, colorC: 0xffddaa, seed: 2.0 }, // Magma Giant
-            { pos: new THREE.Vector3(400, 600, 900), size: 90, colorA: 0x00ffaa, colorB: 0x004433, colorC: 0xaaffff, seed: 3.0 }   // Toxic Moon
+            { pos: new THREE.Vector3(1600, 400, -1600), size: 120, colorA: 0x4400ff, colorB: 0x00ffff, colorC: 0xffffff, seed: 1.0 }, // Cyber Prime
+            { pos: new THREE.Vector3(-1800, -600, 1000), size: 180, colorA: 0xff0055, colorB: 0xffaa00, colorC: 0xffddaa, seed: 2.0 }, // Magma Giant
+            { pos: new THREE.Vector3(800, 1200, 1800), size: 90, colorA: 0x00ffaa, colorB: 0x004433, colorC: 0xaaffff, seed: 3.0 }   // Toxic Moon
         ];
 
         const planetGeo = new THREE.SphereGeometry(1, 64, 64);
@@ -855,6 +935,106 @@ export function FuturisticOrbit() {
                 gl_Position = projectionMatrix * viewMatrix * worldPosition;
             }
         `;
+
+        // --- VISIBLE ARTIFACTS (3D Models) ---
+
+        // 1. ANCIENT SATELLITE (Near Cyber Prime)
+        const visSatelliteGroup = new THREE.Group();
+        visSatelliteGroup.position.copy(secretPositions[0]);
+
+        // Core
+        const satCoreGeo = new THREE.DodecahedronGeometry(15, 0);
+        const satMat = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.4, metalness: 0.8 });
+        const satCore = new THREE.Mesh(satCoreGeo, satMat);
+        visSatelliteGroup.add(satCore);
+
+        // Panels
+        const panelGeo = new THREE.BoxGeometry(40, 2, 10);
+        const panelMat = new THREE.MeshStandardMaterial({ color: 0x3366ff, roughness: 0.2, metalness: 0.5, emissive: 0x112244 });
+        const panel1 = new THREE.Mesh(panelGeo, panelMat);
+        panel1.position.set(30, 0, 0);
+        visSatelliteGroup.add(panel1);
+        const panel2 = new THREE.Mesh(panelGeo, panelMat);
+        panel2.position.set(-30, 0, 0);
+        visSatelliteGroup.add(panel2);
+
+        // Antenna
+        const antGeo = new THREE.CylinderGeometry(1, 1, 20);
+        const ant = new THREE.Mesh(antGeo, satMat);
+        ant.position.set(0, 15, 0);
+        visSatelliteGroup.add(ant);
+
+        // Blink Light
+        const blinkGeo = new THREE.SphereGeometry(2);
+        const blinkMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        const blink = new THREE.Mesh(blinkGeo, blinkMat);
+        blink.position.set(0, 25, 0);
+        visSatelliteGroup.add(blink);
+
+        // Point Light for visibility
+        const satLight = new THREE.PointLight(0x3366ff, 2, 300);
+        visSatelliteGroup.add(satLight);
+
+        // Animation for blink
+        visSatelliteGroup.userData = { type: 'satellite', blinkMesh: blink };
+        scene.add(visSatelliteGroup);
+
+
+        // 2. BLACK MONOLITH (Near Magma Giant)
+        const visMonolithGeo = new THREE.BoxGeometry(20, 60, 5);
+        const visMonolithMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.1, metalness: 0.1 });
+        const visMonolith = new THREE.Mesh(visMonolithGeo, visMonolithMat);
+        visMonolith.position.copy(secretPositions[1]);
+
+        // Subtle glow aura
+        const auraGeo = new THREE.BoxGeometry(22, 62, 7);
+        const auraMat = new THREE.MeshBasicMaterial({ color: 0xff0055, transparent: true, opacity: 0.2, blending: THREE.AdditiveBlending });
+        const aura = new THREE.Mesh(auraGeo, auraMat);
+        visMonolith.add(aura);
+
+        // Point Light for visibility
+        const monolithLight = new THREE.PointLight(0xff0055, 2, 300);
+        visMonolith.add(monolithLight);
+
+        scene.add(visMonolith);
+
+
+        // 3. DERELICT SHIP (Near Toxic Moon)
+        const visShipGroup = new THREE.Group();
+        visShipGroup.position.copy(secretPositions[2]);
+        visShipGroup.rotation.set(Math.random(), Math.random(), Math.random()); // Tumble
+
+        // Hull
+        const hullGeo = new THREE.CylinderGeometry(10, 20, 60, 6);
+        const hullMat = new THREE.MeshStandardMaterial({ color: 0x555555, roughness: 0.7, metalness: 0.6 });
+        const hull = new THREE.Mesh(hullGeo, hullMat);
+        hull.rotation.x = Math.PI / 2;
+        visShipGroup.add(hull);
+
+        // Broken Wing
+        const wingGeo = new THREE.BoxGeometry(40, 2, 20);
+        const wing = new THREE.Mesh(wingGeo, hullMat);
+        wing.position.set(0, 0, 10);
+        wing.rotation.z = 0.2;
+        visShipGroup.add(wing);
+
+        // Engine Glow (Flickering)
+        const engineGeo = new THREE.CylinderGeometry(8, 5, 5);
+        const engineMat = new THREE.MeshBasicMaterial({ color: 0x00ffaa });
+        const engine = new THREE.Mesh(engineGeo, engineMat);
+        engine.position.set(0, -30, 0); // Back of ship (rotated)
+        engine.rotation.x = Math.PI / 2;
+        visShipGroup.add(engine);
+
+        // Point Light for visibility
+        const shipLight = new THREE.PointLight(0x00ffaa, 2, 300);
+        visShipGroup.add(shipLight);
+
+        visShipGroup.userData = { type: 'ship', engineMesh: engine };
+        scene.add(visShipGroup);
+
+        // Store artifacts for animation loop
+        const visibleArtifacts = [visSatelliteGroup, visMonolith, visShipGroup];
 
         const nebulaFragmentShader = `
             varying vec2 vUv;
@@ -1032,6 +1212,8 @@ export function FuturisticOrbit() {
         }
         asteroidBelt.instanceMatrix.needsUpdate = true;
         scene.add(asteroidBelt);
+
+
         const clock = new THREE.Clock();
         let animationId: number;
         const moveRef = { x: 0, z: 0, y: 0, yaw: 0, pitch: 0 };
@@ -1243,6 +1425,9 @@ export function FuturisticOrbit() {
                 }
             }
 
+            // (Secrets visuals moved to setup)
+
+            // --- LIGHTING ---
             // --- NAVIGATION ---
             if (cameraTarget) {
                 controls.autoRotate = false;
@@ -1323,7 +1508,7 @@ export function FuturisticOrbit() {
 
                 // 2. Rotation (Look - FPS Style)
                 if (moveRef.yaw !== 0 || moveRef.pitch !== 0) {
-                    const lookSpeed = 0.03;
+                    const lookSpeed = 0.01; // Reduced from 0.03 for smoother control
 
                     // Rotate TARGET around CAMERA
                     const offset = new THREE.Vector3().subVectors(controls.target, camera.position);
@@ -1484,6 +1669,8 @@ export function FuturisticOrbit() {
             novaDebris.rotation.y -= 0.002; // Slow counter-rotation
             novaGlowMat.uniforms.viewVector.value = camera.position; // Update glow to face camera
 
+
+
             // --- FIX: RESIZE & SCISSOR HANDLING ---
             const width = container.clientWidth;
             const height = container.clientHeight;
@@ -1585,12 +1772,27 @@ export function FuturisticOrbit() {
                 const targetFogDensity = 0.0005 + (fogDensity / 100) * 0.005; // Much less fog in space
                 if (scene.fog instanceof THREE.FogExp2) {
                     scene.fog.density = THREE.MathUtils.lerp(scene.fog.density, targetFogDensity, 0.1);
-                    // Ensure color is black
-                    if (scene.fog.color.getHex() !== 0x000000) {
-                        scene.fog.color.lerp(new THREE.Color(0x000000), 0.05);
+                    // Ensure color is deep cosmic blue
+                    if (scene.fog.color.getHex() !== 0x020410) {
+                        scene.fog.color.lerp(new THREE.Color(0x020410), 0.05);
                     }
                 }
             }
+
+            // --- SECRETS PROXIMITY CHECK ---
+            const currentUnlocked = stateRef.current.unlockedSecrets;
+            secrets.forEach(secret => {
+                // Check both context state and local instant ref to prevent spam
+                if (!currentUnlocked.includes(secret.id) && !locallyUnlockedRef.current.has(secret.id)) {
+                    const dist = camera.position.distanceTo(secret.pos);
+                    if (dist < secret.threshold) {
+                        locallyUnlockedRef.current.add(secret.id); // Mark as unlocked instantly
+                        unlockSecret(secret.id);
+                        setToast({ message: secret.message, visible: true });
+                        setTimeout(() => setToast(prev => ({ ...prev, visible: false })), 6000);
+                    }
+                }
+            });
 
             // --- PHOTON STREAMS ANIMATION ---
             const activePackets = Math.floor(CONFIG.packetCount * (trafficLevel / 100));
@@ -1678,6 +1880,42 @@ export function FuturisticOrbit() {
                 }
             }
 
+            // --- ARTIFACT ANIMATIONS ---
+            // Satellite Rotation & Blink
+            if (visibleArtifacts[0]) {
+                visibleArtifacts[0].rotation.y = elapsed * 0.2;
+                visibleArtifacts[0].rotation.z = Math.sin(elapsed * 0.5) * 0.2;
+                const blinkMesh = visibleArtifacts[0].userData.blinkMesh;
+                if (blinkMesh) {
+                    blinkMesh.material.color.setHex(Math.sin(elapsed * 5) > 0 ? 0xff0000 : 0x330000);
+                }
+            }
+
+            // Monolith Pulse & Hover
+            if (visibleArtifacts[1]) {
+                visibleArtifacts[1].rotation.y = elapsed * 0.05;
+                // visibleArtifacts[1].position.y = secretPositions[1].y + Math.sin(elapsed * 0.5) * 5; // Hover relative to base
+                // Actually, position.copy(secretPositions[1]) sets the base. We should add to it.
+                // But modifying position directly in loop overwrites base.
+                // Better to use a group or offset.
+                // For now, just rotation is fine, or simple bobbing if we tracked baseY.
+                // Let's just do rotation and pulse.
+                const aura = visibleArtifacts[1].children[0] as THREE.Mesh;
+                if (aura) {
+                    (aura.material as THREE.MeshBasicMaterial).opacity = 0.2 + Math.sin(elapsed * 2) * 0.1;
+                }
+            }
+
+            // Ship Tumble & Flicker
+            if (visibleArtifacts[2]) {
+                visibleArtifacts[2].rotation.x += 0.002;
+                visibleArtifacts[2].rotation.y += 0.003;
+                const engine = visibleArtifacts[2].userData.engineMesh;
+                if (engine) {
+                    engine.material.opacity = 0.5 + Math.random() * 0.5; // Flicker
+                }
+            }
+
             controls.update();
             composer.render();
         }
@@ -1707,17 +1945,54 @@ export function FuturisticOrbit() {
         window.addEventListener('resize', handleResize);
 
         const onKeyDown = (e: KeyboardEvent) => {
+            setPressedKeys(prev => ({ ...prev, [e.code]: true }));
+
+            // Dismiss tutorial on first movement (after a delay)
+            if (showTutorial && ['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
+                if (!tutorialTransitionRef.current) {
+                    tutorialTransitionRef.current = true;
+                    setTimeout(() => {
+                        setShowTutorial(false);
+                        const seen = localStorage.getItem('orbit_tutorials_seen');
+                        if (!seen) {
+                            setShowArtifactTutorial(true);
+                        }
+                    }, 5000);
+                }
+            }
+
+            // Dismiss Artifact Tutorial on movement
+            if (showArtifactTutorial && ['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
+                setShowArtifactTutorial(false);
+            }
+
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
+                e.preventDefault();
+            }
+
             switch (e.code) {
-                case 'KeyW': moveRef.z = 1; break;
-                case 'KeyS': moveRef.z = -1; break;
-                case 'KeyA': moveRef.x = -1; break;
-                case 'KeyD': moveRef.x = 1; break;
+                case 'KeyW': case 'ArrowUp': moveRef.z = 1; break;
+                case 'KeyS': case 'ArrowDown': moveRef.z = -1; break;
+                case 'KeyA': case 'ArrowLeft': moveRef.x = -1; break;
+                case 'KeyD': case 'ArrowRight': moveRef.x = 1; break;
+                case 'Space':
+                    if (showTutorial) {
+                        setShowTutorial(false);
+                        const seen = localStorage.getItem('orbit_tutorials_seen');
+                        if (!seen) {
+                            setShowArtifactTutorial(true);
+                        }
+                    } else if (showArtifactTutorial) {
+                        setShowArtifactTutorial(false);
+                    }
+                    break;
             }
         };
         const onKeyUp = (e: KeyboardEvent) => {
+            setPressedKeys(prev => ({ ...prev, [e.code]: false }));
             switch (e.code) {
-                case 'KeyW': case 'KeyS': moveRef.z = 0; break;
-                case 'KeyA': case 'KeyD': moveRef.x = 0; break;
+                case 'KeyW': case 'KeyS': case 'ArrowUp': case 'ArrowDown': moveRef.z = 0; break;
+                case 'KeyA': case 'KeyD': case 'ArrowLeft': case 'ArrowRight': moveRef.x = 0; break;
             }
         };
         window.addEventListener('keydown', onKeyDown);
@@ -1741,10 +2016,29 @@ export function FuturisticOrbit() {
         if (containerRef.current && (containerRef.current as any)._updateMove) {
             (containerRef.current as any)._updateMove(x, z, y, yaw, pitch);
         }
+
+        // Mobile Tutorial Logic
+        if (showTutorial && (x !== 0 || z !== 0)) {
+            if (!tutorialTransitionRef.current) {
+                tutorialTransitionRef.current = true;
+                setTimeout(() => {
+                    setShowTutorial(false);
+                    const seen = localStorage.getItem('orbit_tutorials_seen');
+                    if (!seen) {
+                        setShowArtifactTutorial(true);
+                    }
+                }, 5000);
+            }
+        }
+
+        // Dismiss Artifact Tutorial on move
+        if (showArtifactTutorial && (x !== 0 || z !== 0)) {
+            setShowArtifactTutorial(false);
+        }
     };
 
     return (
-        <div className="fixed inset-0 z-0 bg-black">
+        <div className="fixed inset-0 z-0 bg-[#020410]">
             <div ref={containerRef} className="w-full h-full" />
 
             {/* --- HUD OVERLAY --- */}
@@ -1781,8 +2075,42 @@ export function FuturisticOrbit() {
                 <div className="absolute bottom-8 left-8 md:hidden pointer-events-auto z-50">
                     <Joystick
                         label={t.hud.move}
-                        onMove={(x, y) => handleMove(x, -y, 0, 0)} // y inverted because screen y is down
+                        onMove={(x, y) => handleMove(x, -y, 0, 0, 0)} // y inverted because screen y is down
                     />
+                </div>
+
+                {/* RIGHT: LOOK ARROWS */}
+                <div className="absolute bottom-8 right-8 md:hidden pointer-events-auto z-50 flex flex-col items-center gap-1">
+                    <button
+                        className="w-12 h-12 bg-black/30 border border-cyan-500/30 rounded-t-lg backdrop-blur-sm active:bg-cyan-500/20 flex items-center justify-center"
+                        onTouchStart={(e) => { e.preventDefault(); handleMove(0, 0, 0, 0, 1); }}
+                        onTouchEnd={(e) => { e.preventDefault(); handleMove(0, 0, 0, 0, 0); }}
+                    >
+                        <ChevronUp className="text-cyan-400" />
+                    </button>
+                    <div className="flex gap-1">
+                        <button
+                            className="w-12 h-12 bg-black/30 border border-cyan-500/30 rounded-l-lg backdrop-blur-sm active:bg-cyan-500/20 flex items-center justify-center"
+                            onTouchStart={(e) => { e.preventDefault(); handleMove(0, 0, 0, invertXAxis ? -1 : 1, 0); }}
+                            onTouchEnd={(e) => { e.preventDefault(); handleMove(0, 0, 0, 0, 0); }}
+                        >
+                            <ChevronLeft className="text-cyan-400" />
+                        </button>
+                        <button
+                            className="w-12 h-12 bg-black/30 border border-cyan-500/30 rounded-r-lg backdrop-blur-sm active:bg-cyan-500/20 flex items-center justify-center"
+                            onTouchStart={(e) => { e.preventDefault(); handleMove(0, 0, 0, invertXAxis ? 1 : -1, 0); }}
+                            onTouchEnd={(e) => { e.preventDefault(); handleMove(0, 0, 0, 0, 0); }}
+                        >
+                            <ChevronRight className="text-cyan-400" />
+                        </button>
+                    </div>
+                    <button
+                        className="w-12 h-12 bg-black/30 border border-cyan-500/30 rounded-b-lg backdrop-blur-sm active:bg-cyan-500/20 flex items-center justify-center"
+                        onTouchStart={(e) => { e.preventDefault(); handleMove(0, 0, 0, 0, -1); }}
+                        onTouchEnd={(e) => { e.preventDefault(); handleMove(0, 0, 0, 0, 0); }}
+                    >
+                        <ChevronDown className="text-cyan-400" />
+                    </button>
                 </div>
             </div>
 
@@ -1822,9 +2150,9 @@ export function FuturisticOrbit() {
                 id="return-warning"
                 className="absolute top-64 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none transition-opacity duration-500 opacity-0"
             >
-                <div className="text-cyan-400 font-black tracking-widest text-xl animate-pulse bg-black/50 px-4 py-1 border border-cyan-500/50 rounded shadow-[0_0_10px_rgba(34,211,238,0.3)]">
+                {/* <div className="text-cyan-400 font-black tracking-widest text-xl animate-pulse bg-black/50 px-4 py-1 border border-cyan-500/50 rounded shadow-[0_0_10px_rgba(34,211,238,0.3)]">
                     {t.hud.spaceExploration}
-                </div>
+                </div> */}
                 <div className="text-cyan-200/80 font-mono text-xs tracking-wider">
                     {t.hud.enjoyTheJourney}
                 </div>
@@ -1861,6 +2189,165 @@ export function FuturisticOrbit() {
                         {/* Scanlines */}
                         <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] pointer-events-none" />
                     </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* --- GAMIFICATION TOAST --- */}
+            <AnimatePresence>
+                {toast.visible && (
+                    <motion.div
+                        initial={{ y: 50, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: 50, opacity: 0 }}
+                        className="absolute bottom-24 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-4 p-4 bg-cyan-950/80 border border-cyan-500 rounded-lg shadow-[0_0_20px_rgba(6,182,212,0.5)] backdrop-blur-md"
+                    >
+                        <div className="p-2 bg-cyan-500 rounded-full animate-pulse">
+                            <div className="w-2 h-2 bg-white rounded-full" />
+                        </div>
+                        <div>
+                            <div className="text-xs font-bold text-cyan-400 tracking-widest uppercase">{t.secrets.alert.wow}</div>
+                            <div className="text-sm font-bold text-white font-mono">{toast.message}</div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* --- UNLOCK VISUAL EFFECT --- */}
+            <AnimatePresence>
+                {unlockEffect && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 1.2 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        className="absolute inset-0 z-[95] pointer-events-none flex items-center justify-center"
+                    >
+                        {/* Radial pulse */}
+                        <motion.div
+                            initial={{ scale: 0, opacity: 0.8 }}
+                            animate={{ scale: 3, opacity: 0 }}
+                            transition={{ duration: 1.2, ease: "easeOut" }}
+                            className="absolute w-64 h-64 rounded-full border-2 border-cyan-400 shadow-[0_0_40px_rgba(6,182,212,0.8)]"
+                        />
+
+                        {/* Center glow */}
+                        <motion.div
+                            initial={{ scale: 0.5, opacity: 0 }}
+                            animate={{ scale: 1, opacity: [0, 1, 0] }}
+                            transition={{ duration: 1, ease: "easeInOut" }}
+                            className="w-32 h-32 rounded-full bg-gradient-to-r from-cyan-400/30 to-blue-500/30 blur-xl"
+                        />
+
+                        {/* Particle bursts */}
+                        {[...Array(8)].map((_, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ scale: 0, x: 0, y: 0, opacity: 1 }}
+                                animate={{
+                                    scale: [0, 1, 0],
+                                    x: Math.cos((i / 8) * Math.PI * 2) * 120,
+                                    y: Math.sin((i / 8) * Math.PI * 2) * 120,
+                                    opacity: [1, 1, 0]
+                                }}
+                                transition={{ duration: 1, delay: 0.1 }}
+                                className="absolute w-2 h-2 bg-cyan-300 rounded-full"
+                            />
+                        ))}
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* --- NAVIGATION TUTORIAL --- */}
+            <AnimatePresence>
+                {showTutorial && !loading && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[90] flex flex-col items-center gap-6 p-8 bg-black/80 backdrop-blur-md border border-cyan-500/30 rounded-xl shadow-[0_0_30px_rgba(6,182,212,0.2)] pointer-events-none hidden md:flex"
+                    >
+                        <div className="flex flex-col items-center gap-2">
+                            {/* W / UP */}
+                            <div className={`w-12 h-12 flex items-center justify-center border rounded transition-all duration-200 ${pressedKeys['KeyW'] || pressedKeys['ArrowUp'] ? 'bg-cyan-500 text-black border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.8)] scale-110' : 'bg-black/50 text-cyan-500 border-cyan-900/50'}`}>
+                                <span className="font-mono font-bold text-lg">W</span>
+                            </div>
+                            <div className="flex gap-2">
+                                {/* A / LEFT */}
+                                <div className={`w-12 h-12 flex items-center justify-center border rounded transition-all duration-200 ${pressedKeys['KeyA'] || pressedKeys['ArrowLeft'] ? 'bg-cyan-500 text-black border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.8)] scale-110' : 'bg-black/50 text-cyan-500 border-cyan-900/50'}`}>
+                                    <span className="font-mono font-bold text-lg">A</span>
+                                </div>
+                                {/* S / DOWN */}
+                                <div className={`w-12 h-12 flex items-center justify-center border rounded transition-all duration-200 ${pressedKeys['KeyS'] || pressedKeys['ArrowDown'] ? 'bg-cyan-500 text-black border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.8)] scale-110' : 'bg-black/50 text-cyan-500 border-cyan-900/50'}`}>
+                                    <span className="font-mono font-bold text-lg">S</span>
+                                </div>
+                                {/* D / RIGHT */}
+                                <div className={`w-12 h-12 flex items-center justify-center border rounded transition-all duration-200 ${pressedKeys['KeyD'] || pressedKeys['ArrowRight'] ? 'bg-cyan-500 text-black border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.8)] scale-110' : 'bg-black/50 text-cyan-500 border-cyan-900/50'}`}>
+                                    <span className="font-mono font-bold text-lg">D</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex flex-col items-center gap-1">
+                            <div className="text-cyan-400 font-mono text-xs tracking-[0.2em] animate-pulse">
+                                {t.hud.tutorial?.move || "USE KEYS TO MOVE"}
+                            </div>
+                            <div className="text-cyan-700 font-mono text-[10px] tracking-widest">
+                                {t.hud.tutorial?.dismiss || "PRESS SPACE TO DISMISS"}
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* --- ARTIFACTS & LOGBOOK TUTORIAL --- */}
+            <AnimatePresence>
+                {showArtifactTutorial && !loading && (
+                    <>
+                        {/* Full-screen click handler */}
+                        <div
+                            className="absolute inset-0 z-[89] cursor-pointer"
+                            onClick={() => setShowArtifactTutorial(false)}
+                        />
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.9 }}
+                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[90] w-[90%] max-w-md flex flex-col gap-6 p-8 bg-black/80 backdrop-blur-md border border-cyan-500/30 rounded-xl shadow-[0_0_30px_rgba(6,182,212,0.2)] pointer-events-none"
+                        >
+                            {/* Header */}
+                            <div className="flex items-center gap-4 border-b border-cyan-900/50 pb-4">
+                                <div className="p-3 bg-cyan-500/20 rounded-full border border-cyan-500/50 animate-pulse">
+                                    <div className="w-2 h-2 bg-cyan-400 rounded-full" />
+                                </div>
+                                <h3 className="text-xl font-bold text-white tracking-widest uppercase">
+                                    {t.hud.tutorial?.artifacts?.title || "ARTIFACTS & SECRETS"}
+                                </h3>
+                            </div>
+
+                            {/* Content */}
+                            <div className="space-y-6">
+                                <div className="flex gap-4">
+                                    <div className="text-cyan-400 text-2xl">✦</div>
+                                    <p className="text-sm text-gray-300 leading-relaxed font-mono">
+                                        {t.hud.tutorial?.artifacts?.description || "Explore the cosmos to find ancient artifacts..."}
+                                    </p>
+                                </div>
+
+                                <div className="flex gap-4">
+                                    <div className="text-cyan-400 text-2xl">❖</div>
+                                    <div>
+                                        <h4 className="text-sm font-bold text-cyan-200 uppercase mb-1">
+                                            {t.hud.tutorial?.logbook?.title || "CAPTAIN'S LOG"}
+                                        </h4>
+                                        <p className="text-xs text-gray-400 leading-relaxed font-mono">
+                                            {t.hud.tutorial?.logbook?.description || "Track your discoveries..."}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </motion.div>
+                    </>
                 )}
             </AnimatePresence>
         </div>

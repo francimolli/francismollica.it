@@ -82,15 +82,19 @@ export function Header() {
 
     const {
         time, setTime,
+        fogDensity, setFogDensity,
         trafficLevel, setTrafficLevel,
         zoom, setZoom,
         resetDefaults,
         manualSetTime,
         timeSpeed, setTimeSpeed,
-        resetView,
-        coordinates, regenerateSimulation,
-        triggerEscape, invertYAxis, setInvertYAxis,
-        triggerSystemReboot,
+        flyTo, resetView, triggerSystemReboot,
+        regenerateSimulation,
+        coordinates,
+        invertYAxis, setInvertYAxis,
+        invertXAxis, setInvertXAxis,
+        soundEnabled, setSoundEnabled,
+        triggerEscape,
         activateBoost, boostActive, boostCooldown
     } = useCityControls();
 
@@ -184,7 +188,7 @@ export function Header() {
                             <div className="flex items-center gap-2">
                                 <span className={`w-2 h-2 rounded-full ${isOnline ? 'bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,1)] animate-pulse' : 'bg-gray-600'}`} />
                                 <span className="text-[10px] font-mono uppercase tracking-widest text-gray-400">
-                                    {isOnline ? "Available" : "Offline"}
+                                    {isOnline ? t.header.status.awake : t.header.status.asleep}
                                 </span>
                             </div>
                         </div>
@@ -276,6 +280,32 @@ export function Header() {
                                 </span>
                             )}
                         </button>
+
+                        {/* SOUND TOGGLE */}
+                        <button
+                            onClick={() => setSoundEnabled(!soundEnabled)}
+                            className={`
+                                w-9 h-9 flex items-center justify-center rounded-full transition-all border
+                                ${soundEnabled
+                                    ? 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.3)]'
+                                    : 'bg-white/5 text-gray-500 border-white/10 hover:bg-white/10 hover:text-cyan-400 hover:border-cyan-500/20'}
+                            `}
+                            title={soundEnabled ? "Sound ON" : "Sound OFF"}
+                        >
+                            {soundEnabled ? (
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                                </svg>
+                            ) : (
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                    <line x1="23" y1="9" x2="17" y2="15"></line>
+                                    <line x1="17" y1="9" x2="23" y2="15"></line>
+                                </svg>
+                            )}
+                        </button>
                     </div>
 
                     {/* --- MOBILE ICONS (ALWAYS VISIBLE ON MOBILE) --- */}
@@ -342,15 +372,37 @@ export function Header() {
                                             <ControlSlider label={t.header.controls.timeOfDay || "Time of Day"} value={time} displayValue={formatTime(time)} min={0} max={24} step={0.25} onChange={manualSetTime} unit="" width="w-full" />
 
                                             {/* Invert Y Toggle */}
-                                            {/* <div className="flex items-center justify-between pt-2">
-                                                <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-600 font-bold">Invert Look Y</span>
+                                            <div className="flex items-center justify-between pt-2">
+                                                <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-600 font-bold">{t.header.controls.invertY || "Invert Look Y"}</span>
                                                 <button
                                                     onClick={() => setInvertYAxis(!invertYAxis)}
                                                     className={`relative w-10 h-5 rounded-full transition-colors duration-300 ${invertYAxis ? 'bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.5)]' : 'bg-white/10 border border-white/10'}`}
                                                 >
                                                     <div className={`absolute top-1 left-1 w-3 h-3 bg-white rounded-full shadow-sm transition-transform duration-300 ${invertYAxis ? 'translate-x-5' : 'translate-x-0'}`} />
                                                 </button>
-                                            </div> */}
+                                            </div>
+
+                                            {/* Sound Toggle */}
+                                            <div className="flex items-center justify-between pt-2">
+                                                <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-600 font-bold">{t.header.controls.sound || "Sound"}</span>
+                                                <button
+                                                    onClick={() => setSoundEnabled(!soundEnabled)}
+                                                    className={`relative w-10 h-5 rounded-full transition-colors duration-300 ${soundEnabled ? 'bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.5)]' : 'bg-white/10 border border-white/10'}`}
+                                                >
+                                                    <div className={`absolute top-1 left-1 w-3 h-3 bg-white rounded-full shadow-sm transition-transform duration-300 ${soundEnabled ? 'translate-x-5' : 'translate-x-0'}`} />
+                                                </button>
+                                            </div>
+
+                                            {/* Invert X Axis Toggle (Mobile Arrows) */}
+                                            <div className="flex items-center justify-between pt-2">
+                                                <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-600 font-bold">{t.header.controls.invertX || "Invert Look X"}</span>
+                                                <button
+                                                    onClick={() => setInvertXAxis(!invertXAxis)}
+                                                    className={`relative w-10 h-5 rounded-full transition-colors duration-300 ${invertXAxis ? 'bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.5)]' : 'bg-white/10 border border-white/10'}`}
+                                                >
+                                                    <div className={`absolute top-1 left-1 w-3 h-3 bg-white rounded-full shadow-sm transition-transform duration-300 ${invertXAxis ? 'translate-x-5' : 'translate-x-0'}`} />
+                                                </button>
+                                            </div>
                                         </div>
 
                                         <div className="flex flex-col gap-4 pt-4">
