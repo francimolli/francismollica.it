@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import posthog from 'posthog-js';
 import Layout from "@/components/Layout";
 import SectionCard from "@/components/SectionCard";
 import { Header } from "@/components/Header";
@@ -23,6 +24,7 @@ export default function Home() {
   const t = translations[language];
 
   const handleOnboardingComplete = (selectedMode: "immersive" | "classic") => {
+    posthog.capture('onboarding_completed', { selected_mode: selectedMode });
     setMode(selectedMode);
     setOnboardingComplete(true);
   };

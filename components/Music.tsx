@@ -1,5 +1,6 @@
 "use client";
 
+import posthog from 'posthog-js';
 import { useLanguage } from "@/lib/language-context";
 import { useFloatingSection } from "@/components/FloatingSectionContext";
 import { ExternalLink, Music as MusicIcon, Disc, Mic2, Radio } from "lucide-react";
@@ -58,6 +59,7 @@ export function Music() {
                         href={artist.link}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() => posthog.capture('artist_link_clicked', { artist_name: artist.name, artist_link: artist.link })}
                         className={`group relative overflow-hidden rounded-lg bg-black/40 border ${artist.borderColor} p-6 transition-all duration-300 ${artist.bgHover} hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(0,0,0,0.5)]`}
                     >
                         {/* Background Scanline Effect */}
@@ -99,7 +101,10 @@ export function Music() {
             {/* CTA - Link to Contact */}
             <div className="mt-8 flex justify-center opacity-0 animate-[fadeIn_0.5s_ease-in_1s_forwards]">
                 <button
-                    onClick={() => setExpandedSection('contact')}
+                    onClick={() => {
+                        posthog.capture('contact_cta_clicked', { source_section: 'music' });
+                        setExpandedSection('contact');
+                    }}
                     className="group relative px-12 py-4 bg-black/60 border border-cyan-500/30 overflow-hidden transition-all duration-300 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)]"
                 >
                     {/* Hover Fill Effect */}

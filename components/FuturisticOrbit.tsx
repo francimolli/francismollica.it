@@ -16,8 +16,9 @@ import { useFloatingSection } from "@/components/FloatingSectionContext";
 import { useLanguage } from "@/lib/language-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { translations } from "@/lib/translations";
+import posthog from "posthog-js";
 
-// --- COMPONENT: VIRTUAL JOYSTICK ---
+//VIRTUAL JOYSTICK
 function Joystick({ onMove, label, className }: { onMove: (x: number, y: number) => void, label?: string, className?: string }) {
     const ref = useRef<HTMLDivElement>(null);
     const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -46,6 +47,7 @@ function Joystick({ onMove, label, className }: { onMove: (x: number, y: number)
             setTouchId(null);
             setPos({ x: 0, y: 0 });
             onMove(0, 0);
+            posthog.capture('joystick_used', { label });
         }
     };
 
@@ -162,9 +164,12 @@ const crystalFragmentShader = `
 const starVertexShader = `
     attribute float size;
     attribute float aAlpha;
+    attribute float aRandom;
     varying float vAlpha;
+    varying float vRandom;
     void main() {
         vAlpha = aAlpha;
+        vRandom = aRandom;
         vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
         gl_PointSize = size * (300.0 / -mvPosition.z);
         gl_Position = projectionMatrix * mvPosition;
@@ -173,14 +178,24 @@ const starVertexShader = `
 
 const starFragmentShader = `
     uniform vec3 color;
+    uniform float uTime;
     varying float vAlpha;
+    varying float vRandom;
     
     void main() {
-        float strength = distance(gl_PointCoord, vec2(0.5));
-        strength = 1.0 - strength;
-        strength = pow(strength, 3.0);
+        // Soft circular glow
+        vec2 coord = gl_PointCoord - vec2(0.5);
+        float dist = length(coord);
+        if (dist > 0.5) discard;
         
-        gl_FragColor = vec4(color, strength * vAlpha);
+        // Non-linear glow falloff for realistic star look
+        float strength = 1.0 - (dist * 2.0);
+        strength = pow(strength, 2.0);
+        
+        // Twinkle effect based on time and random seed
+        float twinkle = 0.7 + 0.3 * sin(uTime * 3.0 + vRandom * 10.0);
+        
+        gl_FragColor = vec4(color, strength * vAlpha * twinkle);
     }
 `;
 
@@ -197,7 +212,7 @@ export function FuturisticOrbit() {
     const { language } = useLanguage();
     const { time, timeSpeed, fogDensity, trafficLevel, zoom, setZoom, systemStatus, cameraTarget, setCameraTarget, resetTrigger, regenerationTrigger, escapeTrigger, setCoordinates, invertYAxis, invertXAxis, boostActive, unlockSecret, unlockedSecrets, unlockVisualTrigger } = useCityControls();
 
-    // Mobile Tutorial Logic: Skip first tutorial and show second one after delay
+    // Mobile Tutorial Logic
     useEffect(() => {
         const isMobile = window.innerWidth < 768;
         const seen = localStorage.getItem('orbit_tutorials_seen');
@@ -233,12 +248,27 @@ export function FuturisticOrbit() {
     useEffect(() => {
         if (unlockVisualTrigger > 0) {
             setUnlockEffect(true);
+            posthog.capture('secret_unlocked', { secret_id: unlockVisualTrigger });
             const timer = setTimeout(() => {
                 setUnlockEffect(false);
             }, 1500); // Effect duration
             return () => clearTimeout(timer);
         }
     }, [unlockVisualTrigger]);
+
+    // Track Camera Target (Navigation)
+    useEffect(() => {
+        if (cameraTarget) {
+            posthog.capture('navigation_poi_active', { target_id: cameraTarget });
+        }
+    }, [cameraTarget]);
+
+    // Track System Reboot (Escape/Jailbreak)
+    useEffect(() => {
+        if (isEscaping) {
+            posthog.capture('system_reboot_triggered', { type: 'escape_sequence' });
+        }
+    }, [isEscaping]);
 
     // Persist tutorial dismissal when Artifact Tutorial is closed
     const wasArtifactTutorialShown = useRef(false);
@@ -274,7 +304,6 @@ export function FuturisticOrbit() {
     ];
 
     // --- SECRETS (Gamification) ---
-    // Randomize positions near planets
     // Randomize positions near planets (pushed out to avoid clipping)
     const secretPositions = useRef([
         new THREE.Vector3(1600 + 200 + (Math.random() - 0.5) * 100, 400 + (Math.random() - 0.5) * 100, -1600 + (Math.random() - 0.5) * 100), // Near Cyber Prime
@@ -350,7 +379,7 @@ export function FuturisticOrbit() {
 
         const CONFIG = {
             colors: {
-                bg: 0x000000, // Deep Space
+                bg: 0x020410, // Deep Space (Rich Dark Blue)
                 base: baseColor,
                 active: activeColor,
                 poi1: new THREE.Color().setHSL(Math.random(), 1.0, 0.5),
@@ -396,7 +425,7 @@ export function FuturisticOrbit() {
         bloomPass.radius = 0.5;
         composer.addPass(bloomPass);
 
-        // --- NEW: RGB SHIFT PASS (Speed Distortion) ---
+        // --- Speed Distortion ---
         const rgbShiftPass = new ShaderPass(RGBShiftShader);
         rgbShiftPass.uniforms['amount'].value = 0.0015; // Base subtle shift
         composer.addPass(rgbShiftPass);
@@ -412,7 +441,7 @@ export function FuturisticOrbit() {
             metalness: 0.9
         });
 
-        // --- GALACTIC CRYSTALS (The "Buildings") ---
+        // --- GALACTIC CRYSTALS---
         const crystalMat = new THREE.ShaderMaterial({
             vertexShader: crystalVertexShader,
             fragmentShader: crystalFragmentShader,
@@ -468,7 +497,7 @@ export function FuturisticOrbit() {
         crystalGeo.setAttribute('aInstanceSeed', new THREE.InstancedBufferAttribute(seeds, 1));
         scene.add(crystals);
 
-        // --- ARTIFACTS (Beacons) ---
+        // --- ARTIFACT ---
         const artifacts: THREE.Mesh[] = [];
         const beaconCoords = [
             { x: 0, z: -200, color: CONFIG.colors.poi1 }, // North
@@ -503,7 +532,7 @@ export function FuturisticOrbit() {
             artifacts.push(mesh);
         });
 
-        // --- PHOTON STREAMS (Traffic) ---
+        // --- Traffic ---
         const packetGeo = new THREE.BufferGeometry();
         const positions = new Float32Array(CONFIG.packetCount * 6);
         const colors = new Float32Array(CONFIG.packetCount * 6);
@@ -545,12 +574,13 @@ export function FuturisticOrbit() {
         const packetLines = new THREE.LineSegments(packetGeo, packetMat);
         scene.add(packetLines);
 
-        // --- STARDUST (Rain) ---
+        // --- STARDUST ---
         const dustCount = 8000;
         const dustGeo = new THREE.BufferGeometry();
         const dustPos = new Float32Array(dustCount * 3);
         const dustSizes = new Float32Array(dustCount);
         const dustAlphas = new Float32Array(dustCount);
+        const dustRandoms = new Float32Array(dustCount);
 
         for (let i = 0; i < dustCount; i++) {
             dustPos[i * 3] = (Math.random() - 0.5) * 1000;
@@ -558,16 +588,19 @@ export function FuturisticOrbit() {
             dustPos[i * 3 + 2] = (Math.random() - 0.5) * 1000;
             dustSizes[i] = Math.random() * 2;
             dustAlphas[i] = Math.random() * 0.5 + 0.1;
+            dustRandoms[i] = Math.random();
         }
         dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
         dustGeo.setAttribute('size', new THREE.InstancedBufferAttribute(dustSizes, 1));
         dustGeo.setAttribute('aAlpha', new THREE.InstancedBufferAttribute(dustAlphas, 1));
+        dustGeo.setAttribute('aRandom', new THREE.InstancedBufferAttribute(dustRandoms, 1));
 
         const dustMat = new THREE.ShaderMaterial({
             vertexShader: starVertexShader,
             fragmentShader: starFragmentShader,
             uniforms: {
-                color: { value: new THREE.Color(0xffffff) }
+                color: { value: new THREE.Color(0xffffff) },
+                uTime: { value: 0 }
             },
             transparent: true,
             blending: THREE.AdditiveBlending,
@@ -578,7 +611,7 @@ export function FuturisticOrbit() {
 
         setLoading(false);
 
-        // --- NEW: COMET SYSTEM ---
+        // --- COMET SYSTEM ---
         const cometVertexShader = `
             attribute float aSize;
             attribute float aSpeed;
@@ -805,7 +838,7 @@ export function FuturisticOrbit() {
         novaDebris.instanceMatrix.needsUpdate = true;
         novaSystemGroup.add(novaDebris);
 
-        // --- NEW: PROCEDURAL PLANET SHADER ---
+        // --- PROCEDURAL PLANET SHADER ---
         const planetVertexShader = `
             varying vec2 vUv;
             varying vec3 vNormal;
@@ -1163,7 +1196,7 @@ export function FuturisticOrbit() {
         nebulaMesh.frustumCulled = false; // Prevent disappearing when camera moves inside/outside bounds
         scene.add(nebulaMesh);
 
-        // --- NEW: GIANT ORBITAL RINGS ---
+        // --- GIANT ORBITAL RINGS ---
         const ringGroup = new THREE.Group();
         const giantRingGeo = new THREE.TorusGeometry(800, 2, 64, 200);
         const giantRingMat = new THREE.MeshBasicMaterial({
@@ -1185,7 +1218,7 @@ export function FuturisticOrbit() {
 
         scene.add(ringGroup);
 
-        // --- NEW: ASTEROID BELT (InstancedMesh) ---
+        // --- ASTEROID BELT ---
         const asteroidCount = 2000;
         const asteroidGeo = new THREE.IcosahedronGeometry(1, 0);
         const asteroidMat = new THREE.MeshStandardMaterial({
@@ -1225,6 +1258,9 @@ export function FuturisticOrbit() {
             const elapsed = clock.getElapsedTime();
             const delta = clock.getDelta();
             const { time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger } = stateRef.current;
+
+            // Update Dust Twinkle
+            dustMat.uniforms.uTime.value = elapsed;
 
             // --- ESCAPE ANIMATION ---
             if (escapeTrigger > escapeAnimation.lastTrigger) {

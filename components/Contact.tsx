@@ -4,6 +4,7 @@ import { useLanguage } from "@/lib/language-context";
 import { Mail, Send, MapPin, Linkedin, Github, Terminal, Wifi, Phone, Instagram, Copy, Check, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import posthog from 'posthog-js';
 
 export function Contact() {
     const { t } = useLanguage();
@@ -12,6 +13,7 @@ export function Contact() {
     const email = "francesco.mollica@outlook.com";
 
     const handleCopyEmail = () => {
+        posthog.capture('contact_email_copied', { email: email });
         navigator.clipboard.writeText(email);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
@@ -83,6 +85,7 @@ export function Contact() {
                         <Link
                             href="https://t.me/franklyn"
                             target="_blank"
+                            onClick={() => posthog.capture('contact_link_clicked', { destination: 'telegram' })}
                             className="w-full group flex items-center justify-between p-6 bg-gray-900/50 border border-gray-800 hover:border-[#0088cc] transition-all duration-300 rounded-lg"
                         >
                             <div className="flex items-center gap-4">
@@ -100,6 +103,7 @@ export function Contact() {
                         {/* PHONE */}
                         <a
                             href="tel:+393271852718"
+                            onClick={() => posthog.capture('contact_link_clicked', { destination: 'phone' })}
                             className="w-full flex items-center gap-4 p-4 rounded-lg border border-transparent hover:bg-white/5 transition-colors group"
                         >
                             <Phone className="w-5 h-5 text-gray-500 group-hover:text-green-400 transition-colors" />
@@ -120,6 +124,7 @@ export function Contact() {
                             <Link
                                 href="https://linkedin.com/in/francesco-mollica"
                                 target="_blank"
+                                onClick={() => posthog.capture('contact_link_clicked', { destination: 'linkedin' })}
                                 className="group flex flex-col items-center justify-center p-6 bg-gray-900/30 border border-gray-800 hover:border-[#0a66c2] hover:bg-[#0a66c2]/10 rounded-lg transition-all"
                             >
                                 <Linkedin className="w-8 h-8 text-gray-400 group-hover:text-[#0a66c2] mb-3 transition-colors" />
@@ -130,6 +135,7 @@ export function Contact() {
                             <Link
                                 href="https://github.com/francimolli"
                                 target="_blank"
+                                onClick={() => posthog.capture('contact_link_clicked', { destination: 'github' })}
                                 className="group flex flex-col items-center justify-center p-6 bg-gray-900/30 border border-gray-800 hover:border-purple-500 hover:bg-purple-500/10 rounded-lg transition-all"
                             >
                                 <Github className="w-8 h-8 text-gray-400 group-hover:text-purple-400 mb-3 transition-colors" />
@@ -140,6 +146,7 @@ export function Contact() {
                             <Link
                                 href="https://instagram.com/franci_molli"
                                 target="_blank"
+                                onClick={() => posthog.capture('contact_link_clicked', { destination: 'instagram' })}
                                 className="group col-span-2 flex items-center justify-between px-6 py-4 bg-gray-900/30 border border-gray-800 hover:border-pink-500 hover:bg-pink-500/10 rounded-lg transition-all"
                             >
                                 <div className="flex items-center gap-3">

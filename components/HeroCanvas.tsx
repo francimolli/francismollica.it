@@ -1,5 +1,6 @@
 "use client";
 
+import posthog from 'posthog-js';
 import { Canvas } from "@react-three/fiber";
 import { MeshDistortMaterial, Sphere, OrbitControls, Float, Environment } from "@react-three/drei";
 import { Suspense } from "react";
@@ -31,7 +32,12 @@ export function HeroCanvas() {
                             />
                         </Sphere>
                     </Float>
-                    <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
+                    <OrbitControls 
+                        enableZoom={false} 
+                        autoRotate 
+                        autoRotateSpeed={0.5} 
+                        onStart={() => posthog.capture('hero-canvas-interacted')}
+                    />
                 </Suspense>
             </Canvas>
         </div>

@@ -8,6 +8,7 @@ import { useCityControls } from "./CityControlsContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/language-context";
 import { translations } from "@/lib/translations";
+import posthog from 'posthog-js';
 
 const sections = [
     { id: "home", title: "nav.home", icon: Home, target: null }, // Home resets view
@@ -38,6 +39,7 @@ export function LogbookMenu() {
     ];
 
     const handleSectionClick = (id: string, target: { x: number, z: number } | null) => {
+        posthog.capture('logbook_navigated', { section_id: id });
         setIsOpen(false);
 
         // 1. Trigger Navigation
@@ -152,13 +154,19 @@ export function LogbookMenu() {
                                             {/* TABS */}
                                             <div className="flex gap-2">
                                                 <button
-                                                    onClick={() => setActiveTab('navigation')}
+                                                    onClick={() => {
+                                                        setActiveTab('navigation');
+                                                        posthog.capture('logbook_tab_viewed', { tab_name: 'navigation' });
+                                                    }}
                                                     className={`px-4 py-1 rounded text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'navigation' ? 'bg-yellow-500 text-black' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
                                                 >
                                                     {t.logbook.tab1}
                                                 </button>
                                                 <button
-                                                    onClick={() => setActiveTab('achievements')}
+                                                    onClick={() => {
+                                                        setActiveTab('achievements');
+                                                        posthog.capture('logbook_tab_viewed', { tab_name: 'achievements' });
+                                                    }}
                                                     className={`px-4 py-1 rounded text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'achievements' ? 'bg-yellow-500 text-black' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
                                                 >
                                                     {t.logbook.tab2} [{unlockedSecrets.length}/{secretsList.length}]
@@ -268,6 +276,7 @@ export function LogbookMenu() {
                                                                                 onClick={(e) => {
                                                                                     e.stopPropagation();
                                                                                     navigator.clipboard.writeText(copyText);
+                                                                                    posthog.capture('achievement_code_copied', { secret_id: secret.id });
                                                                                     // Optional: Show a small tooltip or change icon temporarily
                                                                                     const btn = e.currentTarget;
                                                                                     const originalContent = btn.innerHTML;

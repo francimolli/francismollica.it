@@ -9,6 +9,7 @@ import { useLanguage } from "@/lib/language-context";
 import { useCityControls } from "@/components/CityControlsContext";
 import { useFloatingSection } from "@/components/FloatingSectionContext";
 import { translations } from "@/lib/translations";
+import posthog from 'posthog-js';
 
 // --- PROFESSIONAL SLIDER COMPONENT (Bigger & Better) ---
 const ControlSlider = ({
@@ -143,6 +144,11 @@ export function Header() {
         triggerSystemReboot(); // Trigger blackout effect
         setCooldown(145);
         setIsOpen(false);
+        posthog.capture('simulation_regenerated', {
+            new_time: randomTime,
+            new_time_speed: randomSpeed,
+            new_traffic_level: randomTraffic
+        });
     };
 
     const handleEscape = () => {
@@ -261,7 +267,7 @@ export function Header() {
 
                         {/* BOOST BUTTON (Green Lightning) */}
                         <button
-                            onClick={activateBoost}
+                            onClick={() => { activateBoost(); posthog.capture('hyper_boost_activated'); }}
                             disabled={boostCooldown > 0 || boostActive}
                             className={`
                                 relative group p-2 rounded-full transition-all duration-300
@@ -313,7 +319,7 @@ export function Header() {
 
                         {/* MOBILE BOOST (Left of Rocket) */}
                         <button
-                            onClick={activateBoost}
+                            onClick={() => { activateBoost(); posthog.capture('hyper_boost_activated'); }}
                             disabled={boostCooldown > 0 || boostActive}
                             className={`
                                 relative p-3 rounded-full transition-all duration-300
