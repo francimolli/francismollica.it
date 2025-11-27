@@ -69,7 +69,7 @@ export function LogbookMenu() {
                     }}
                     className={`relative group p-4 rounded-full shadow-[0_0_30px_rgba(250,204,21,0.3)] border border-yellow-400/30 backdrop-blur-xl transition-all duration-300 cursor-pointer overflow-hidden ${isOpen ? "bg-red-500/20 text-red-400 border-red-500/50" : "bg-black/60 text-yellow-400 hover:bg-yellow-500/10 hover:border-yellow-400/80"
                         }`}
-                    // whileHover={{ scale: 1.1 }}
+                    whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                 >
                     {/* Radar Ping Effect */}
