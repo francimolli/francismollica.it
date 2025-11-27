@@ -11,7 +11,7 @@ import { translations } from "@/lib/translations";
 const sections = [
     { id: "home", title: "nav.home", icon: Home, target: null }, // Home resets view
     { id: "about", title: "nav.about", icon: User, target: { x: 0, z: -200 } },
-    { id: "projects", title: "nav.work", icon: Briefcase, target: { x: 200, z: 0 } },
+    { id: "projects", title: "nav.projects", icon: Briefcase, target: { x: 200, z: 0 } },
     { id: "contact", title: "nav.contact", icon: Mail, target: { x: -200, z: 0 } },
     { id: "music", title: "nav.music", icon: Headphones, target: { x: 0, z: 200 } },
 ];

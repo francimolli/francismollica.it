@@ -2,8 +2,8 @@ export const translations = {
     it: {
         nav: {
             home: "Home",
-            about: "Profilo",
-            work: "Lavoro",
+            about: "Chi sono",
+            work: "Area Lavoro",
             contact: "Contatti",
             music: "Musica",
         },
@@ -16,7 +16,7 @@ export const translations = {
             ctaContact: "Contattami",
         },
         about: {
-            title: "Profilo",
+            title: "Chi sono",
             headline: "Appassionato di",
             headlineSuffix: "Software e AI",
             bio1: "Design dello sviluppo software con {\"Python\" : JavaScript}. ",
@@ -148,7 +148,7 @@ export const translations = {
         nav: {
             home: "Home",
             about: "About",
-            projects: "Projects",
+            work: "Work",
             contact: "Contact",
             music: "Music",
         },
