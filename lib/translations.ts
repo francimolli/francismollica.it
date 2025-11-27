@@ -3,7 +3,7 @@ export const translations = {
         nav: {
             home: "Home",
             about: "Chi sono",
-            work: "Area Lavoro",
+            projects: "Area Lavoro",
             contact: "Contatti",
             music: "Musica",
         },
@@ -115,7 +115,7 @@ export const translations = {
             },
             controls: {
                 systemConfiguration: "Configurazione Sistema",
-                environmentVariables: "Variabili Ambiente",
+                // environmentVariables: "Variabili Ambiente",
                 restoreDefaults: "Ripristina Default",
                 reloadUniverse: "Aumenta entropia",
                 cooldown: "Cooldown",
@@ -148,7 +148,7 @@ export const translations = {
         nav: {
             home: "Home",
             about: "About",
-            work: "Work",
+            projects: "Work",
             contact: "Contact",
             music: "Music",
         },
@@ -178,6 +178,7 @@ export const translations = {
             demo: "Company",
             code: "Details",
             viewAll: "View Full Archive",
+            totalObjects: "Total Objects",
             items: [
                 {
                     title: "Analyst",
@@ -295,7 +296,7 @@ export const translations = {
             distanceTraveled: "Distance Traveled",
             hyperjumps: "Hyperjumps",
             anomaliesDetected: "Anomalies",
-            totalObjects: "Total Objects",
+
         }
     },
 };
