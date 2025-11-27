@@ -207,11 +207,11 @@ export function FuturisticOrbit() {
 
     // --- NAVIGATION POIs ---
     const pois = [
-        { id: 'home', label: 'HOME SECTOR', pos: new THREE.Vector3(0, 0, 0), color: '#06b6d4' },
-        { id: 'nova', label: 'NOVA PRIME', pos: new THREE.Vector3(-2500, 500, -2500), color: '#ffffff' },
-        { id: 'cyber', label: 'CYBER PRIME', pos: new THREE.Vector3(800, 200, -800), color: '#4400ff' },
-        { id: 'magma', label: 'MAGMA GIANT', pos: new THREE.Vector3(-900, -300, 500), color: '#ff0055' },
-        { id: 'toxic', label: 'TOXIC MOON', pos: new THREE.Vector3(400, 600, 900), color: '#00ffaa' },
+        { id: 'home', label: 'F23A541289', pos: new THREE.Vector3(0, 0, 0), color: '#06b6d4' },
+        { id: 'nova', label: 'Excelsa', pos: new THREE.Vector3(-2500, 500, -2500), color: '#ffffff' },
+        { id: 'cyber', label: 'GOLV10110010110101101001100-10110111001101111001000000110110001100101011100110111010001101111011100100110110001100001', pos: new THREE.Vector3(800, 200, -800), color: '#4400ff' },
+        { id: 'magma', label: 'M4GUNA', pos: new THREE.Vector3(-900, -300, 500), color: '#ff0055' },
+        { id: 'toxic', label: 'stash', pos: new THREE.Vector3(400, 600, 900), color: '#00ffaa' },
     ];
 
     // --- INTERACTION TRACKING ---
