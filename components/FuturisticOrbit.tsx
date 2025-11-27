@@ -1817,16 +1817,16 @@ export function FuturisticOrbit() {
                 </div>
             ))}
 
-            {/* --- NEW: RETURN WARNING --- */}
+            {/* --- NEW: RETURN WARNING (Friendly) --- */}
             <div
                 id="return-warning"
                 className="absolute top-64 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none transition-opacity duration-500 opacity-0"
             >
-                <div className="text-red-500 font-black tracking-widest text-xl animate-pulse bg-black/50 px-4 py-1 border border-red-500/50 rounded">
-                    WARNING: LEAVING SECTOR 0
+                <div className="text-cyan-400 font-black tracking-widest text-xl animate-pulse bg-black/50 px-4 py-1 border border-cyan-500/50 rounded shadow-[0_0_10px_rgba(34,211,238,0.3)]">
+                    {t.hud.spaceExploration}
                 </div>
-                <div className="text-red-400/80 font-mono text-xs">
-                    SIGNAL INTEGRITY DROPPING
+                <div className="text-cyan-200/80 font-mono text-xs tracking-wider">
+                    {t.hud.enjoyTheJourney}
                 </div>
             </div>
 

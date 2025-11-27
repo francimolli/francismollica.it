@@ -337,8 +337,8 @@ export function Header() {
 
                                     <div className="p-8 space-y-10 flex-1 overflow-y-auto">
                                         <div className="space-y-8">
-                                            <ControlSlider label={t.header.controls.timeSpeed} value={timeSpeed} min={-5} max={5} step={0.25} onChange={setTimeSpeed} unit="x" width="w-full" />
-                                            <ControlSlider label={t.header.controls.trafficDensity} value={trafficLevel} min={0} max={100} step={1} onChange={setTrafficLevel} unit="%" width="w-full" />
+                                            <ControlSlider label={t.header.controls.timeWarp || "Time Warp"} value={timeSpeed} min={-5} max={5} step={0.25} onChange={setTimeSpeed} unit="x" width="w-full" />
+                                            <ControlSlider label={t.header.controls.traffic || "Density"} value={trafficLevel} min={0} max={100} step={1} onChange={setTrafficLevel} unit="%" width="w-full" />
                                             <ControlSlider label={t.header.controls.timeOfDay || "Time of Day"} value={time} displayValue={formatTime(time)} min={0} max={24} step={0.25} onChange={manualSetTime} unit="" width="w-full" />
 
                                             {/* Invert Y Toggle */}
