@@ -180,7 +180,7 @@ export function Header() {
                     <Link
                         href="/"
                         className="flex items-center gap-4 group"
-                        onClick={(e) => { e.preventDefault(); resetView(); setExpandedSection('contact'); }}
+                        onClick={(e: React.MouseEvent<HTMLAnchorElement>) => { e.preventDefault(); resetView(); setExpandedSection('contact'); }}
                     >
                         {/* Logo Mark - Bigger
                         <div className="relative w-12 h-12 flex items-center justify-center bg-cyan-950/30 border border-cyan-500/40 rounded-md group-hover:bg-cyan-900/30 group-hover:border-cyan-400 transition-all duration-300 shadow-[0_0_15px_rgba(6,182,212,0.1)]">

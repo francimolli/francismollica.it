@@ -65,7 +65,7 @@ export function LogbookMenu() {
                 <motion.button
                     drag
                     dragMomentum={false}
-                    onClick={(e) => {
+                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                         e.stopPropagation();
                         setIsOpen(!isOpen);
                     }}
