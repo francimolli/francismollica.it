@@ -36,19 +36,19 @@ export const translations = {
             totalObjects: "Progetti Totali",
             items: [
                 {
-                    title: "Analyst",
+                    title: "Data Science (Analyst)",
                     company: "BitBang",
                     period: "2024 - Presente",
                     description: "Progettazione di strategie di data collection enterprise (GTM, Adobe Analytics). Uso competenze Frontend per validare tracciamenti complessi e garantire l'integrità dei dati di user behavior.",
-                    tags: ["Google Tag Manager", "JavaScript", "Data Integrity", "Python"],
+                    tags: ["Google Tag Manager", "JavaScript", "Data Integrity", "Python", "Adobe Analytics"],
                     url: "https://bitbang.com/",
                 },
                 {
-                    title: "Full Stack Development",
+                    title: "Architect Engineer",
                     company: "Libero Professionista",
-                    period: "2017 - Presente",
-                    description: "Sviluppo di web application scalabili (React/Next.js) con focus su 'Strict Type Safety' (TypeScript) e architetture robuste anche con focus incontinenti, cioè per clienti internazionali.",
-                    tags: ["TypeScript", "Next.js", "React.js", "Node.js", "Python", "Node.js", "Three.js", "Tailwind CSS", "Styled Components", "ecc."],
+                    period: "2025 - Presente",
+                    description: "Sviluppo di web application scalabili (React/Next.js)e architetture robuste, Backend (C++, Go), Sistemi Operativi",
+                    tags: ["Go", "C++", "TypeScript", "Next.js", "React.js", "Node.js", "Python", "Node.js", "Three.js", "Tailwind CSS", "Styled Components", "ecc."],
                     url: "https://github.com/francimolli",
                 },
                 {
@@ -241,23 +241,22 @@ export const translations = {
             preview: "Role",
             demo: "Company",
             code: "Details",
-            viewAll: "View Full Archive",
-            totalObjects: "Total Objects",
+            totalObjects: "Total Projects",
             items: [
                 {
-                    title: "Analyst",
+                    title: "Data Science (Analyst)",
                     company: "BitBang",
                     period: "2024 - Present",
                     description: "Designing enterprise data collection strategies (GTM, Adobe Analytics). Using Frontend skills to validate complex tracking and ensure user behavior data integrity.",
-                    tags: ["Google Tag Manager", "JavaScript", "Data Integrity", "Python"],
+                    tags: ["Google Tag Manager", "JavaScript", "Data Integrity", "Python", "Adobe Analytics"],
                     url: "https://bitbang.com/",
                 },
                 {
-                    title: "Full Stack Development",
+                    title: "Architect Engineer",
                     company: "Freelance",
-                    period: "2017 - Present",
-                    description: "Developing scalable web applications (React/Next.js) with a focus on 'Strict Type Safety' (TypeScript) and robust architectures, even with incontinent focus, i.e., for international clients.",
-                    tags: ["TypeScript", "Next.js", "React.js", "Node.js", "Python", "Node.js", "Three.js", "Tailwind CSS", "Styled Components", "etc."],
+                    period: "2025 - Present",
+                    description: "Developing scalable web applications (React/Next.js) and robust architectures, Backend (C++, Go), Operating Systems",
+                    tags: ["Go", "C++", "TypeScript", "Next.js", "React.js", "Node.js", "Python", "Three.js", "Tailwind CSS", "Styled Components", "etc."],
                     url: "https://github.com/francimolli",
                 },
                 {
@@ -269,7 +268,7 @@ export const translations = {
                     url: "https://strixia.com/",
                 },
                 {
-                    title: "Full Stack Developer",
+                    title: "Software Developer",
                     company: "Altea Federation",
                     period: "Apr 2021 - Sep 2021",
                     description: "Developed automation scripts (PowerShell) to optimize workflows on Microsoft management infrastructures.",
@@ -301,8 +300,8 @@ export const translations = {
             subtitle: "Contacts",
             description: "Write me directly.",
             openForOpportunities: "ONLINE",
-            lets: "Bring your project",
-            initialize: "to life!",
+            lets: "Bring",
+            initialize: "your project to life!",
             directUplink: "Contact Me",
             primaryEmail: "Emails",
             instantMessaging: "Write me here, I might have to answer you sooner",
@@ -347,53 +346,43 @@ export const translations = {
             statusBlackout: "BLACKOUT",
             move: "MOVE",
             lookFly: "LOOK/FLY",
-            initializing: "INITIALIZING GALACTIC CORE...",
-            warpSequence: "WARP SEQUENCE INITIATED",
-            entropyInjection: "ENTROPY INJECTION",
+            initializing: "SYSTEM LOADING A0BK4TTO-14AKQO10-00G1A4D9-H1JPKF IN PROGRESS...",
             spaceExploration: "Space Exploration",
             enjoyTheJourney: "There's a beautiful view outside, let's enjoy it.",
             tutorial: {
-                move: "USE KEYS TO MOVE",
+                move: "USE WASD OR ARROW KEYS TO MOVE",
                 dismiss: "PRESS SPACE TO DISMISS",
                 artifacts: {
                     title: "ARTIFACTS & SECRETS",
-                    description: "Explore the cosmos to find ancient artifacts, unlock technologies, and get secret discounts."
+                    description: "Explore the cosmos to find ancient artifacts, unlock technologies, and get secret advantages."
                 },
                 logbook: {
-                    title: "CAPTAIN'S LOG",
+                    title: "LOGBOOK",
                     description: "Track your discoveries and analyze collected data in the Logbook menu."
                 },
                 continue: "CLICK OR PRESS SPACE"
             }
         },
         logbook: {
-            title: "Captain's Log",
+            title: "Logbook",
             tab1: "Navigation",
             tab2: "Artifacts",
-            entry: "Entry",
-            date: "Stardate",
-            content: " System operating within normal parameters.",
-            close: "Close Log",
-            stats: "Statistics",
-            distanceTraveled: "Distance Traveled",
-            hyperjumps: "Hyperjumps",
-            anomaliesDetected: "Anomalies",
-            copy: "COPY CODE",
+            copy: "CONTACT HEADQUARTERS",
             copied: "COPIED",
         },
         onboarding: {
-            loadingText: "WELCOME TO ORBIT.",
+            loadingText: "WELCOME TO ORBIT",
             immersive: {
-                title: "Explorer",
+                title: "Explorer and Adventurer",
                 description: "Interactive 3D experience. Discover secrets, navigate the universe, and find hidden easter eggs.",
                 tag: "CURIOUS",
-                recommendation: "[ RECOMMENDED FOR DESKTOP ]"
+                recommendation: "[ FUN BUT MORE COMPLEX ]"
             },
             classic: {
-                title: "Standard",
+                title: "Minimalist (I'm in a hurry)",
                 description: "Clean and fast interface. Get straight to the point without distractions.",
                 tag: "ESSENTIAL",
-                recommendation: "[ RECOMMENDED FOR MOBILE ]"
+                recommendation: "[ PLEASANT TO LOOK AT AND USE ]"
             }
         },
         secrets: {
@@ -413,14 +402,14 @@ export const translations = {
                 copyText: "I analyzed the Monolith. Discount Code: PWA-ID-15"
             },
             void_ship: {
-                title: "Derelict Ship",
+                title: "Abandoned Ship",
                 description: "Secret Project Access",
                 message: "LOG RECOVERED: SECRET PROJECT ACCESS GRANTED",
-                copyText: "I discovered the Derelict Ship. Requesting Access: VOID-SHIP-X"
+                copyText: "I discovered the Abandoned Ship. Requesting Access: VOID-SHIP-X"
             }
         },
         roadmap: {
-            title: "COMING SOON",
+            title: "UNDER DEVELOPMENT",
             description: "Trajectory calculation in progress...",
         }
     },
