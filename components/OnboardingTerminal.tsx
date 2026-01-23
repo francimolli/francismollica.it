@@ -54,7 +54,7 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
     const classicModeActive = false; // Flag per disattivare la modalità Classic (Standard)
 
     return (
-        <div className="fixed inset-0 z-[100] bg-[#020410] flex flex-col items-center justify-center text-white p-4 font-sans h-[100dvh] w-full overflow-y-auto">
+        <div className="fixed inset-0 z-[100] bg-[#020410] flex flex-col items-center justify-between text-white p-4 font-sans h-[100dvh] w-full overflow-y-auto">
 
             {/* SELETTORE LINGUA */}
             <div className="absolute top-4 right-4 z-10">
@@ -74,10 +74,9 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
                 </div>
             </div>
 
-            <div className="max-w-4xl w-full space-y-8 md:space-y-16 py-12 md:py-0">
-
+            <div className="flex-1 flex flex-col items-center justify-center w-full max-w-4xl space-y-8 md:space-y-16 py-12 md:py-0">
                 {/* TITOLO/TESTO DI CARICAMENTO */}
-                <div className="min-h-[60px] flex flex-col items-center justify-center relative">
+                <div className="min-h-[60px] flex flex-col items-center justify-center relative w-full">
                     {/* Background Glow */}
                     <div className="absolute inset-0 bg-cyan-500/10 blur-3xl rounded-full opacity-20 animate-pulse" />
 
@@ -100,7 +99,7 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 mt-8 md:mt-12"
+                            className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 mt-8 md:mt-12 w-full"
                         >
                             {/* IMMERSIVE / CURIOUS MODE - ATTIVO */}
                             <button
@@ -170,6 +169,42 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
                         </motion.div>
                     )}
                 </AnimatePresence>
+
+                {/* LOGO OPEN SOURCE & GITHUB LINK */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1, delay: 1 }}
+                    className="flex flex-col items-center justify-center mt-auto pb-8 md:pb-0"
+                >
+                    <a
+                        href="https://github.com/francimolli/portfolio"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex flex-col items-center space-y-3 transition-opacity duration-300 hover:opacity-80"
+                    >
+                        <div className="relative">
+                            {/* Orbital Glow Effect */}
+                            <div className="absolute inset-0 bg-cyan-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 scale-150" />
+
+                            <img
+                                src="/images/oss-logo.png"
+                                alt="Open Source Initiative"
+                                className="w-12 h-12 md:w-16 md:h-16 relative z-10 brightness-90 contrast-125 transition-transform duration-500 group-hover:scale-105"
+                                style={{ filter: 'drop-shadow(0 0 8px rgba(6, 182, 212, 0.4))' }}
+                            />
+                        </div>
+
+                        <div className="flex flex-col items-center space-y-1">
+                            <span className="text-[10px] font-mono tracking-[0.3em] text-cyan-400 opacity-60 group-hover:opacity-100 transition-opacity">
+                                OPEN SOURCE SYSTEM
+                            </span>
+                            <span className="text-[9px] font-mono text-gray-500 tracking-widest uppercase">
+                                github.com/francimolli/portfolio
+                            </span>
+                        </div>
+                    </a>
+                </motion.div>
             </div>
         </div>
     );

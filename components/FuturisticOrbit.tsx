@@ -297,8 +297,7 @@ export function FuturisticOrbit() {
     const pois = [
         { id: 'home', label: 'F23A541289', pos: new THREE.Vector3(0, 0, 0), color: '#06b6d4' },
         { id: 'nova', label: 'Excelsa', pos: new THREE.Vector3(-2500, 500, -2500), color: '#ffffff' },
-        { id: 'cyber', label: 'GOLV10110010110101101001100', pos: new THREE.Vector3(1600, 400, -1600), color: '#4400ff' },
-        // { id: 'cyber', label: 'GOLV10110010110101101001100-10110111001101111001000000110110001100101011100110111010001101111011100100110110001100001', pos: new THREE.Vector3(1600, 400, -1600), color: '#4400ff' },
+        { id: 'cyber', label: 'GOLV101100110', pos: new THREE.Vector3(1600, 400, -1600), color: '#4400ff' },
         { id: 'magma', label: 'M4GUNA', pos: new THREE.Vector3(-1800, -600, 1000), color: '#ff0055' },
         { id: 'toxic', label: 'stash', pos: new THREE.Vector3(800, 1200, 1800), color: '#00ffaa' },
     ];
