@@ -24,8 +24,6 @@ export const metadata: Metadata = {
 import { Analytics } from "@vercel/analytics/react";
 import { LanguageProvider } from "@/lib/language-context";
 
-import { CSPostHogProvider } from './providers'
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,16 +31,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <CSPostHogProvider>
-        <body
-          className={`${playfair.variable} ${lato.variable} antialiased font-sans`}
-        >
-          <LanguageProvider>
-            {children}
-            <Analytics />
-          </LanguageProvider>
-        </body>
-      </CSPostHogProvider>
+      <body
+        className={`${playfair.variable} ${lato.variable} antialiased font-sans`}
+      >
+        <LanguageProvider>
+          {children}
+          <Analytics />
+        </LanguageProvider>
+      </body>
     </html>
   );
 }

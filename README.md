@@ -25,7 +25,6 @@ This vessel is powered by state-of-the-art propulsion systems:
 - **Visual Sensors**: [Three.js](https://threejs.org/) & [Framer Motion](https://www.framer.com/motion/)
 - **Hull Material**: [Tailwind CSS](https://tailwindcss.com/)
 - **Navigational Intelligence**: [TypeScript](https://www.typescriptlang.org/)
-- **Telemetry**: [PostHog](https://posthog.com/)
 
 ---
 

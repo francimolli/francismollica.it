@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useFloatingSection } from "@/components/FloatingSectionContext";
-import posthog from 'posthog-js';
 import {
     SiJavascript,
     SiTypescript,
@@ -210,7 +209,7 @@ export function About() {
                                         href={skill.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        onClick={() => posthog.capture('skill_link_clicked', { skill_name: skill.name, skill_url: skill.url })}
+                                        onClick={() => { }}
                                         className="group relative inline-flex items-center gap-2 px-4 py-2 bg-black border border-cyan-800 hover:border-cyan-400 text-cyan-400/80 hover:text-cyan-300 hover:bg-cyan-950/30 transition-all duration-300"
                                     >
                                         <skill.icon className="w-4 h-4 transition-transform group-hover:scale-110" />
@@ -227,7 +226,6 @@ export function About() {
                         <div className="pt-8 opacity-0 animate-[fadeIn_0.5s_ease-in_8s_forwards]">
                             <button
                                 onClick={() => {
-                                    posthog.capture('contact_cta_clicked', { target_section: 'contact' });
                                     setExpandedSection('contact');
                                 }}
                                 className="group relative w-full px-8 py-4 bg-black/60 border border-cyan-500/30 overflow-hidden transition-all duration-300 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)]"

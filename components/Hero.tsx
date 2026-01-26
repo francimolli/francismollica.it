@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useFloatingSection } from "@/components/FloatingSectionContext";
 import { Terminal, ChevronRight } from "lucide-react";
-import posthog from 'posthog-js';
+
 
 // Componente Typewriter con effetto terminale anni '80
 function TypewriterText({
@@ -114,7 +114,6 @@ export function Hero() {
                         <div className="pt-8 opacity-0 animate-[fadeIn_0.5s_ease-in_5s_forwards]">
                             <button
                                 onClick={() => {
-                                    posthog.capture('hero_cta_clicked', { section: 'contact' });
                                     setExpandedSection('contact');
                                 }}
                                 className="group relative px-8 py-4 bg-black/60 border border-cyan-500/30 overflow-hidden transition-all duration-300 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)]"

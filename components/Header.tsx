@@ -9,7 +9,6 @@ import { useLanguage } from "@/lib/language-context";
 import { useCityControls } from "@/components/CityControlsContext";
 import { useFloatingSection } from "@/components/FloatingSectionContext";
 import { translations } from "@/lib/translations";
-import posthog from 'posthog-js';
 import React from "react";
 import { HackerGliderAnimated } from "@/components/HackerGlider";
 
@@ -148,11 +147,6 @@ export function Header() {
         playExplosionSound();
         setCooldown(145);
         setIsOpen(false);
-        posthog.capture('simulation_regenerated', {
-            new_time: randomTime,
-            new_time_speed: randomSpeed,
-            new_traffic_level: randomTraffic
-        });
     };
 
     const handleEscape = () => {
@@ -266,7 +260,7 @@ export function Header() {
 
                         {/* BOOST BUTTON (Green Lightning) */}
                         <button
-                            onClick={() => { activateBoost(); posthog.capture('hyper_boost_activated'); }}
+                            onClick={() => { activateBoost(); }}
                             disabled={boostCooldown > 0 || boostActive}
                             className={`
                                 relative group p-2 rounded-full transition-all duration-300
@@ -318,7 +312,7 @@ export function Header() {
 
                         {/* MOBILE BOOST (Left of Rocket) */}
                         <button
-                            onClick={() => { activateBoost(); posthog.capture('hyper_boost_activated'); }}
+                            onClick={() => { activateBoost(); }}
                             disabled={boostCooldown > 0 || boostActive}
                             className={`
                                 relative p-3 rounded-full transition-all duration-300

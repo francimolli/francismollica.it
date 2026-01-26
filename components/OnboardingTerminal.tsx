@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Telescope, Zap, Globe } from "lucide-react"; // Aggiunto Globe per il selettore lingua
 import { useLanguage } from "@/lib/language-context";
-import posthog from "posthog-js";
 
 interface OnboardingTerminalProps {
     onComplete: (mode: "immersive" | "classic") => void;
@@ -42,7 +41,6 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
         const newLang = e.target.value as "it" | "en";
         setLanguage(newLang);
         setStep(0); // Riavvia il typing effect per la nuova lingua
-        posthog.capture('language_changed', { language: newLang, source: 'onboarding' });
     };
 
     // Stile comune per i pulsanti (minimalista e spaziale)
@@ -104,7 +102,6 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
                             {/* IMMERSIVE / CURIOUS MODE - ATTIVO */}
                             <button
                                 onClick={() => {
-                                    posthog.capture('onboarding_completed', { mode: 'immersive' });
                                     onComplete("immersive");
                                 }}
                                 className={`group ${buttonBaseStyle} border-cyan-700/50 hover:border-cyan-400 bg-black min-h-[320px] shadow-cyan-950/20 hover:shadow-cyan-400/20`}

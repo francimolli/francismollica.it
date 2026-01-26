@@ -16,7 +16,7 @@ import { useFloatingSection } from "@/components/FloatingSectionContext";
 import { useLanguage } from "@/lib/language-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { translations } from "@/lib/translations";
-import posthog from "posthog-js";
+
 
 //VIRTUAL JOYSTICK
 function Joystick({ onMove, label, className }: { onMove: (x: number, y: number) => void, label?: string, className?: string }) {
@@ -47,7 +47,6 @@ function Joystick({ onMove, label, className }: { onMove: (x: number, y: number)
             setTouchId(null);
             setPos({ x: 0, y: 0 });
             onMove(0, 0);
-            posthog.capture('joystick_used', { label });
         }
     };
 
@@ -248,7 +247,6 @@ export function FuturisticOrbit() {
     useEffect(() => {
         if (unlockVisualTrigger > 0) {
             setUnlockEffect(true);
-            posthog.capture('secret_unlocked', { secret_id: unlockVisualTrigger });
             const timer = setTimeout(() => {
                 setUnlockEffect(false);
             }, 1500); // Effect duration
@@ -259,14 +257,12 @@ export function FuturisticOrbit() {
     // Track Camera Target (Navigation)
     useEffect(() => {
         if (cameraTarget) {
-            posthog.capture('navigation_poi_active', { target_id: cameraTarget });
         }
     }, [cameraTarget]);
 
     // Track System Reboot (Escape/Jailbreak)
     useEffect(() => {
         if (isEscaping) {
-            posthog.capture('system_reboot_triggered', { type: 'escape_sequence' });
         }
     }, [isEscaping]);
 

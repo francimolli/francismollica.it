@@ -4,7 +4,6 @@ import { useLanguage } from "@/lib/language-context";
 import { Mail, Send, MapPin, Linkedin, Github, Terminal, Wifi, Phone, Instagram, Copy, Check, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { useState, useMemo } from "react";
-import posthog from 'posthog-js';
 
 export function Contact() {
     const { t } = useLanguage();
@@ -32,7 +31,6 @@ export function Contact() {
     }, []);
 
     const handleCopyEmail = () => {
-        posthog.capture('contact_email_copied', { email: contactData.fullEmail });
         navigator.clipboard.writeText(contactData.fullEmail);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
@@ -104,7 +102,7 @@ export function Contact() {
                         <Link
                             href="https://t.me/franklyn"
                             target="_blank"
-                            onClick={() => posthog.capture('contact_link_clicked', { destination: 'telegram' })}
+                            onClick={() => { }}
                             className="w-full group flex items-center justify-between p-6 bg-gray-900/50 border border-gray-800 hover:border-[#0088cc] transition-all duration-300 rounded-lg"
                         >
                             <div className="flex items-center gap-4">
@@ -122,7 +120,7 @@ export function Contact() {
                         {/* PHONE */}
                         <a
                             href={`tel:${contactData.dialPhone}`}
-                            onClick={() => posthog.capture('contact_link_clicked', { destination: 'phone' })}
+                            onClick={() => { }}
                             className="w-full flex items-center gap-4 p-4 rounded-lg border border-transparent hover:bg-white/5 transition-colors group"
                         >
                             <Phone className="w-5 h-5 text-gray-500 group-hover:text-green-400 transition-colors" />
@@ -144,7 +142,7 @@ export function Contact() {
                             <Link
                                 href="https://github.com/francimolli"
                                 target="_blank"
-                                onClick={() => posthog.capture('contact_link_clicked', { destination: 'github' })}
+                                onClick={() => { }}
                                 className="group flex flex-col items-center justify-center p-6 bg-gray-900/30 border border-gray-800 hover:border-purple-500 hover:bg-purple-500/10 rounded-lg transition-all"
                             >
                                 <Github className="w-8 h-8 text-gray-400 group-hover:text-purple-400 mb-3 transition-colors" />

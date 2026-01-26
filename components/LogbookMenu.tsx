@@ -8,7 +8,6 @@ import { useCityControls } from "./CityControlsContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/language-context";
 import { translations } from "@/lib/translations";
-import posthog from 'posthog-js';
 
 const sections = [
     { id: "home", title: "nav.home", icon: Home, target: null }, // Home resets view
@@ -39,7 +38,6 @@ export function LogbookMenu() {
     ];
 
     const handleSectionClick = (id: string, target: { x: number, z: number } | null) => {
-        posthog.capture('logbook_navigated', { section_id: id });
         setIsOpen(false);
 
         // 1. Trigger Navigation
@@ -156,7 +154,6 @@ export function LogbookMenu() {
                                                 <button
                                                     onClick={() => {
                                                         setActiveTab('navigation');
-                                                        posthog.capture('logbook_tab_viewed', { tab_name: 'navigation' });
                                                     }}
                                                     className={`px-4 py-1 rounded text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'navigation' ? 'bg-yellow-500 text-black' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
                                                 >
@@ -165,7 +162,6 @@ export function LogbookMenu() {
                                                 <button
                                                     onClick={() => {
                                                         setActiveTab('achievements');
-                                                        posthog.capture('logbook_tab_viewed', { tab_name: 'achievements' });
                                                     }}
                                                     className={`px-4 py-1 rounded text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'achievements' ? 'bg-yellow-500 text-black' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
                                                 >
@@ -276,14 +272,6 @@ export function LogbookMenu() {
                                                                                 onClick={(e) => {
                                                                                     e.stopPropagation();
                                                                                     navigator.clipboard.writeText(copyText);
-                                                                                    posthog.capture('achievement_code_copied', { secret_id: secret.id });
-                                                                                    // Optional: Show a small tooltip or change icon temporarily
-                                                                                    const btn = e.currentTarget;
-                                                                                    const originalContent = btn.innerHTML;
-                                                                                    btn.innerHTML = `<span class="flex items-center gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> ${t.logbook.copied}</span>`;
-                                                                                    setTimeout(() => {
-                                                                                        btn.innerHTML = originalContent;
-                                                                                    }, 2000);
                                                                                 }}
                                                                                 className="ml-auto px-4 py-2 bg-yellow-500 hover:bg-yellow-400 text-black rounded font-bold text-xs uppercase tracking-widest flex items-center gap-2 transition-colors shadow-[0_0_15px_rgba(250,204,21,0.4)]"
                                                                             >
