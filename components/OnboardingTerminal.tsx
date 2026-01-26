@@ -139,9 +139,9 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
                                         <p className="text-sm text-gray-300 leading-relaxed max-w-[90%]">
                                             {t.onboarding.immersive.description}
                                         </p>
-                                        <div className="mt-6 flex items-center gap-2 text-[10px] text-cyan-400/80 font-mono uppercase tracking-widest bg-cyan-950/40 w-fit px-2 py-1 rounded border border-cyan-800/30">
+                                        {/* <div className="mt-6 flex items-center gap-2 text-[10px] text-cyan-400/80 font-mono uppercase tracking-widest bg-cyan-950/40 w-fit px-2 py-1 rounded border border-cyan-800/30">
                                             {t.onboarding.immersive.recommendation}
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                             </button>
@@ -167,9 +167,9 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
                                     <p className="text-sm text-gray-600 leading-relaxed">
                                         {t.onboarding.classic.description}
                                     </p>
-                                    <div className="mt-8 flex items-center gap-2 text-[10px] text-gray-700 font-mono uppercase tracking-widest">
+                                    {/* <div className="mt-8 flex items-center gap-2 text-[10px] text-gray-700 font-mono uppercase tracking-widest">
                                         {t.onboarding.classic.recommendation}
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
 
