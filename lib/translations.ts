@@ -19,8 +19,8 @@ export const translations = {
         about: {
             title: "Chi sono",
             headline: "Appassionato di",
-            headlineSuffix: "Software e AI",
-            bio1: "Design dello sviluppo software con {\"Python\" : JavaScript}. ",
+            headlineSuffix: "Software Engineer - Appassionato di Making (Hardware)",
+            bio1: "Design dall'architettura allo sviluppo software.",
             bio2: "Il mio obiettivo è colmare il divario tra ingegneria e business development.",
             techStack: "Stack Tecnologico",
             techStackLoading: "TECH STACK...",
@@ -169,7 +169,7 @@ export const translations = {
             immersive: {
                 title: "Esploratore e Avventuriero",
                 description: "Esperienza 3D interattiva. Scopri segreti, naviga l'universo e trova easter egg nascosti.",
-                tag: "CURIOSO",
+                tag: "GAMEPLAY",
                 recommendation: "[ DIVERTENTE MA PIù COMPLICATO ]"
             },
             classic: {
@@ -227,9 +227,9 @@ export const translations = {
         about: {
             title: "Profile",
             headline: "Passionate about",
-            headlineSuffix: "Software and AI",
-            bio1: "Software development design with {\"Python\" : JavaScript}. ",
-            bio2: "Bridging the gap between engineering and business development.",
+            headlineSuffix: "Software Engineer - Passionate about Making (Hardware)",
+            bio1: "Design from architecture to software development.",
+            bio2: "My goal is to bridge the gap between engineering and business development.",
             techStack: "Tech Stack",
             techStackLoading: "TECH STACK...",
             ageLabel: "years",
@@ -375,7 +375,7 @@ export const translations = {
             immersive: {
                 title: "Explorer and Adventurer",
                 description: "Interactive 3D experience. Discover secrets, navigate the universe, and find hidden easter eggs.",
-                tag: "CURIOUS",
+                tag: "GAMEPLAY",
                 recommendation: "[ FUN BUT MORE COMPLEX ]"
             },
             classic: {

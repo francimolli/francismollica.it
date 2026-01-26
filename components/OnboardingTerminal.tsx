@@ -107,34 +107,41 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
                                     posthog.capture('onboarding_completed', { mode: 'immersive' });
                                     onComplete("immersive");
                                 }}
-                                className={`${buttonBaseStyle} border-cyan-700 hover:border-cyan-500 bg-cyan-950/20 hover:bg-cyan-900/30 shadow-cyan-500/10 hover:shadow-cyan-500/30`}
+                                className={`group ${buttonBaseStyle} border-cyan-700/50 hover:border-cyan-400 bg-black min-h-[320px] shadow-cyan-950/20 hover:shadow-cyan-400/20`}
                             >
-                                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                {/* Background Image with Zoom on Hover */}
+                                <div className="absolute inset-0 z-0 overflow-hidden">
+                                    <img
+                                        src="/images/banner.png"
+                                        alt="Immersive Mode"
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60"
+                                    />
+                                    {/* Gradient Overlay for text readability */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                                    <div className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                </div>
 
-                                <div className="relative z-10">
-                                    <div className="flex items-center justify-between mb-6">
+                                <div className="relative z-10 h-full flex flex-col">
+                                    <div className="flex items-center justify-between mb-auto">
                                         {/* Icona a tema Spaziale */}
-                                        <motion.div
-                                            initial={{ scale: 1 }}
-                                            whileHover={{ scale: 1.1, rotate: 3 }}
-                                            transition={{ duration: 0.3 }}
-                                            className="p-4 bg-cyan-900/50 rounded-full text-cyan-400 border border-cyan-800 shadow-lg"
-                                        >
-                                            <Telescope className="w-6 h-6 md:w-8 md:h-8" />
-                                        </motion.div>
-                                        <span className="text-[10px] font-bold tracking-widest text-cyan-300 bg-cyan-800/30 px-3 py-1 rounded-full border border-cyan-700/50">
+                                        <div className="p-3 bg-cyan-900/40 rounded-lg text-cyan-400 border border-cyan-800 animate-pulse">
+                                            <Telescope className="w-6 h-6" />
+                                        </div>
+                                        <span className="text-[10px] font-bold tracking-widest text-cyan-300 bg-cyan-950/50 px-3 py-1 rounded-full border border-cyan-700/50 backdrop-blur-md">
                                             {t.onboarding.immersive.tag}
                                         </span>
                                     </div>
 
-                                    <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-cyan-200 transition-colors">
-                                        {t.onboarding.immersive.title}
-                                    </h3>
-                                    <p className="text-sm text-gray-300 leading-relaxed">
-                                        {t.onboarding.immersive.description}
-                                    </p>
-                                    <div className="mt-8 flex items-center gap-2 text-[10px] text-cyan-600 font-mono uppercase tracking-widest">
-                                        {t.onboarding.immersive.recommendation}
+                                    <div className="mt-8">
+                                        <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-cyan-200 transition-colors drop-shadow-lg">
+                                            {t.onboarding.immersive.title}
+                                        </h3>
+                                        <p className="text-sm text-gray-300 leading-relaxed max-w-[90%]">
+                                            {t.onboarding.immersive.description}
+                                        </p>
+                                        <div className="mt-6 flex items-center gap-2 text-[10px] text-cyan-400/80 font-mono uppercase tracking-widest bg-cyan-950/40 w-fit px-2 py-1 rounded border border-cyan-800/30">
+                                            {t.onboarding.immersive.recommendation}
+                                        </div>
                                     </div>
                                 </div>
                             </button>

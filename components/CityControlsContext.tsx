@@ -41,6 +41,8 @@ interface CityControls {
     soundEnabled: boolean;
     setSoundEnabled: (v: boolean) => void;
     unlockVisualTrigger: number;
+    playExplosionSound: () => void;
+    playBoostSound: (duration: number) => void;
 }
 
 const CityControlsContext = createContext<CityControls | undefined>(undefined);
@@ -188,6 +190,7 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
         if (boostCooldown > 0 || boostActive) return;
         setBoostActive(true);
         setBoostCooldown(20);
+        playBoostSound(12000); // Trigger NOS sound
         setTimeout(() => setBoostActive(false), 12000);
         const interval = setInterval(() => {
             setBoostCooldown(prev => {
@@ -276,6 +279,148 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    const playExplosionSound = () => {
+        if (!soundEnabled || typeof window === 'undefined') return;
+        try {
+            const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+            const now = audioContext.currentTime;
+
+            // --- 1. THE LOW RUMBLE (Brownian-ish noise/low osc) ---
+            const lowOsc = audioContext.createOscillator();
+            const lowGain = audioContext.createGain();
+            lowOsc.type = 'triangle';
+            lowOsc.frequency.setValueAtTime(40, now);
+            lowOsc.frequency.exponentialRampToValueAtTime(10, now + 3);
+
+            lowGain.gain.setValueAtTime(0, now);
+            lowGain.gain.linearRampToValueAtTime(0.4, now + 0.1);
+            lowGain.gain.exponentialRampToValueAtTime(0.01, now + 3);
+
+            // --- 2. THE EXPLOSION NOISE (White noise filtered) ---
+            const bufferSize = audioContext.sampleRate * 2;
+            const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+
+            const noiseSource = audioContext.createBufferSource();
+            noiseSource.buffer = buffer;
+
+            const filter = audioContext.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(1000, now);
+            filter.frequency.exponentialRampToValueAtTime(100, now + 2);
+
+            const noiseGain = audioContext.createGain();
+            noiseGain.gain.setValueAtTime(0, now);
+            noiseGain.gain.linearRampToValueAtTime(0.3, now + 0.05);
+            noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 2.5);
+
+            // Connect Low Rumble
+            lowOsc.connect(lowGain);
+            lowGain.connect(audioContext.destination);
+
+            // Connect Noise
+            noiseSource.connect(filter);
+            filter.connect(noiseGain);
+            noiseGain.connect(audioContext.destination);
+
+            lowOsc.start(now);
+            noiseSource.start(now);
+
+            lowOsc.stop(now + 3.1);
+            noiseSource.stop(now + 3.1);
+
+            setTimeout(() => audioContext.close(), 4000);
+        } catch (e) {
+            console.warn('Explosion sound failed:', e);
+        }
+    };
+
+    const playBoostSound = (durationMs: number) => {
+        if (!soundEnabled || typeof window === 'undefined') return;
+        try {
+            const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+            const now = audioContext.currentTime;
+            const duration = durationMs / 1000;
+
+            // --- 1. THE ION DRIVE (Clean Electronic Hum) ---
+            const mainOsc = audioContext.createOscillator();
+            const mainGain = audioContext.createGain();
+            mainOsc.type = 'triangle'; // Softer than sawtooth, feels more high-tech
+            mainOsc.frequency.setValueAtTime(60, now);
+            mainOsc.frequency.exponentialRampToValueAtTime(140, now + 1.5);
+            mainOsc.frequency.linearRampToValueAtTime(120, now + duration);
+
+            mainGain.gain.setValueAtTime(0, now);
+            mainGain.gain.linearRampToValueAtTime(0.15, now + 1.0);
+            mainGain.gain.linearRampToValueAtTime(0, now + duration);
+
+            // --- 2. PLASMA SHIMMER (High-frequency Resonance) ---
+            const shimmerOsc = audioContext.createOscillator();
+            const shimmerGain = audioContext.createGain();
+            shimmerOsc.type = 'sine';
+            shimmerOsc.frequency.setValueAtTime(800, now);
+            shimmerOsc.frequency.exponentialRampToValueAtTime(1200, now + 2);
+
+            shimmerGain.gain.setValueAtTime(0, now);
+            shimmerGain.gain.linearRampToValueAtTime(0.04, now + 1.5);
+            shimmerGain.gain.linearRampToValueAtTime(0, now + duration);
+
+            // --- 3. PULSING THRUSTERS (Modulated Resonant Noise) ---
+            const bufferSize = audioContext.sampleRate * duration;
+            const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) { data[i] = Math.random() * 2 - 1; }
+            const noise = audioContext.createBufferSource();
+            noise.buffer = buffer;
+
+            const sweepFilter = audioContext.createBiquadFilter();
+            sweepFilter.type = 'lowpass';
+            sweepFilter.Q.value = 12; // High resonance for that "whoosh" effect
+            sweepFilter.frequency.setValueAtTime(200, now);
+            sweepFilter.frequency.exponentialRampToValueAtTime(2000, now + 1.5);
+            sweepFilter.frequency.exponentialRampToValueAtTime(500, now + duration);
+
+            const pulseLFO = audioContext.createOscillator();
+            const pulseGain = audioContext.createGain();
+            pulseLFO.frequency.value = 8; // 8Hz pulsing
+            pulseGain.gain.value = 0.08;
+            pulseLFO.connect(pulseGain);
+
+            const noiseGain = audioContext.createGain();
+            noiseGain.gain.setValueAtTime(0, now);
+            noiseGain.gain.linearRampToValueAtTime(0.2, now + 0.5);
+            noiseGain.gain.linearRampToValueAtTime(0, now + duration);
+
+            // Audio Routing
+            mainOsc.connect(mainGain).connect(audioContext.destination);
+            shimmerOsc.connect(shimmerGain).connect(audioContext.destination);
+
+            noise.connect(sweepFilter);
+            sweepFilter.connect(noiseGain);
+            pulseGain.connect(noiseGain.gain); // Pulse the volume of the thrust
+            noiseGain.connect(audioContext.destination);
+
+            // Ignition
+            mainOsc.start(now);
+            shimmerOsc.start(now);
+            noise.start(now);
+            pulseLFO.start(now);
+
+            // Shutdown
+            mainOsc.stop(now + duration + 0.1);
+            shimmerOsc.stop(now + duration + 0.1);
+            noise.stop(now + duration + 0.1);
+            pulseLFO.stop(now + duration + 0.1);
+
+            setTimeout(() => audioContext.close(), (duration + 1) * 1000);
+        } catch (e) {
+            console.warn('Cosmic Boost synthesis failed:', e);
+        }
+    };
+
     return (
         <CityControlsContext.Provider
             value={{
@@ -298,7 +443,9 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
                 boostActive, activateBoost, boostCooldown,
                 unlockedSecrets, unlockSecret,
                 soundEnabled, setSoundEnabled,
-                unlockVisualTrigger
+                unlockVisualTrigger,
+                playExplosionSound,
+                playBoostSound
             }}>
             {children}
         </CityControlsContext.Provider>

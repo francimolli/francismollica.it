@@ -1,40 +1,95 @@
-<<<<<<< HEAD
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌌 MISSION CONTROL: THE UNIVERSAL PORTFOLIO
 
-## Getting Started
+> "Trajectory calculation in progress... Destined for the edge of the Full-Stack Universe."
 
-First, run the development server:
+Welcome to the command center of **Francesco Mollica**, Architect Engineer and Digital Explorer. This isn't just a portfolio; it's a fully operational intergalactic interface designed to navigate through professional experiences, technical artifacts, and creative nebulae.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 SYSTEM OVERVIEW
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Status | Value |
+| :--- | :--- |
+| **Current Objective** | Bridging engineering and business development |
+| **Entropy Level** | Increasing |
+| **System Version** | A0BK4TTO-14AKQO10-00G1A4D9-H1JPKF |
+| **Location** | Orbiting Italy (Earth Sector) |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🛠 TECH ENGINES (The Stack)
 
-To learn more about Next.js, take a look at the following resources:
+This vessel is powered by state-of-the-art propulsion systems:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Core Reactor**: [Next.js](https://nextjs.org/) (React Framework)
+- **Visual Sensors**: [Three.js](https://threejs.org/) & [Framer Motion](https://www.framer.com/motion/)
+- **Hull Material**: [Tailwind CSS](https://tailwindcss.com/)
+- **Navigational Intelligence**: [TypeScript](https://www.typescriptlang.org/)
+- **Telemetry**: [PostHog](https://posthog.com/)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🕹 MISSION MODES
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 🔭 Immersive Explorer (Curious Mode)
+For the bold. A 3D interactive cosmos where you can fly, look around, and discover hidden artifacts. 
+- **WASD/Arrows**: Adjust thrusters.
+- **Space**: Interact / Dismiss logs.
+- **Warning**: High GPU usage, but extremely satisfying.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-=======
-# portfolio
->>>>>>> 9bd2d2abf60c96c5b494679610c8324359cd4996
+### ⚡ Classic Minimal (Essential Mode)
+For those traveling at light speed. A clean, high-performance interface that gets straight to the point. No fluff, just pure data.
+
+---
+
+## 💎 ARTEFACTS & SECRETS
+
+Keep your eyes on the HUD. The universe is filled with:
+- **Ancient Satellites**: Housing prototype blueprints.
+- **Black Monoliths**: Containing encoded discounts and secret keys.
+- **Abandoned Ships**: Granting access to classified projects.
+
+Check your **Logbook** (Diario di Bordo) frequently to analyze collected telemetry.
+
+---
+
+## 🛸 LAUNCH SEQUENCE
+
+To initialize this system on your local node:
+
+1. **Clone the Uplink**:
+   ```bash
+   git clone https://github.com/francimolli/portfolio.git
+   ```
+
+2. **Refuel Dependencies**:
+   ```bash
+   pnpm install
+   ```
+
+3. **Ignition**:
+   ```bash
+   pnpm dev
+   ```
+
+4. **Access the Interface**:
+   Open `http://localhost:3000` to begin the onboarding sequence.
+
+---
+
+## 📡 DIRECT UPLINK
+
+Found a bug in the matrix? Want to collaborate on a new galaxy?
+- **Email**: [Available in the Contact section]
+- **Instagram**: [@francimolli](https://instagram.com/francimolli)
+- **GitHub**: [github.com/francimolli](https://github.com/francimolli)
+
+---
+
+## ⚖️ PROTOCOLS
+
+This project is an **Open Source System**. Feel free to explore, clone, and build upon it. Just remember to keep the entropy increasing!
+
+---
+
+*Safe travels, Commander.* 👨‍🚀✨

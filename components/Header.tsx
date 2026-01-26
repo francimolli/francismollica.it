@@ -10,6 +10,8 @@ import { useCityControls } from "@/components/CityControlsContext";
 import { useFloatingSection } from "@/components/FloatingSectionContext";
 import { translations } from "@/lib/translations";
 import posthog from 'posthog-js';
+import React from "react";
+import { HackerGliderAnimated } from "@/components/HackerGlider";
 
 // --- PROFESSIONAL SLIDER COMPONENT (Bigger & Better) ---
 const ControlSlider = ({
@@ -96,7 +98,8 @@ export function Header() {
         invertXAxis, setInvertXAxis,
         soundEnabled, setSoundEnabled,
         triggerEscape,
-        activateBoost, boostActive, boostCooldown
+        activateBoost, boostActive, boostCooldown,
+        playExplosionSound
     } = useCityControls();
 
     const { setExpandedSection } = useFloatingSection();
@@ -142,6 +145,7 @@ export function Header() {
         setTrafficLevel(randomTraffic);
         regenerateSimulation();
         triggerSystemReboot(); // Trigger blackout effect
+        playExplosionSound();
         setCooldown(145);
         setIsOpen(false);
         posthog.capture('simulation_regenerated', {
@@ -155,6 +159,7 @@ export function Header() {
         if (escapeCooldown > 0) return;
         const randomCoord = escapeCoordinates[Math.floor(Math.random() * escapeCoordinates.length)];
         triggerEscape({ x: randomCoord.x, y: randomCoord.y, z: randomCoord.z });
+        playExplosionSound();
         setEscapeCooldown(55);
     };
 
@@ -176,30 +181,24 @@ export function Header() {
             <div className="relative z-10 w-full h-24 max-w-[1920px] mx-auto px-6 pointer-events-auto flex items-center justify-between">
 
                 {/* 1. LEFT: IDENTITY (Fixed Width Desktop) */}
-                <div className="flex items-center gap-6 lg:w-[400px] shrink-0">
-                    <Link
-                        href="/"
-                        className="flex items-center gap-4 group"
-                        onClick={(e: React.MouseEvent<HTMLAnchorElement>) => { e.preventDefault(); resetView(); setExpandedSection('contact'); }}
-                    >
-                        {/* Logo Mark - Bigger
-                        <div className="relative w-12 h-12 flex items-center justify-center bg-cyan-950/30 border border-cyan-500/40 rounded-md group-hover:bg-cyan-900/30 group-hover:border-cyan-400 transition-all duration-300 shadow-[0_0_15px_rgba(6,182,212,0.1)]">
-                            <span className="font-mono font-bold text-2xl text-cyan-50 pb-1">^</span>
-                        </div> */}
-
-                        <div className="flex flex-col justify-center">
-                            <span className="font-bold text-base text-white tracking-tight group-hover:text-cyan-400 transition-colors">
-                                Francesco Mollica
+                <Link
+                    href="/"
+                    className="flex items-center gap-4 group lg:w-[400px] shrink-0"
+                    onClick={(e: React.MouseEvent<HTMLAnchorElement>) => { e.preventDefault(); resetView(); setExpandedSection('contact'); }}
+                >
+                    <HackerGliderAnimated className="w-10 h-10 shrink-0" />
+                    <div className="flex flex-col justify-center">
+                        <span className="font-bold text-base text-white tracking-tight group-hover:text-cyan-400 transition-colors">
+                            Francesco Mollica
+                        </span>
+                        <div className="flex items-center gap-2">
+                            <span className={`w-2 h-2 rounded-full ${isOnline ? 'bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,1)] animate-pulse' : 'bg-gray-600'}`} />
+                            <span className="text-[10px] font-mono uppercase tracking-widest text-gray-400">
+                                {isOnline ? t.header.status.awake : t.header.status.asleep}
                             </span>
-                            <div className="flex items-center gap-2">
-                                <span className={`w-2 h-2 rounded-full ${isOnline ? 'bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,1)] animate-pulse' : 'bg-gray-600'}`} />
-                                <span className="text-[10px] font-mono uppercase tracking-widest text-gray-400">
-                                    {isOnline ? t.header.status.awake : t.header.status.asleep}
-                                </span>
-                            </div>
                         </div>
-                    </Link>
-                </div>
+                    </div>
+                </Link>
 
                 {/* 2. CENTER: COMMAND CONSOLE (Desktop Only - Bigger) */}
                 <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
