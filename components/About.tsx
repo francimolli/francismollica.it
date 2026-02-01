@@ -155,7 +155,7 @@ export function About() {
                                     <SiReact />
                                 </div>
                                 <div className="font-mono text-xs text-cyan-500/70 text-center space-y-1">
-                                    <p className="animate-pulse mt-2 text-cyan-300">PROCESSING DATA...</p>
+                                    <p className="animate-pulse mt-2 text-cyan-300">{(t as any).contact.processingData}</p>
                                 </div>
                             </div>
                         </div>

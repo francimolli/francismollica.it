@@ -79,7 +79,7 @@ const VerticalDivider = () => (
 
 export function Header() {
     const [isOpen, setIsOpen] = useState(false);
-    const { language, setLanguage } = useLanguage();
+    const { language, setLanguage, setOnboardingComplete } = useLanguage();
     const t = translations[language];
 
     const {
@@ -175,10 +175,12 @@ export function Header() {
             <div className="relative z-10 w-full h-24 max-w-[1920px] mx-auto px-6 pointer-events-auto flex items-center justify-between">
 
                 {/* 1. LEFT: IDENTITY (Fixed Width Desktop) */}
-                <Link
-                    href="/"
-                    className="flex items-center gap-4 group lg:w-[400px] shrink-0"
-                    onClick={(e: React.MouseEvent<HTMLAnchorElement>) => { e.preventDefault(); resetView(); setExpandedSection('contact'); }}
+                <div
+                    className="flex items-center gap-4 group lg:w-[400px] shrink-0 cursor-pointer pointer-events-auto"
+                    onClick={() => {
+                        resetView();
+                        setTimeout(() => setOnboardingComplete(false), 500);
+                    }}
                 >
                     <HackerGliderAnimated className="w-10 h-10 shrink-0" />
                     <div className="flex flex-col justify-center">
@@ -192,7 +194,7 @@ export function Header() {
                             </span>
                         </div>
                     </div>
-                </Link>
+                </div>
 
                 {/* 2. CENTER: COMMAND CONSOLE (Desktop Only - Bigger) */}
                 <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">

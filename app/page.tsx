@@ -6,6 +6,7 @@ import SectionCard from "@/components/SectionCard";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Projects } from "@/components/Projects";
+import { Portfolio } from "@/components/Portfolio";
 import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
 import { Music } from "@/components/Music";
@@ -15,14 +16,31 @@ import { LogbookMenu } from "@/components/LogbookMenu";
 import { OnboardingTerminal } from "@/components/OnboardingTerminal";
 import { useLanguage } from "@/lib/language-context";
 import { translations } from "@/lib/translations";
+import { useFloatingSection } from "@/components/FloatingSectionContext";
+import { useEffect } from "react";
+
+function InitialSectionSetter({ section }: { section: string | null }) {
+  const { setExpandedSection } = useFloatingSection();
+
+  useEffect(() => {
+    if (section) {
+      // Small timeout to ensure the layout is ready
+      const timer = setTimeout(() => {
+        setExpandedSection(section);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [section, setExpandedSection]);
+
+  return null;
+}
 
 export default function Home() {
-  const [onboardingComplete, setOnboardingComplete] = useState(false);
-  const [mode, setMode] = useState<"immersive" | "classic">("immersive");
-  const { language } = useLanguage();
+  const { onboardingComplete, setOnboardingComplete, language } = useLanguage();
+  const [mode, setMode] = useState<"immersive" | "classic" | "technical" | "uplink" | "projects">("immersive");
   const t = translations[language];
 
-  const handleOnboardingComplete = (selectedMode: "immersive" | "classic") => {
+  const handleOnboardingComplete = (selectedMode: "immersive" | "classic" | "technical" | "uplink" | "projects") => {
     setMode(selectedMode);
     setOnboardingComplete(true);
   };
@@ -31,7 +49,11 @@ export default function Home() {
     return <OnboardingTerminal onComplete={handleOnboardingComplete} />;
   }
 
-  if (mode === "classic") {
+  // Determine final mode and initial section
+  const finalMode = (mode === "technical" || mode === "uplink" || mode === "projects") ? "immersive" : mode;
+  const initialSection = mode === "technical" ? "timeline" : mode === "uplink" ? "contact" : mode === "projects" ? "portfolio" : null;
+
+  if (finalMode === "classic") {
     return (
       <main className="min-h-screen bg-black text-white p-4 md:p-8 overflow-y-auto">
         <div className="max-w-4xl mx-auto space-y-12">
@@ -49,9 +71,14 @@ export default function Home() {
             <About />
           </section>
 
-          <section id="projects" className="pt-8 border-t border-gray-900">
-            <h2 className="text-2xl font-bold mb-6 text-cyan-500">Projects</h2>
+          <section id="timeline" className="pt-8 border-t border-gray-900">
+            <h2 className="text-2xl font-bold mb-6 text-cyan-500">{(t as any).projects.sectionTitle}</h2>
             <Projects />
+          </section>
+
+          <section id="portfolio" className="pt-8 border-t border-gray-900">
+            <h2 className="text-2xl font-bold mb-6 text-cyan-500">{(t as any).portfolio.sectionTitle}</h2>
+            <Portfolio />
           </section>
 
           <section id="music" className="pt-8 border-t border-gray-900">
@@ -71,6 +98,7 @@ export default function Home() {
   return (
     <CityControlsProvider>
       <FloatingSectionProvider>
+        <InitialSectionSetter section={initialSection} />
         <Layout>
           <Header />
           <LogbookMenu />
@@ -80,8 +108,11 @@ export default function Home() {
           <SectionCard id="about" title="Who am I?">
             <About />
           </SectionCard>
-          <SectionCard id="projects" title="Projects">
+          <SectionCard id="timeline" title={(t as any).projects.sectionTitle}>
             <Projects />
+          </SectionCard>
+          <SectionCard id="portfolio" title={(t as any).portfolio.sectionTitle}>
+            <Portfolio />
           </SectionCard>
           <SectionCard id="contact" title="Contact">
             <Contact />

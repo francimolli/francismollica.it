@@ -12,7 +12,8 @@ import { translations } from "@/lib/translations";
 const sections = [
     { id: "home", title: "nav.home", icon: Home, target: null }, // Home resets view
     { id: "about", title: "nav.about", icon: User, target: { x: 0, z: -200 } },
-    { id: "projects", title: "nav.projects", icon: Briefcase, target: { x: 200, z: 0 } },
+    { id: "timeline", title: "nav.timeline", icon: Briefcase, target: { x: 200, z: 0 } },
+    { id: "portfolio", title: "nav.portfolio", icon: Book, target: { x: -250, z: -150 } },
     { id: "contact", title: "nav.contact", icon: Mail, target: { x: -200, z: 0 } },
     { id: "music", title: "nav.music", icon: Headphones, target: { x: 0, z: 200 } },
     { id: "roadmap", title: "nav.roadmap", icon: Map, target: null },
@@ -272,6 +273,8 @@ export function LogbookMenu() {
                                                                                 onClick={(e) => {
                                                                                     e.stopPropagation();
                                                                                     navigator.clipboard.writeText(copyText);
+                                                                                    const contactSection = sections.find(s => s.id === 'contact');
+                                                                                    handleSectionClick('contact', contactSection?.target || null);
                                                                                 }}
                                                                                 className="ml-auto px-4 py-2 bg-yellow-500 hover:bg-yellow-400 text-black rounded font-bold text-xs uppercase tracking-widest flex items-center gap-2 transition-colors shadow-[0_0_15px_rgba(250,204,21,0.4)]"
                                                                             >

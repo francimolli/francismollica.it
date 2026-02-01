@@ -48,7 +48,7 @@ export function Projects() {
     }));
 
     return (
-        <section id="projects" className="relative w-full min-h-screen py-20 bg-black overflow-hidden font-mono text-cyan-500">
+        <section id="timeline" className="relative w-full min-h-screen py-20 bg-black overflow-hidden font-mono text-cyan-500">
 
             {/* --- BACKGROUND EFFECTS --- */}
             <div className="absolute inset-0 z-0 pointer-events-none opacity-15">
@@ -159,7 +159,7 @@ export function Projects() {
                                                     className={`group/btn relative inline-flex items-center gap-2 px-6 py-2 text-xs font-bold uppercase tracking-widest text-cyan-400 border border-cyan-800 hover:text-black hover:bg-cyan-400 hover:border-cyan-400 transition-all overflow-hidden ${project.demoUrl === "#" ? "opacity-50 cursor-not-allowed pointer-events-none" : ""}`}
                                                 >
                                                     <span className="relative z-10 flex items-center gap-2">
-                                                        DETAILS <ExternalLink className="w-3 h-3" />
+                                                        {t.projects.code} <ExternalLink className="w-3 h-3" />
                                                     </span>
                                                 </Link>
                                             </div>

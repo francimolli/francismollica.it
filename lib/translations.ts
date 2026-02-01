@@ -3,7 +3,8 @@ export const translations = {
         nav: {
             home: "Home",
             about: "Chi sono",
-            projects: "Area Lavoro",
+            timeline: "Percorso",
+            portfolio: "Progetti",
             contact: "Contatti",
             music: "Musica",
             roadmap: "Roadmap",
@@ -85,6 +86,126 @@ export const translations = {
                 }
             ],
         },
+        portfolio: {
+            sectionTitle: "Progetti Recenti",
+            sectionSubtitle: "Showcase",
+            viewProject: "VEDI PROGETTO",
+            viewCode: "CODICE SORGENTE",
+            items: [
+                {
+                    title: "Orbit Portfolio",
+                    description: "Un universo interattivo 3D costruito con Three.js e React. Esplorazione spaziale, artefatti nascosti e menu HUD futuristico.",
+                    tags: ["Three.js", "React", "Next.js", "Framer Motion"],
+                    image: "/projects/orbit.png",
+                    url: "https://github.com/francimolli",
+                    repo: "https://github.com/francimolli/"
+                },
+                {
+                    title: "Tre Gocce d'Oro - Valutazione",
+                    description: "Piattaforma Next.js per la valutazione sensoriale dei mieli. Progettata per l'Osservatorio Nazionale Miele con interfaccia tecnica real-time.",
+                    tags: ["Next.js", "TypeScript", "Tailwind CSS", "Shadcn UI"],
+                    image: "/projects/miele_valutazione.png",
+                    url: "https://giurie-valutazione.sistematregoccedoro.it/login",
+                    repo: "https://giurie-valutazione.sistematregoccedoro.it/login"
+                },
+                {
+                    title: "Tre Gocce d'Oro - Giuria",
+                    description: "Dashboard di visualizzazione real-time risultati e analisi statistica per il concorso nazionale Grandi Mieli d'Italia.",
+                    tags: ["Next.js", "Typescript", "Load Balancing", "Laravel", "Tailwind CSS", "Real-time Data"],
+                    image: "/projects/miele_risultati.png",
+                    url: "https://giurie-risultati.sistematregoccedoro.it/login",
+                    repo: "https://giurie-risultati.sistematregoccedoro.it/login"
+                },
+                {
+                    title: "Arbitraggio Bookmakers",
+                    description: "Algoritmo avanzato e dashboard per l'individuazione di opportunità di arbitraggio sportivo tra molteplici bookmakers.",
+                    tags: ["Next.js", "TypeScript", "Algorithms", "Real-time"],
+                    image: "/projects/arbitrage.png",
+                    url: "https://bookmakers-kill-9.vercel.app/login",
+                    repo: "https://bookmakers-kill-9.vercel.app/login"
+                },
+                {
+                    title: "Miss Convenienza 3D",
+                    description: "Applicazione PWA per la visualizzazione e il render grafico 3D di elettrodomestici in ambienti domestici personalizzabili.",
+                    tags: ["React", "Three.js", "PWA", "3D Rendering"],
+                    image: "/projects/miss_convenienza.png",
+                    url: "http://miss-convenienza-3d-pwa.vercel.app/",
+                    repo: "https://github.com/francimolli"
+                },
+                {
+                    title: "L'Hobbista Verbania",
+                    description: "Sito e catalogo digitale per lo storico negozio di hobbistica, belle arti e modellismo di Verbania.",
+                    tags: ["Next.js", "E-commerce", "Local Marketing", "SEO"],
+                    image: "/projects/hobbysta.jpeg",
+                    url: "https://www.hobbystaverbania.it/",
+                    repo: "https://www.hobbystaverbania.it/"
+                },
+                // {
+                //     title: "Cyber-Sentinel Dashboard",
+                //     description: "Piattaforma di monitoraggio per la sicurezza delle reti in tempo reale. Analisi pacchetti e rilevamento intrusioni con visualizzazione grafica avanzata.",
+                //     tags: ["Go", "TypeScript", "D3.js", "Cybersecurity"],
+                //     image: "/projects/cyber.png",
+                //     url: "#",
+                //     repo: "https://github.com/francimolli/cyber-sentinel"
+                // },
+                // {
+                //     title: "Smart Mirror OS",
+                //     description: "Sistema operativo custom per specchi intelligenti basato su Raspberry Pi. Integrazione domotica, widget meteo e controllo vocale.",
+                //     tags: ["Python", "Node.js", "Hardware", "Raspberry Pi"],
+                //     image: "/projects/mirror.png",
+                //     url: "#",
+                //     repo: "https://github.com/francimolli/smart-mirror"
+                // },
+                {
+                    title: "AI Neural Weaver (In Arrivo)",
+                    description: "Generatore di immagini basato su modelli di diffusione stabili con interfaccia web ottimizzata per la velocità e il controllo dei parametri.",
+                    tags: ["Python", "TensorFlow", "React", "FastAPI"],
+                    image: "/projects/ai.png",
+                    url: "https://github.com/francimolli",
+                    repo: "https://github.com/francimolli/neural-weaver"
+                },
+                {
+                    title: "Stissi Studio",
+                    description: "Sito web professionale con ottimizzazione SEO, hosting dedicato e sviluppo custom in HTML/SCSS/PHP.",
+                    tags: ["WORDPRESS", "HTML", "SCSS", "PHP", "SEO", "JS"],
+                    image: "/projects/stissi.jpg",
+                    url: "https://stissistudio.it/",
+                    repo: "https://stissistudio.it/"
+                },
+                {
+                    title: "Ovest Meeting Planner",
+                    description: "Piattaforma gestionale per l'organizzazione di eventi e meeting con integrazione di calendari e mappe interattive.",
+                    tags: ["PHP", "Management", "UX", "JAVASCRIPT", "SEO", "WORDPRESS"],
+                    image: "/projects/ovest.jpeg",
+                    url: "https://ovestmeetingplanner.com",
+                    repo: "https://ovestmeetingplanner.com"
+                },
+                {
+                    title: "Ristorante Italia",
+                    description: "Sito web elegante per lo storico ristorante dell'Isola dei Pescatori. Ottimizzazione SEO locale e gestione della presenza digitale.",
+                    tags: ["HTML", "SCSS", "JS", "SEO", "Local Marketing", "WORDPRESS"],
+                    image: "/projects/italia.jpg",
+                    url: "https://www.ristoranteitalia.eu/",
+                    repo: "https://www.ristoranteitalia.eu/"
+                },
+                {
+                    title: "56MX",
+                    description: "Portale dinamico per il mondo del motocross con shop.",
+                    tags: ["Next.js", "React", "E-commerce", "Motocross"],
+                    image: "/projects/56mx.png",
+                    url: "https://56mx.it/",
+                    repo: "https://56mx.it/"
+                },
+                {
+                    title: "Motorlaghi",
+                    description: "Showroom digitale e piattaforma di vendita per auto di lusso e prestazione.",
+                    tags: ["Next.js", "Tailwind CSS", "Automotive", "Showroom"],
+                    image: "/projects/motorlaghi.avif",
+                    url: "https://www.motorlaghi.com/",
+                    repo: "https://www.motorlaghi.com/"
+                }
+            ]
+        },
         contact: {
             labelCTA: "CONTATTAMI",
             sectionTitle: "Partendo da zero",
@@ -100,6 +221,8 @@ export const translations = {
             publicNodes: "Altri canali",
             followUpdates: "Instagram",
             location: "Vivo in Italia",
+            systemStatus: "SISTEMA ONLINE",
+            processingData: "ELABORAZIONE DATI...",
             //vedi se serve qui sotto
             name: "Nome",
             email: "Email",
@@ -166,6 +289,7 @@ export const translations = {
         },
         onboarding: {
             loadingText: "BENVENUTO IN ORBIT",
+            creator: "Un progetto ideato e creato da Francesco Mollica",
             immersive: {
                 title: "Esploratore e Avventuriero",
                 description: "Esperienza 3D interattiva. Scopri segreti, naviga l'universo e trova easter egg nascosti.",
@@ -177,7 +301,23 @@ export const translations = {
                 description: "Interfaccia pulita e veloce. Vai dritto al punto senza distrazioni.",
                 tag: "ESSENZIALE",
                 recommendation: "[ PIACEVOLE ALLA VISTA E ALLA FRUIZIONE ]"
-            }
+            },
+            technical: {
+                title: "Dossier Tecnico",
+                description: "Accesso diretto alla timeline professionale e alle competenze ingegneristiche.",
+                tag: "ESPERIENZA",
+            },
+            uplink: {
+                title: "Uplink Satellitare",
+                description: "Contatto diretto. Avvia una trasmissione dedicata per collaborazioni.",
+                tag: "CONTATTO",
+            },
+            projects: {
+                title: "Archivio Progetti",
+                description: "Esplora la galleria dei lavori selezionati e delle innovazioni realizzate.",
+                tag: "PORTFOLIO",
+            },
+            footer: "SISTEMA CREATO CON PASSIONE"
         },
         secrets: {
             alert: {
@@ -185,21 +325,21 @@ export const translations = {
             },
             satellite: {
                 title: "Satellite Antico",
-                description: "Progetto Prototipo Trovato",
-                message: "SEGNALE RILEVATO: BLUEPRINT PROTOTIPO TROVATO",
-                copyText: "Ho trovato il Satellite Antico nelle coordinate profonde. Codice: PROTO-SAT-23"
+                description: "Vantaggio: 30 min di Consulenza Gratuita. [Fai uno screenshot e invialo]",
+                message: "SEGNALE RILEVATO: CONSULENZA DISPONIBILE",
+                copyText: "Ho trovato il Satellite Antico. Richiedo Bonus Consulenza. Codice: SAT-ORBIT-77"
             },
             monolith: {
                 title: "Monolite Nero",
-                description: "Codice Sconto: PWA-ID-15",
-                message: "ARTEFATTO ANALIZZATO: SCONTO 15% [PWA-ID-15]",
-                copyText: "Ho analizzato il Monolite. Codice Sconto: PWA-ID-15"
+                description: "Vantaggio: Sconto 15% sul primo progetto. [Fai uno screenshot e invialo]",
+                message: "ARTEFATTO ANALIZZATO: SCONTO 15% ATTIVATO",
+                copyText: "Ho analizzato il Monolite. Richiedo Sconto 15%. Codice: MONO-ORBIT-15"
             },
             void_ship: {
                 title: "Nave Abbandonata",
-                description: "Accesso Progetto Segreto",
-                message: "LOG RECUPERATO: ACCESSO PROGETTO SEGRETO",
-                copyText: "Ho scoperto la Nave Abbandonata. Richiedo Accesso: VOID-SHIP-X"
+                description: "Vantaggio: Audit Tecnico Gratuito (SEO/Perf). [Fai uno screenshot e invialo]",
+                message: "LOG RECUPERATO: AUDIT TECNICO DISPONIBILE",
+                copyText: "Ho scoperto la Nave Abbandonata. Richiedo Audit Gratuito. Codice: VOID-ORBIT-X"
             }
         },
         roadmap: {
@@ -211,7 +351,8 @@ export const translations = {
         nav: {
             home: "Home",
             about: "About",
-            projects: "Work",
+            timeline: "Timeline",
+            portfolio: "Portfolio",
             contact: "Contact",
             music: "Music",
             roadmap: "Roadmap",
@@ -293,6 +434,110 @@ export const translations = {
                 }
             ],
         },
+        portfolio: {
+            sectionTitle: "Selected Projects",
+            sectionSubtitle: "Showcase",
+            viewProject: "VIEW PROJECT",
+            viewCode: "SOURCE CODE",
+            items: [
+                {
+                    title: "Orbit Portfolio",
+                    description: "An interactive 3D universe built with Three.js and React. Space exploration, hidden artifacts, and a futuristic HUD menu.",
+                    tags: ["Three.js", "React", "Next.js", "Framer Motion"],
+                    image: "/projects/orbit.png",
+                    url: "https://github.com/francimolli",
+                    repo: "https://github.com/francimolli/"
+                },
+                {
+                    title: "Tre Gocce d'Oro - Evaluation",
+                    description: "Next.js platform for honey sensory evaluation. Designed for the National Honey Observatory with a real-time technical interface.",
+                    tags: ["Next.js", "TypeScript", "Tailwind CSS", "Shadcn UI"],
+                    image: "/projects/miele_valutazione.png",
+                    url: "https://giurie-valutazione.sistematregoccedoro.it/login",
+                    repo: "https://giurie-valutazione.sistematregoccedoro.it/login"
+                },
+                {
+                    title: "Tre Gocce d'Oro - Giury",
+                    description: "Real-time results display dashboard and statistical analysis for the National 'Grandi Mieli d'Italia' competition.",
+                    tags: ["Next.js", "TypeScript", "Laravel", "Load Balancing", "Tailwind CSS", "Real-time Data"],
+                    image: "/projects/miele_risultati.png",
+                    url: "https://giurie-risultati.sistematregoccedoro.it/login",
+                    repo: "https://giurie-risultati.sistematregoccedoro.it/login"
+                },
+                {
+                    title: "Bookmakers Arbitrage",
+                    description: "Advanced algorithm and dashboard for identifying sporting arbitrage opportunities across multiple bookmakers.",
+                    tags: ["Next.js", "TypeScript", "Algorithms", "Real-time"],
+                    image: "/projects/arbitrage.png",
+                    url: "https://bookmakers-kill-9.vercel.app/login",
+                    repo: "https://bookmakers-kill-9.vercel.app/login"
+                },
+                {
+                    title: "Miss Convenienza 3D",
+                    description: "PWA application for 3D visualization and graphic rendering of household appliances in customizable home environments.",
+                    tags: ["React", "Three.js", "PWA", "3D Rendering"],
+                    image: "/projects/miss_convenienza.png",
+                    url: "http://miss-convenienza-3d-pwa.vercel.app/",
+                    repo: "https://github.com/francimolli"
+                },
+                {
+                    title: "L'Hobbista Verbania",
+                    description: "E-commerce website and digital catalog for the historic hobby, fine arts, and modeling shop in Verbania.",
+                    tags: ["WORDPRESS", "E-commerce", "Local Marketing", "SEO"],
+                    image: "/projects/hobbysta.jpeg",
+                    url: "https://www.hobbystaverbania.it/",
+                    repo: "https://www.hobbystaverbania.it/"
+                },
+                {
+                    title: "AI Neural Weaver (Coming Soon)",
+                    description: "Image generator based on stable diffusion models with a web interface optimized for speed and parameter control.",
+                    tags: ["Python", "TensorFlow", "React", "FastAPI"],
+                    image: "/projects/ai.png",
+                    url: "https://github.com/francimolli",
+                    repo: "https://github.com/francimolli/"
+                },
+                {
+                    title: "Stissi Studio",
+                    description: "Professional website with SEO optimization, dedicated hosting, and custom development in HTML/SCSS/PHP.",
+                    tags: ["HTML", "SCSS", "PHP", "SEO"],
+                    image: "/projects/stissi.jpg",
+                    url: "https://stissistudio.it/",
+                    repo: "https://stissistudio.it/"
+                },
+                {
+                    title: "Ovest Meeting Planner",
+                    description: "Management platform for event and meeting organization with calendar integration and interactive maps.",
+                    tags: ["PHP", "Management", "UX", "Web App"],
+                    image: "/projects/ovest.jpeg",
+                    url: "https://ovestmeetingplanner.com",
+                    repo: "https://ovestmeetingplanner.com"
+                },
+                {
+                    title: "Ristorante Italia",
+                    description: "Elegant website for the historic restaurant on Isola dei Pescatori. Local SEO optimization and digital presence management.",
+                    tags: ["HTML", "SCSS", "JS", "SEO", "Local Marketing", "WORDPRESS"],
+                    image: "/projects/italia.jpg",
+                    url: "https://www.ristoranteitalia.eu/",
+                    repo: "https://www.ristoranteitalia.eu/"
+                },
+                {
+                    title: "56MX",
+                    description: "Dynamic portal for the motocross world featuring shop.",
+                    tags: ["Next.js", "React", "E-commerce", "Motocross"],
+                    image: "/projects/56mx.png",
+                    url: "https://56mx.it/",
+                    repo: "https://56mx.it/"
+                },
+                {
+                    title: "Motorlaghi",
+                    description: "Digital showroom and sales platform for luxury and performance cars.",
+                    tags: ["Next.js", "Tailwind CSS", "Automotive", "Showroom"],
+                    image: "/projects/motorlaghi.avif",
+                    url: "https://www.motorlaghi.com/",
+                    repo: "https://www.motorlaghi.com/"
+                }
+            ]
+        },
         contact: {
             labelCTA: "CONTACT ME",
             sectionTitle: "Starting from zero",
@@ -315,6 +560,8 @@ export const translations = {
             placeholderName: "Your Name",
             placeholderEmail: "you@email.com",
             placeholderMessage: "Tell me about your project...",
+            systemStatus: "SYSTEM ONLINE",
+            processingData: "PROCESSING DATA...",
         },
         header: {
             status: {
@@ -372,6 +619,7 @@ export const translations = {
         },
         onboarding: {
             loadingText: "WELCOME TO ORBIT",
+            creator: "A project designed and created by Francesco Mollica",
             immersive: {
                 title: "Explorer and Adventurer",
                 description: "Interactive 3D experience. Discover secrets, navigate the universe, and find hidden easter eggs.",
@@ -383,7 +631,23 @@ export const translations = {
                 description: "Clean and fast interface. Get straight to the point without distractions.",
                 tag: "ESSENTIAL",
                 recommendation: "[ PLEASANT TO LOOK AT AND USE ]"
-            }
+            },
+            technical: {
+                title: "Technical Dossier",
+                description: "Direct access to the professional timeline and engineering skills.",
+                tag: "EXPERIENCE",
+            },
+            uplink: {
+                title: "Satellite Uplink",
+                description: "Direct contact. Start a dedicated transmission for collaborations.",
+                tag: "CONTACT",
+            },
+            projects: {
+                title: "Project Archive",
+                description: "Explore the gallery of selected works and realized innovations.",
+                tag: "PORTFOLIO",
+            },
+            footer: "SYSTEM CREATED WITH PASSION"
         },
         secrets: {
             alert: {
@@ -391,21 +655,21 @@ export const translations = {
             },
             satellite: {
                 title: "Ancient Satellite",
-                description: "Prototype Blueprint Found",
-                message: "SIGNAL DETECTED: PROTOTYPE BLUEPRINT FOUND",
-                copyText: "I found the Ancient Satellite in deep coordinates. Code: PROTO-SAT-23"
+                description: "Benefit: 30 min Free Consultancy. [Take a screenshot and send it]",
+                message: "SIGNAL DETECTED: CONSULTANCY AVAILABLE",
+                copyText: "I found the Ancient Satellite. Requesting Consultancy Bonus. Code: SAT-ORBIT-77"
             },
             monolith: {
                 title: "Black Monolith",
-                description: "Discount Code: PWA-ID-15",
-                message: "ARTIFACT ANALYZED: 15% DISCOUNT CODE [PWA-ID-15]",
-                copyText: "I analyzed the Monolith. Discount Code: PWA-ID-15"
+                description: "Benefit: 15% Discount on first project. [Take a screenshot and send it]",
+                message: "ARTIFACT ANALYZED: 15% DISCOUNT ACTIVATED",
+                copyText: "I analyzed the Monolith. Requesting 15% Discount. Code: MONO-ORBIT-15"
             },
             void_ship: {
                 title: "Abandoned Ship",
-                description: "Secret Project Access",
-                message: "LOG RECOVERED: SECRET PROJECT ACCESS GRANTED",
-                copyText: "I discovered the Abandoned Ship. Requesting Access: VOID-SHIP-X"
+                description: "Benefit: Free Technical Audit (SEO/Perf). [Take a screenshot and send it]",
+                message: "LOG RECOVERED: TECHNICAL AUDIT AVAILABLE",
+                copyText: "I discovered the Abandoned Ship. Requesting Free Audit. Code: VOID-ORBIT-X"
             }
         },
         roadmap: {

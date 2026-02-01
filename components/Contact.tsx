@@ -65,99 +65,102 @@ export function Contact() {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                <div className="max-w-3xl mx-auto bg-gray-900/20 border border-white/5 p-8 rounded-2xl backdrop-blur-md">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* --- LEFT COLUMN: DIRECT CONTACT --- */}
+                        <div className="space-y-6">
+                            <div className="text-xs text-cyan-600 uppercase tracking-widest font-bold mb-4 flex items-center gap-2">
+                                <Terminal className="w-4 h-4" />
+                                {t.contact.directUplink}
+                            </div>
 
-                    {/* --- LEFT COLUMN: DIRECT CONTACT (Primary) --- */}
-                    <div className="flex flex-col gap-4">
-                        <div className="text-xs text-cyan-600 uppercase tracking-widest font-bold mb-2 flex items-center gap-2">
-                            <Terminal className="w-4 h-4" />
-                            {t.contact.directUplink}
+                            <div className="space-y-4">
+                                {/* EMAIL */}
+                                <button
+                                    onClick={handleCopyEmail}
+                                    className="w-full group relative flex items-center justify-between p-4 bg-black/40 border border-cyan-900/30 hover:border-cyan-500 transition-all duration-300 rounded-xl overflow-hidden text-left"
+                                >
+                                    <div className="flex items-center gap-4 relative z-10">
+                                        <div className="p-2.5 bg-cyan-950/50 rounded-lg border border-cyan-800 text-cyan-400 group-hover:bg-cyan-500 group-hover:text-black transition-colors">
+                                            <Mail className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <span className="block text-[10px] text-gray-500 uppercase tracking-tighter mb-0.5">{t.contact.primaryEmail}</span>
+                                            <span className="block text-xs font-bold text-white tracking-wide">{contactData.fullEmail}</span>
+                                        </div>
+                                    </div>
+                                    <div className="relative z-10 text-gray-600 group-hover:text-cyan-400 transition-colors">
+                                        {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
+                                    </div>
+                                </button>
+
+                                {/* TELEGRAM */}
+                                <Link
+                                    href="https://t.me/franklyn"
+                                    target="_blank"
+                                    className="w-full group flex items-center justify-between p-4 bg-black/40 border border-white/5 hover:border-[#0088cc] transition-all duration-300 rounded-xl"
+                                >
+                                    <div className="flex items-center gap-4">
+                                        <div className="p-2.5 bg-gray-800 rounded-lg border border-gray-700 text-gray-400 group-hover:bg-[#0088cc] group-hover:text-white transition-colors">
+                                            <Send className="w-5 h-5 -rotate-45 translate-x-0.5" />
+                                        </div>
+                                        <div>
+                                            <span className="block text-[10px] text-gray-500 uppercase tracking-tighter mb-0.5">{t.contact.instantMessaging}</span>
+                                            <span className="block text-sm font-bold text-white tracking-widest">TELEGRAM</span>
+                                        </div>
+                                    </div>
+                                    <ExternalLink className="w-4 h-4 text-gray-700 group-hover:text-white transition-colors" />
+                                </Link>
+
+                                {/* PHONE */}
+                                <a
+                                    href={`tel:${contactData.dialPhone}`}
+                                    className="flex items-center gap-3 px-4 py-2 text-xs text-gray-500 hover:text-cyan-400 transition-colors group w-fit"
+                                >
+                                    <Phone className="w-4 h-4" />
+                                    <span className="font-mono">{contactData.fullPhone}</span>
+                                </a>
+                            </div>
                         </div>
 
-                        {/* EMAIL - BIG CARD (Copy functionality) */}
-                        <button
-                            onClick={handleCopyEmail}
-                            className="w-full group relative flex items-center justify-between p-6 bg-gradient-to-br from-gray-900 to-black border border-cyan-900/50 hover:border-cyan-500 transition-all duration-300 rounded-lg overflow-hidden text-left"
-                        >
-                            <div className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        {/* --- RIGHT COLUMN: SOCIALS & SYSTEM --- */}
+                        <div className="flex flex-col justify-between">
+                            <div className="space-y-6">
+                                <div className="text-xs text-cyan-600 uppercase tracking-widest font-bold mb-4 flex items-center gap-2">
+                                    <Wifi className="w-4 h-4" />
+                                    {t.contact.publicNodes}
+                                </div>
 
-                            <div className="flex items-center gap-4 relative z-10">
-                                <div className="p-3 bg-cyan-950/50 rounded-md border border-cyan-800 text-cyan-400 group-hover:text-white group-hover:bg-cyan-600 group-hover:border-cyan-400 transition-colors">
-                                    <Mail className="w-6 h-6" />
-                                </div>
-                                <div>
-                                    <span className="block text-xs text-gray-500 group-hover:text-cyan-400 mb-1">{t.contact.primaryEmail}</span>
-                                    <span className="block text-xs font-bold text-white tracking-wide break-all">
-                                        {contactData.fullEmail}
-                                    </span>
-                                </div>
+                                {/* GITHUB CARD */}
+                                <Link
+                                    href="https://github.com/francimolli"
+                                    target="_blank"
+                                    className="group flex items-center gap-4 p-5 bg-black/60 border border-white/5 hover:border-purple-500 hover:bg-purple-500/5 rounded-xl transition-all"
+                                >
+                                    <div className="p-3 bg-gray-900 rounded-lg border border-white/5 group-hover:border-purple-500 transition-all text-gray-500 group-hover:text-purple-400">
+                                        <Github className="w-8 h-8" />
+                                    </div>
+                                    <div>
+                                        <span className="block text-sm font-bold text-white tracking-widest group-hover:text-purple-300 font-mono">GITHUB</span>
+                                        <span className="text-[10px] text-gray-500">github.com/francimolli</span>
+                                    </div>
+                                </Link>
                             </div>
 
-                            <div className="relative z-10 text-gray-500 group-hover:text-cyan-400 transition-colors">
-                                {copied ? <Check className="w-5 h-5 text-green-500" /> : <Copy className="w-5 h-5" />}
-                            </div>
-                        </button>
-
-                        {/* TELEGRAM - FAST ACTION */}
-                        <Link
-                            href="https://t.me/franklyn"
-                            target="_blank"
-                            onClick={() => { }}
-                            className="w-full group flex items-center justify-between p-6 bg-gray-900/50 border border-gray-800 hover:border-[#0088cc] transition-all duration-300 rounded-lg"
-                        >
-                            <div className="flex items-center gap-4">
-                                <div className="p-3 bg-gray-800/50 rounded-md border border-gray-700 text-gray-400 group-hover:text-white group-hover:bg-[#0088cc] group-hover:border-[#0088cc] transition-colors">
-                                    <Send className="w-6 h-6 -rotate-45 translate-x-0.5" />
+                            {/* LOCATION INFO */}
+                            <div className="mt-12 flex items-center justify-end gap-3 text-[10px] text-gray-500 font-mono uppercase tracking-widest bg-black/40 px-4 py-2 rounded-full border border-white/5 w-fit ml-auto">
+                                <div className="flex gap-1.5 items-center">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
+                                    <span>{(t as any).contact.systemStatus}</span>
                                 </div>
-                                <div>
-                                    <span className="block text-xs text-gray-500 group-hover:text-[#0088cc] mb-1">{t.contact.instantMessaging}</span>
-                                    <span className="block text-lg font-bold text-white">Telegram</span>
+                                <span className="text-gray-700">|</span>
+                                <div className="flex items-center gap-1.5">
+                                    <MapPin className="w-3 h-3 text-cyan-500/50" />
+                                    {t.contact.location}
                                 </div>
                             </div>
-                            <ExternalLink className="w-5 h-5 text-gray-600 group-hover:text-white transition-colors" />
-                        </Link>
-
-                        {/* PHONE */}
-                        <a
-                            href={`tel:${contactData.dialPhone}`}
-                            onClick={() => { }}
-                            className="w-full flex items-center gap-4 p-4 rounded-lg border border-transparent hover:bg-white/5 transition-colors group"
-                        >
-                            <Phone className="w-5 h-5 text-gray-500 group-hover:text-green-400 transition-colors" />
-                            <span className="text-gray-400 group-hover:text-white font-mono text-sm">{contactData.fullPhone}</span>
-                        </a>
+                        </div>
                     </div>
-
-
-                    {/* --- RIGHT COLUMN: SOCIAL GRID & LOCATION --- */}
-                    <div className="flex flex-col h-full gap-4">
-                        <div className="text-xs text-cyan-600 uppercase tracking-widest font-bold mb-2 flex items-center gap-2">
-                            <Wifi className="w-4 h-4" />
-                            {t.contact.publicNodes}
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4 flex-1">
-
-                            {/* GITHUB */}
-                            <Link
-                                href="https://github.com/francimolli"
-                                target="_blank"
-                                onClick={() => { }}
-                                className="group flex flex-col items-center justify-center p-6 bg-gray-900/30 border border-gray-800 hover:border-purple-500 hover:bg-purple-500/10 rounded-lg transition-all"
-                            >
-                                <Github className="w-8 h-8 text-gray-400 group-hover:text-purple-400 mb-3 transition-colors" />
-                                <span className="text-sm font-medium text-gray-300 group-hover:text-white">GitHub</span>
-                            </Link>
-                        </div>
-
-                        {/* LOCATION BADGE */}
-                        <div className="mt-auto pt-6 flex items-center justify-center md:justify-end gap-2 text-xs text-gray-500 font-mono">
-                            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                            <MapPin className="w-3 h-3" />
-                            {t.contact.location}
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </section>

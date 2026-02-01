@@ -7,6 +7,8 @@ interface LanguageContextType {
     language: Language;
     setLanguage: (lang: Language) => void;
     t: Translation;
+    onboardingComplete: boolean;
+    setOnboardingComplete: (complete: boolean) => void;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -22,6 +24,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         }
     }, []);
 
+    const [onboardingComplete, setOnboardingComplete] = useState(false);
+
     const handleSetLanguage = (lang: Language) => {
         setLanguage(lang);
         localStorage.setItem("language", lang);
@@ -31,6 +35,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         language,
         setLanguage: handleSetLanguage,
         t: translations[language],
+        onboardingComplete,
+        setOnboardingComplete,
     };
 
     return (
