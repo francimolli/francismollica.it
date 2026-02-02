@@ -1,6 +1,6 @@
 "use client";
 
-
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useFloatingSection } from "@/components/FloatingSectionContext";
 import { ExternalLink, Music as MusicIcon, Disc, Mic2, Radio } from "lucide-react";
@@ -9,90 +9,99 @@ export function Music() {
     const { t } = useLanguage();
     const { setExpandedSection } = useFloatingSection();
 
-    const artists = [
-        {
-            name: "Caparezza",
-            genre: "Alternative Hip Hop / Rock",
-            description: "A visionary Italian rapper known for his intellectual lyrics, social commentary, and eclectic musical style. His concept albums are masterpieces of storytelling.",
-            icon: Mic2,
-            color: "text-yellow-400",
-            borderColor: "border-yellow-400/50",
-            bgHover: "hover:bg-yellow-400/10",
-            link: "https://www.caparezza.com/"
-        },
-        {
-            name: "Bassi Maestro",
-            genre: "Hip Hop / Lo-Fi",
-            description: "A legend of Italian Hip Hop. Rapper, DJ, and producer who has shaped the sound of the underground scene for decades. Now also exploring Lo-Fi beats as North of Loreto.",
-            icon: Disc,
-            color: "text-red-500",
-            borderColor: "border-red-500/50",
-            bgHover: "hover:bg-red-500/10",
-            link: "https://downwithbassi.com/"
-        },
-        {
-            name: "System of a Down",
-            genre: "Alternative Metal",
-            description: "The Armenian-American band that redefined metal. Known for their chaotic energy, political lyrics, and unique blend of heavy riffs with traditional melodies.",
-            icon: Radio,
-            color: "text-purple-500",
-            borderColor: "border-purple-500/50",
-            bgHover: "hover:bg-purple-500/10",
-            link: "https://systemofadown.com/"
-        }
+    // List of reusable colors for the palette
+    const palette = [
+        { text: "text-amber-400", border: "border-amber-400/50", glow: "shadow-[0_0_15px_rgba(251,191,36,0.4)]", bgHover: "hover:bg-amber-400/10", corner: "from-amber-500/20" },
+        { text: "text-red-500", border: "border-red-500/50", glow: "shadow-[0_0_15px_rgba(239,68,68,0.4)]", bgHover: "hover:bg-red-500/10", corner: "from-red-500/20" },
+        { text: "text-purple-500", border: "border-purple-500/50", glow: "shadow-[0_0_15px_rgba(168,85,247,0.4)]", bgHover: "hover:bg-purple-500/10", corner: "from-purple-500/20" },
+        { text: "text-cyan-400", border: "border-cyan-400/50", glow: "shadow-[0_0_15px_rgba(34,211,238,0.4)]", bgHover: "hover:bg-cyan-400/10", corner: "from-cyan-500/20" },
+        { text: "text-green-500", border: "border-green-500/50", glow: "shadow-[0_0_15px_rgba(34,197,94,0.4)]", bgHover: "hover:bg-green-500/10", corner: "from-green-500/20" },
+        { text: "text-blue-500", border: "border-blue-500/50", glow: "shadow-[0_0_15px_rgba(59,130,246,0.4)]", bgHover: "hover:bg-blue-500/10", corner: "from-blue-500/20" },
+        { text: "text-pink-500", border: "border-pink-500/50", glow: "shadow-[0_0_15px_rgba(236,72,153,0.4)]", bgHover: "hover:bg-pink-500/10", corner: "from-pink-500/20" },
     ];
+
+    const icons = [Mic2, Disc, Radio, MusicIcon];
+
+    interface DisplayArtist {
+        name: string;
+        genre: string;
+        description: string;
+        icon: typeof MusicIcon;
+        color: string;
+        borderColor: string;
+        glow: string;
+        bgHover: string;
+        corner: string;
+    }
+
+    const [randomizedArtists, setRandomizedArtists] = useState<DisplayArtist[]>([]);
+
+    useEffect(() => {
+        const musicItems = (t as any).music?.items || [];
+
+        // Shuffle and map with colors/icons
+        const shuffled = [...musicItems]
+            .sort(() => Math.random() - 0.5)
+            .map((item: any, index: number) => {
+                const style = palette[index % palette.length];
+                return {
+                    ...item,
+                    icon: icons[index % icons.length],
+                    color: style.text,
+                    borderColor: style.border,
+                    glow: style.glow,
+                    bgHover: style.bgHover,
+                    corner: style.corner
+                };
+            });
+
+        setRandomizedArtists(shuffled);
+    }, [t]);
 
     return (
         <div className="space-y-12 pb-12 pt-20">
             {/* Header Section */}
             <div className="relative border-l-2 border-cyan-500 pl-6 py-2">
                 <h3 className="text-2xl font-bold text-white uppercase tracking-widest mb-2">
-                    QUALCHE ARTISTA CHE ASCOLTO
+                    {(t as any).music?.sectionTitle || "QUALCHE ARTISTA CHE ASCOLTO"}
                 </h3>
             </div>
 
             {/* Artists Grid */}
-            <div className="grid gap-8 md:grid-cols-1">
-                {artists.map((artist, index) => (
-                    <a
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
+                {randomizedArtists.map((artist, index) => (
+                    <div
                         key={index}
-                        href={artist.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => { }}
-                        className={`group relative overflow-hidden rounded-lg bg-black/40 border ${artist.borderColor} p-6 transition-all duration-300 ${artist.bgHover} hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(0,0,0,0.5)]`}
+                        className={`group relative overflow-hidden rounded-lg bg-black/40 border ${artist.borderColor} p-6 transition-all duration-500 ${artist.bgHover} hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(0,0,0,0.5)] cursor-default`}
                     >
                         {/* Background Scanline Effect */}
-                        <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.2)_2px,rgba(0,0,0,0.2)_4px)] pointer-events-none" />
+                        <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.1)_2px,rgba(0,0,0,0.1)_4px)] pointer-events-none" />
 
-                        <div className="relative z-10 flex flex-col md:flex-row gap-6 items-start md:items-center">
-                            {/* Icon/Avatar Container */}
-                            <div className={`p-4 rounded-full bg-black/60 border border-white/10 ${artist.color} shadow-[0_0_15px_currentColor]`}>
-                                <artist.icon className="w-8 h-8" />
-                            </div>
-
-                            {/* Content */}
-                            <div className="flex-1 space-y-2">
-                                <div className="flex items-center justify-between">
-                                    <h4 className={`text-xl font-bold ${artist.color} uppercase tracking-wider`}>
+                        <div className="relative z-10 flex flex-col gap-4">
+                            {/* Icon & Title Row */}
+                            <div className="flex items-center gap-4">
+                                <div className={`p-3 rounded-xl bg-black/60 border border-white/10 ${artist.color} ${artist.glow}`}>
+                                    <artist.icon className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <h4 className={`text-lg font-bold ${artist.color} uppercase tracking-wider`}>
                                         {artist.name}
                                     </h4>
-                                    <ExternalLink className={`w-4 h-4 ${artist.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
+                                    <div className="inline-block px-1.5 py-0.5 text-[9px] font-mono bg-white/5 rounded border border-white/10 text-gray-400 uppercase tracking-tighter">
+                                        {artist.genre}
+                                    </div>
                                 </div>
-
-                                <div className="inline-block px-2 py-1 text-[10px] font-mono bg-white/5 rounded border border-white/10 text-gray-400 uppercase">
-                                    {artist.genre}
-                                </div>
-
-                                <p className="text-gray-300 text-sm leading-relaxed font-light">
-                                    {artist.description}
-                                </p>
                             </div>
+
+                            {/* Description */}
+                            <p className="text-gray-400 text-xs leading-relaxed font-light line-clamp-3 group-hover:line-clamp-none transition-all duration-500">
+                                {artist.description}
+                            </p>
                         </div>
 
-                        {/* Corner Accents */}
-                        <div className={`absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-${artist.color.split('-')[1]}-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity`} />
-                    </a>
+                        {/* Corner Accent Glow */}
+                        <div className={`absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl ${artist.corner} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                    </div>
                 ))}
             </div>
 

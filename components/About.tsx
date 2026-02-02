@@ -18,25 +18,34 @@ import {
     SiPostgresql,
     SiGit,
     SiDocker,
-    SiPandas
+    SiPandas,
+    SiFlutter,
+    SiNumpy,
+    SiGoogleanalytics,
+    SiGnubash,
+    SiCplusplus,
+    SiC
 } from "react-icons/si";
 import Link from "next/link";
 
-// --- Componente Typewriter ---
+// --- Componente Typewriter Migliorato ---
 function TypewriterText({
     text,
     delay = 0,
     speed = 30,
-    className = ""
+    className = "",
+    onComplete
 }: {
     text: string;
     delay?: number;
     speed?: number;
     className?: string;
+    onComplete?: () => void;
 }) {
     const [displayedText, setDisplayedText] = useState("");
     const [currentIndex, setCurrentIndex] = useState(0);
     const [started, setStarted] = useState(false);
+    const [isDone, setIsDone] = useState(false);
 
     useEffect(() => {
         const startTimer = setTimeout(() => {
@@ -54,10 +63,41 @@ function TypewriterText({
         return () => clearTimeout(timer);
     }, [currentIndex, text, started, speed]);
 
+    useEffect(() => {
+        if (started && currentIndex >= text.length && !isDone) {
+            setIsDone(true);
+            onComplete?.();
+        }
+    }, [currentIndex, text.length, started, isDone, onComplete]);
+
+    // Rende i link markdown [testo](url) cliccabili se l'animazione è finita
+    const renderContent = () => {
+        if (!isDone) return displayedText;
+
+        const parts = text.split(/(\[.*?\]\(.*?\))/g);
+        return parts.map((part, i) => {
+            const match = part.match(/\[(.*?)\]\((.*?)\)/);
+            if (match) {
+                return (
+                    <a
+                        key={i}
+                        href={match[2]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-cyan-400 hover:underline decoration-cyan-400/50 transition-all font-bold"
+                    >
+                        {match[1]}
+                    </a>
+                );
+            }
+            return part;
+        });
+    };
+
     return (
         <span className={className}>
-            {displayedText}
-            {started && currentIndex < text.length && (
+            {renderContent()}
+            {started && !isDone && (
                 <span className="animate-pulse text-cyan-400">_</span>
             )}
         </span>
@@ -88,6 +128,7 @@ export function About() {
         { name: "TypeScript", url: "https://www.typescriptlang.org/", icon: SiTypescript },
         { name: "React", url: "https://react.dev/", icon: SiReact },
         { name: "Next.js", url: "https://nextjs.org/", icon: SiNextdotjs },
+        { name: "Flutter", url: "https://flutter.dev/", icon: SiFlutter },
 
         // Styling & UI (Aggiunti)
         { name: "Tailwind CSS", url: "https://tailwindcss.com/", icon: SiTailwindcss },
@@ -98,13 +139,18 @@ export function About() {
         { name: "Pandas", url: "https://pandas.pydata.org/", icon: SiPandas }, // Essenziale per Data Analysis
         { name: "TensorFlow", url: "https://www.tensorflow.org/", icon: SiTensorflow },
         { name: "Keras", url: "https://keras.io/", icon: SiKeras },
+        { name: "NumPy", url: "https://numpy.org/", icon: SiNumpy },
 
         // Analytics & Business
+        { name: "Google Analytics", url: "https://analytics.google.com/", icon: SiGoogleanalytics },
         { name: "GTM", url: "https://marketingplatform.google.com/about/tag-manager/", icon: SiGoogletagmanager },
 
         // Backend & Engineering (Opzionali ma consigliati per il tuo profilo)
         { name: "Node.js", url: "https://nodejs.org/", icon: SiNodedotjs },
         { name: "PostgreSQL", url: "https://www.postgresql.org/", icon: SiPostgresql },
+        { name: "Bash", url: "https://www.gnu.org/software/bash/", icon: SiGnubash },
+        { name: "C++", url: "https://isocpp.org/", icon: SiCplusplus },
+        { name: "C", url: "https://en.wikipedia.org/wiki/C_(programming_language)", icon: SiC },
         { name: "Git", url: "https://git-scm.com/", icon: SiGit },
         { name: "Docker", url: "https://www.docker.com/", icon: SiDocker },
     ];
@@ -187,12 +233,12 @@ export function About() {
 
                         {/* Paragrafi Bio */}
                         <div className="space-y-6 text-cyan-100/70 leading-relaxed text-sm md:text-base">
-                            <p>
+                            <div className="min-h-[3em]">
                                 <TypewriterText text={t.about.bio1} speed={10} delay={3000} />
-                            </p>
-                            <p>
+                            </div>
+                            <div className="min-h-[3em]">
                                 <TypewriterText text={t.about.bio2} speed={10} delay={5000} />
-                            </p>
+                            </div>
                         </div>
 
                         {/* Sezione Skills */}

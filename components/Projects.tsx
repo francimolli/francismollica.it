@@ -34,7 +34,6 @@ export function Projects() {
     // Dati dei progetti
     // Dati dei progetti dinamici dalle traduzioni
     const projects = t.projects.items.map((item, index) => ({
-        id: `PRJ_0${index + 1}`,
         title: item.title,
         description: item.description,
         tags: item.tags || [],
@@ -114,7 +113,6 @@ export function Projects() {
                                                 <div className={`p-1.5 rounded bg-cyan-900/30 border border-cyan-800 text-cyan-400 group-hover:text-white group-hover:border-cyan-400 transition-colors`}>
                                                     <project.icon className="w-4 h-4" />
                                                 </div>
-                                                <span className="text-xs font-mono text-cyan-500/70 tracking-widest">{project.id}</span>
                                             </div>
                                             <div className="flex gap-1">
                                                 {[...Array(3)].map((_, i) => (
@@ -126,9 +124,9 @@ export function Projects() {
                                         {/* Card Body */}
                                         <div className="relative z-10 p-6 md:p-8">
                                             <div className="flex flex-col gap-1 mb-4">
-                                                <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest text-cyan-600">
+                                                <div className="flex flex-col md:flex-row md:items-center justify-between text-xs font-bold uppercase tracking-widest text-cyan-600 gap-2 md:gap-0">
                                                     <span>{project.company}</span>
-                                                    <span className="px-2 py-0.5 bg-cyan-950/30 rounded border border-cyan-900/50 text-cyan-500">{project.period}</span>
+                                                    <span className="w-fit px-2 py-0.5 bg-cyan-950/30 rounded border border-cyan-900/50 text-cyan-500">{project.period}</span>
                                                 </div>
                                                 <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-cyan-300 transition-colors group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]">
                                                     {project.title}

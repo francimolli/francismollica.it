@@ -21,8 +21,8 @@ export const translations = {
             title: "Chi sono",
             headline: "Appassionato di",
             headlineSuffix: "Software Engineer - Appassionato di Making (Hardware)",
-            bio1: "Design dall'architettura allo sviluppo software.",
-            bio2: "Il mio obiettivo è colmare il divario tra ingegneria e business development.",
+            bio1: "Design dall'architettura allo sviluppo software. Batterista e super appassionato di musica, faccio parte della Banda Musicale di Baveno.",
+            bio2: "Il mio obiettivo è colmare il divario tra ingegneria e business development. Organizzo jam session e sperimento nuove sonorità su [jamsession.me](https://jamsession.me).",
             techStack: "Stack Tecnologico",
             techStackLoading: "TECH STACK...",
             ageLabel: "anni",
@@ -46,7 +46,7 @@ export const translations = {
                 },
                 {
                     title: "Architect Engineer",
-                    company: "Libero Professionista",
+                    company: "Freelance",
                     period: "2025 - Presente",
                     description: "Sviluppo di web application scalabili (React/Next.js) e architetture robuste. Specializzato in Sistemi Operativi, Backend (C++, Go) e Cyber Security (Hacking/Pentesting). Esperto in infrastrutture di telecomunicazione e gestione della fornitura di servizi IT.",
                     tags: ["Go", "C++", "Cybersecurity", "Hacking", "Telecom", "TypeScript", "Next.js", "React.js", "Node.js", "Python", "Three.js", "Tailwind CSS", "ecc."],
@@ -222,7 +222,7 @@ export const translations = {
             followUpdates: "Instagram",
             location: "Vivo in Italia",
             systemStatus: "SISTEMA ONLINE",
-            processingData: "ELABORAZIONE DATI...",
+            processingData: "IN AGGIORNAMENTO",
             //vedi se serve qui sotto
             name: "Nome",
             email: "Email",
@@ -231,6 +231,51 @@ export const translations = {
             placeholderName: "Il tuo nome",
             placeholderEmail: "tua@email.com",
             placeholderMessage: "Parlami del tuo progetto...",
+        },
+        music: {
+            sectionTitle: "QUALCHE ARTISTA CHE ASCOLTO",
+            items: [
+                {
+                    name: "Caparezza",
+                    genre: "Alternative Hip Hop / Rock",
+                    description: "Un visionario della scena italiana, noto per i suoi testi colti, la critica sociale e uno stile eclettico che unisce rap, rock e teatro."
+                },
+                {
+                    name: "Bassi Maestro",
+                    genre: "Hip Hop / Lo-Fi",
+                    description: "Una leggenda del rap italiano. Rapper, DJ e produttore che ha plasmato il suono dell'underground per decenni, ora anche esploratore di sonorità Lo-Fi."
+                },
+                {
+                    name: "System of a Down",
+                    genre: "Alternative Metal",
+                    description: "La band che ha ridefinito il metal. Energia caotica, testi politici e un mix unico di riff pesanti e melodie tradizionali armene."
+                },
+                {
+                    name: "The Beatles",
+                    genre: "Rock / Pop",
+                    description: "I pionieri che hanno cambiato la storia della musica moderna, portando l'innovazione in studio e melodie immortali alla cultura pop."
+                },
+                {
+                    name: "Lucio Battisti",
+                    genre: "Pop / Rock Progressivo",
+                    description: "L'innovatore della canzone italiana. Ha saputo unire la melodia mediterranea alle sperimentazioni internazionali più avanzate."
+                },
+                {
+                    name: "Chet Baker",
+                    genre: "Jazz / Cool Jazz",
+                    description: "Il 'principe del cool jazz'. La sua tromba e la sua voce sono sinonimo di malinconia pura, eleganza e improvvisazione intima."
+                },
+                {
+                    name: "Ludwig van Beethoven",
+                    genre: "Musica Classica / Romantica",
+                    description: "La forza della natura fatta musica. Un ponte tra classicismo e romanticismo, capace di esprimere l'eroismo e la profondità umana."
+                },
+                {
+                    name: "Johann Sebastian Bach",
+                    genre: "Musica Barocca",
+                    description: "L'architetto del suono. La perfezione matematica delle sue fughe e la profondità spirituale delle sue composizioni restano insuperate."
+                }
+            ]
         },
         header: {
             status: {
@@ -382,8 +427,8 @@ export const translations = {
             title: "Profile",
             headline: "Passionate about",
             headlineSuffix: "Software Engineer - Passionate about Making (Hardware)",
-            bio1: "Design from architecture to software development.",
-            bio2: "My goal is to bridge the gap between engineering and business development.",
+            bio1: "Design from architecture to software development. Drummer and music enthusiast, member of the Baveno Musical Band.",
+            bio2: "My goal is to bridge the gap between engineering and business development. I organize jam sessions and experiment with new sounds at [jamsession.me](https://jamsession.me).",
             techStack: "Tech Stack",
             techStackLoading: "TECH STACK...",
             ageLabel: "years",
@@ -426,7 +471,7 @@ export const translations = {
                     company: "Altea Federation",
                     period: "Apr 2021 - Sep 2021",
                     description: "Developed automation scripts (PowerShell) to optimize workflows on Microsoft management infrastructures.",
-                    tags: ["PowerShell", "Bash", "Programming Automation", "Microsoft Ecosystem Enterprise"],
+                    tags: ["PowerShell", "Bash", "Programming Automation", "Microsoft Ecosystem Enterprise", "MySQL"],
                     url: "https://alteafederation.it/",
                 },
                 {
@@ -470,7 +515,7 @@ export const translations = {
                     repo: "https://giurie-valutazione.sistematregoccedoro.it/login"
                 },
                 {
-                    title: "Tre Gocce d'Oro - Giury",
+                    title: "Tre Gocce d'Oro - Jury",
                     description: "Real-time results display dashboard and statistical analysis for the National 'Grandi Mieli d'Italia' competition.",
                     tags: ["Next.js", "TypeScript", "Laravel", "Load Balancing", "Tailwind CSS", "Real-time Data"],
                     image: "/projects/miele_risultati.png",
@@ -574,7 +619,52 @@ export const translations = {
             placeholderEmail: "you@email.com",
             placeholderMessage: "Tell me about your project...",
             systemStatus: "SYSTEM ONLINE",
-            processingData: "PROCESSING DATA...",
+            processingData: "UPDATING...",
+        },
+        music: {
+            sectionTitle: "SOME ARTISTS I LISTEN TO",
+            items: [
+                {
+                    name: "Caparezza",
+                    genre: "Alternative Hip Hop / Rock",
+                    description: "A visionary of the Italian scene, known for his cultured lyrics, social criticism, and an eclectic style that blends rap, rock, and theater."
+                },
+                {
+                    name: "Bassi Maestro",
+                    genre: "Hip Hop / Lo-Fi",
+                    description: "A legend of Italian rap. Rapper, DJ, and producer who has shaped the underground sound for decades, now also an explorer of Lo-Fi sounds."
+                },
+                {
+                    name: "System of a Down",
+                    genre: "Alternative Metal",
+                    description: "The band that redefined metal. Chaotic energy, political lyrics, and a unique mix of heavy riffs and traditional Armenian melodies."
+                },
+                {
+                    name: "The Beatles",
+                    genre: "Rock / Pop",
+                    description: "The pioneers who changed the history of modern music, bringing studio innovation and immortal melodies to pop culture."
+                },
+                {
+                    name: "Lucio Battisti",
+                    genre: "Pop / Progressive Rock",
+                    description: "The innovator of the Italian song. He managed to combine Mediterranean melody with the most advanced international experimentations."
+                },
+                {
+                    name: "Chet Baker",
+                    genre: "Jazz / Cool Jazz",
+                    description: "The 'prince of cool jazz'. His trumpet and his voice are synonymous with pure melancholy, elegance, and intimate improvisation."
+                },
+                {
+                    name: "Ludwig van Beethoven",
+                    genre: "Classical / Romantic",
+                    description: "The force of nature turned into music. A bridge between classicism and romanticism, capable of expressing human heroism and depth."
+                },
+                {
+                    name: "Johann Sebastian Bach",
+                    genre: "Baroque",
+                    description: "The architect of sound. The mathematical perfection of his fugues and the spiritual depth of his compositions remain unsurpassed."
+                }
+            ]
         },
         header: {
             status: {
