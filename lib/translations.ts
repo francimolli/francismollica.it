@@ -259,13 +259,14 @@ export const translations = {
             missionTime: "Tempo Missione",
             systemStatus: "Sistema",
             statusNormal: "NORMALE",
-            statusRebooting: "RIAVVIO",
-            statusBlackout: "BLACKOUT",
+            statusExploring: "ESPLORANDO SPAZIO-TEMPO",
+            statusRebooting: "ANOMALIA RILEVATA",
+            statusBlackout: "SALTO QUANTICO",
             move: "MUOVI",
             lookFly: "GUARDA/VOLA",
             initializing: "CARICAMENTO SISTEMA A0BK4TTO-14AKQO10-00G1A4D9-H1JPKF IN CORSO...",
             spaceExploration: "Esplorazione Spaziale",
-            enjoyTheJourney: "La fuori c'è uno splendido panorama, godiamoci la veduta.",
+            enjoyTheJourney: "La fuori c'è uno splendido panorama, godiamoci la veduta. (PER TORNARE RAPIDAMENTE ALLA GALASSIA MADRE PREMI L'ICONA DEL WORMHOLE VIOLA)",
             tutorial: {
                 move: "USA I TASTI WASD OPPURE LE FRECCIE PER MUOVERTI",
                 dismiss: "PREMI SPAZIO PER CHIUDERE",
@@ -284,17 +285,29 @@ export const translations = {
             title: "Diario di Bordo",
             tab1: "Navigazione",
             tab2: "Artefatti",
+            tab3: "Legenda",
             copy: "CONTATTA LA CASA MADRE",
             copied: "COPIATO",
+            help: {
+                navTitle: "01. MANUALE DI VOLO",
+                navDesc: "Usa i portali colorati per il teletrasporto rapido. Controlli avanzati (Tempo, Sound, Config) sono situati nella Header (Desktop) o nel Menu laterale (Mobile).",
+                secretsTitle: "02. RILEVAZIONE SEGNALI",
+                secretsDesc: "Individua le anomalie visive nello spazio. Avvicinati a < 15 AU per decriptare i pacchetti dati.",
+                redeemTitle: "03. PROTOCOLLO RISCATTO",
+                redeemDesc: "Copia il codice univoco dell'artefatto e invialo via uplink per attivare i benefici nel mondo reale.",
+                controlsTitle: "04. UNITÀ DI COMANDO",
+                controlsDesc: "[WASD] Propulsori - [SPACE] Post-bruciatore - [CLICK] Analisi Waypoint.",
+                footer: "Inertial Navigation System v3.14 // SOLIS SECTOR // NO SIGNAL INTERFERENCE"
+            }
         },
         onboarding: {
-            loadingText: "BENVENUTO IN ORBIT",
+            loadingText: "BENVENUTO IN ORB",
             creator: "Un progetto ideato e creato da Francesco Mollica",
             immersive: {
                 title: "Esploratore e Avventuriero",
                 description: "Esperienza 3D interattiva. Scopri segreti, naviga l'universo e trova easter egg nascosti.",
                 tag: "GAMEPLAY",
-                recommendation: "[ DIVERTENTE MA PIù COMPLICATO ]"
+                recommendation: "[ DIVERTENTE MA PIÙ COMPLICATO ]"
             },
             classic: {
                 title: "Minimalista (vado di fretta)",
@@ -308,7 +321,7 @@ export const translations = {
                 tag: "ESPERIENZA",
             },
             uplink: {
-                title: "Uplink Satellitare",
+                title: "Esplora la mia galassia",
                 description: "Contatto diretto. Avvia una trasmissione dedicata per collaborazioni.",
                 tag: "CONTATTO",
             },
@@ -324,22 +337,22 @@ export const translations = {
                 wow: "Rilevazione avvenuta",
             },
             satellite: {
-                title: "Satellite Antico",
-                description: "Vantaggio: 30 min di Consulenza Gratuita. [Fai uno screenshot e invialo]",
-                message: "SEGNALE RILEVATO: CONSULENZA DISPONIBILE",
-                copyText: "Ho trovato il Satellite Antico. Richiedo Bonus Consulenza. Codice: SAT-ORBIT-77"
+                title: "Telescopio Kepler-186f",
+                description: "Vantaggio: Bonus 10% su Consulenza Tecnica. [Fai uno screenshot e invialo]",
+                message: "SEGNALE CRIPTATO: BONUS 10% RILEVATO",
+                copyText: "Ho trovato il Telescopio Kepler. Richiedo Bonus Consulenza. Codice: SAT-ORBIT-77"
             },
             monolith: {
-                title: "Monolite Nero",
+                title: "Gliese 436 b",
                 description: "Vantaggio: Sconto 15% sul primo progetto. [Fai uno screenshot e invialo]",
                 message: "ARTEFATTO ANALIZZATO: SCONTO 15% ATTIVATO",
-                copyText: "Ho analizzato il Monolite. Richiedo Sconto 15%. Codice: MONO-ORBIT-15"
+                copyText: "Ho analizzato Gliese 436 b. Richiedo Sconto 15%. Codice: MONO-ORBIT-15"
             },
             void_ship: {
-                title: "Nave Abbandonata",
+                title: "'Oumuamua",
                 description: "Vantaggio: Audit Tecnico Gratuito (SEO/Perf). [Fai uno screenshot e invialo]",
                 message: "LOG RECUPERATO: AUDIT TECNICO DISPONIBILE",
-                copyText: "Ho scoperto la Nave Abbandonata. Richiedo Audit Gratuito. Codice: VOID-ORBIT-X"
+                copyText: "Ho scoperto 'Oumuamua. Richiedo Audit Gratuito. Codice: VOID-ORBIT-X"
             }
         },
         roadmap: {
@@ -589,13 +602,14 @@ export const translations = {
             missionTime: "Mission Time",
             systemStatus: "System",
             statusNormal: "NORMAL",
-            statusRebooting: "REBOOTING",
-            statusBlackout: "BLACKOUT",
+            statusExploring: "EXPLORING SPACE-TIME",
+            statusRebooting: "ANOMALY DETECTED",
+            statusBlackout: "QUANTUM LEAP",
             move: "MOVE",
             lookFly: "LOOK/FLY",
             initializing: "SYSTEM LOADING A0BK4TTO-14AKQO10-00G1A4D9-H1JPKF IN PROGRESS...",
             spaceExploration: "Space Exploration",
-            enjoyTheJourney: "There's a beautiful view outside, let's enjoy it.",
+            enjoyTheJourney: "It's a beautiful view out there, let's enjoy it. (TO QUICKLY RETURN TO THE MOTHER GALAXY, PRESS THE VIOLET WORMHOLE ICON)",
             tutorial: {
                 move: "USE WASD OR ARROW KEYS TO MOVE",
                 dismiss: "PRESS SPACE TO DISMISS",
@@ -614,11 +628,23 @@ export const translations = {
             title: "Logbook",
             tab1: "Navigation",
             tab2: "Artifacts",
+            tab3: "Legend",
             copy: "CONTACT HEADQUARTERS",
             copied: "COPIED",
+            help: {
+                navTitle: "01. FLIGHT MANUAL",
+                navDesc: "Use colored portals for rapid teleportation. Advanced controls (Time, Sound, Config) are located in the Header (Desktop) or Side Menu (Mobile).",
+                secretsTitle: "02. SIGNAL DETECTION",
+                secretsDesc: "Locate visual anomalies in space. Approach within < 15 AU to decrypt data packets.",
+                redeemTitle: "03. REDEMPTION PROTOCOL",
+                redeemDesc: "Copy the unique artifact code and send it via uplink to activate real-world benefits.",
+                controlsTitle: "04. COMMAND UNIT",
+                controlsDesc: "[WASD] Thrusters - [SPACE] Afterburner - [CLICK] Waypoint Analysis.",
+                footer: "Inertial Navigation System v3.14 // SOLIS SECTOR // NO SIGNAL INTERFERENCE"
+            }
         },
         onboarding: {
-            loadingText: "WELCOME TO ORBIT",
+            loadingText: "WELCOME TO ORB",
             creator: "A project designed and created by Francesco Mollica",
             immersive: {
                 title: "Explorer and Adventurer",
@@ -638,7 +664,7 @@ export const translations = {
                 tag: "EXPERIENCE",
             },
             uplink: {
-                title: "Satellite Uplink",
+                title: "Explore my galaxy",
                 description: "Direct contact. Start a dedicated transmission for collaborations.",
                 tag: "CONTACT",
             },
@@ -654,22 +680,22 @@ export const translations = {
                 wow: "Detection Confirmed",
             },
             satellite: {
-                title: "Ancient Satellite",
-                description: "Benefit: 30 min Free Consultancy. [Take a screenshot and send it]",
-                message: "SIGNAL DETECTED: CONSULTANCY AVAILABLE",
-                copyText: "I found the Ancient Satellite. Requesting Consultancy Bonus. Code: SAT-ORBIT-77"
+                title: "Kepler-186f Telescope",
+                description: "Perk: 10% Bonus on Technical Consulting. [Take a screenshot and send it]",
+                message: "ENCRYPTED SIGNAL: 10% BONUS DETECTED",
+                copyText: "I found the Kepler Telescope. Requesting Consulting Bonus. Code: SAT-ORBIT-77"
             },
             monolith: {
-                title: "Black Monolith",
-                description: "Benefit: 15% Discount on first project. [Take a screenshot and send it]",
+                title: "Gliese 436 b",
+                description: "Perk: 15% Discount on first project. [Take a screenshot and send it]",
                 message: "ARTIFACT ANALYZED: 15% DISCOUNT ACTIVATED",
-                copyText: "I analyzed the Monolith. Requesting 15% Discount. Code: MONO-ORBIT-15"
+                copyText: "I analyzed Gliese 436 b. Requesting 15% Discount. Code: MONO-ORBIT-15"
             },
             void_ship: {
-                title: "Abandoned Ship",
-                description: "Benefit: Free Technical Audit (SEO/Perf). [Take a screenshot and send it]",
+                title: "'Oumuamua",
+                description: "Perk: Free Technical Audit (SEO/Perf). [Take a screenshot and send it]",
                 message: "LOG RECOVERED: TECHNICAL AUDIT AVAILABLE",
-                copyText: "I discovered the Abandoned Ship. Requesting Free Audit. Code: VOID-ORBIT-X"
+                copyText: "I discovered 'Oumuamua. Requesting Free Audit. Code: VOID-ORBIT-X"
             }
         },
         roadmap: {

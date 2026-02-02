@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
-import { RotateCcw, Settings2, SlidersHorizontal, RefreshCw, Rocket, Zap, Menu as MenuIcon } from "lucide-react";
+import { RotateCcw, Settings2, SlidersHorizontal, RefreshCw, Aperture, Zap, Menu as MenuIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useCityControls } from "@/components/CityControlsContext";
@@ -255,9 +255,9 @@ export function Header() {
                             onClick={handleEscape}
                             disabled={escapeCooldown > 0}
                             className={`w-9 h-9 flex items-center justify-center rounded-full transition-all border border-transparent ${escapeCooldown > 0 ? 'text-yellow-400 cursor-not-allowed opacity-50' : 'text-purple-400 hover:bg-purple-500/10 hover:border-purple-500/30 shadow-[0_0_0_rgba(0,0,0,0)] hover:shadow-[0_0_15px_rgba(168,85,247,0.4)]'}`}
-                            title="Escape Velocity"
+                            title="Wormhole Jump"
                         >
-                            {escapeCooldown > 0 ? <span className="text-[9px] font-mono">{escapeCooldown}</span> : <Rocket size={16} className="-rotate-45" />}
+                            {escapeCooldown > 0 ? <span className="text-[9px] font-mono">{escapeCooldown}</span> : <Aperture size={16} className="animate-[spin_4s_linear_infinite]" />}
                         </button>
 
                         {/* BOOST BUTTON (Green Lightning) */}
@@ -344,7 +344,7 @@ export function Header() {
                             {escapeCooldown > 0 ? (
                                 <span className="text-[10px] font-bold font-mono">{escapeCooldown}</span>
                             ) : (
-                                <Rocket size={18} className="-rotate-45" />
+                                <Aperture size={18} className="animate-[spin_4s_linear_infinite]" />
                             )}
                         </button>
 

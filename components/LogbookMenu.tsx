@@ -21,7 +21,7 @@ const sections = [
 
 export function LogbookMenu() {
     const [isOpen, setIsOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState<'navigation' | 'achievements'>('navigation');
+    const [activeTab, setActiveTab] = useState<'navigation' | 'achievements' | 'help'>('navigation');
     const { setExpandedSection } = useFloatingSection();
     const { flyTo, resetView, coordinates, unlockedSecrets } = useCityControls();
     const { language } = useLanguage();
@@ -33,9 +33,9 @@ export function LogbookMenu() {
     }, []);
 
     const secretsList = [
-        { id: 'satellite', title: 'Ancient Satellite', description: 'Prototype Blueprint Found', icon: '🛰️' },
-        { id: 'monolith', title: 'Black Monolith', description: 'Discount Code: MONO-10', icon: '🗿' },
-        { id: 'void_ship', title: 'Derelict Ship', description: 'Secret Project Access', icon: '🚀' },
+        { id: 'satellite', title: 'Kepler Telescope', description: 'Prototype Blueprint Found', icon: '🛰️' },
+        { id: 'monolith', title: 'Gliese 436 b', description: 'Discount Code: MONO-10', icon: '🗿' },
+        { id: 'void_ship', title: "'Oumuamua", description: 'Secret Project Access', icon: '🚀' },
     ];
 
     const handleSectionClick = (id: string, target: { x: number, z: number } | null) => {
@@ -68,20 +68,25 @@ export function LogbookMenu() {
                         e.stopPropagation();
                         setIsOpen(!isOpen);
                     }}
-                    className={`relative group p-4 rounded-full shadow-[0_0_30px_rgba(250,204,21,0.3)] border border-yellow-400/30 backdrop-blur-xl transition-all duration-300 cursor-pointer overflow-hidden ${isOpen ? "bg-red-500/20 text-red-400 border-red-500/50" : "bg-black/60 text-yellow-400 hover:bg-yellow-500/10 hover:border-yellow-400/80"
+                    className={`relative group flex items-center gap-3 px-6 py-4 rounded-full shadow-[0_0_30px_rgba(139,92,246,0.3)] border border-violet-400/30 backdrop-blur-xl transition-all duration-300 cursor-pointer overflow-hidden ${isOpen ? "bg-red-500/20 text-red-400 border-red-500/50" : "bg-black/60 text-violet-400 hover:bg-violet-500/10 hover:border-violet-400/80"
                         }`}
-                    whileHover={{ scale: 1.1 }}
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                 >
                     {/* Radar Ping Effect */}
                     {!isOpen && (
                         <>
-                            <span className="absolute inset-0 rounded-full border border-yellow-400/50 animate-ping opacity-20" />
-                            <span className="absolute inset-0 rounded-full border border-yellow-400/30 animate-[ping_3s_linear_infinite] opacity-10 delay-75" />
+                            <span className="absolute inset-0 rounded-full border border-violet-400/50 animate-ping opacity-20" />
+                            <span className="absolute inset-0 rounded-full border border-violet-400/30 animate-[ping_3s_linear_infinite] opacity-10 delay-75" />
                         </>
                     )}
 
-                    {isOpen ? <X size={24} /> : <Radio size={24} className={!isOpen ? "animate-pulse" : ""} />}
+                    {isOpen ? <X size={24} /> : (
+                        <>
+                            <Book size={24} className={!isOpen ? "animate-pulse" : ""} />
+                            <span className="text-sm font-bold tracking-[0.2em] font-mono">LOGBOOK</span>
+                        </>
+                    )}
                 </motion.button>
             </div>
 
@@ -110,22 +115,22 @@ export function LogbookMenu() {
                                 style={{ perspective: "1000px" }}
                             >
                                 {/* Panel Container */}
-                                <div className="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 border-2 border-yellow-500/50 rounded-2xl shadow-[0_0_60px_rgba(250,204,21,0.3)] flex flex-col h-[80vh] md:h-auto md:max-h-[85vh] pointer-events-auto overflow-hidden">
+                                <div className="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 border-2 border-violet-500/50 rounded-2xl shadow-[0_0_60px_rgba(139,92,246,0.3)] flex flex-col h-[80vh] md:h-auto md:max-h-[85vh] pointer-events-auto overflow-hidden">
                                     {/* Scanline Effect */}
-                                    <div className="absolute inset-0 bg-[linear-gradient(0deg,transparent_50%,rgba(250,204,21,0.03)_50%)] bg-[length:100%_4px] pointer-events-none animate-pulse" />
+                                    <div className="absolute inset-0 bg-[linear-gradient(0deg,transparent_50%,rgba(139,92,246,0.03)_50%)] bg-[length:100%_4px] pointer-events-none animate-pulse" />
 
                                     {/* Corner Accents */}
-                                    <div className="absolute top-0 left-0 w-16 h-16 border-t-4 border-l-4 border-yellow-400/70 rounded-tl-2xl" />
-                                    <div className="absolute top-0 right-0 w-16 h-16 border-t-4 border-r-4 border-yellow-400/70 rounded-tr-2xl" />
-                                    <div className="absolute bottom-0 left-0 w-16 h-16 border-b-4 border-l-4 border-yellow-400/70 rounded-bl-2xl" />
-                                    <div className="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4 border-yellow-400/70 rounded-br-2xl" />
+                                    <div className="absolute top-0 left-0 w-16 h-16 border-t-4 border-l-4 border-violet-400/70 rounded-tl-2xl" />
+                                    <div className="absolute top-0 right-0 w-16 h-16 border-t-4 border-r-4 border-violet-400/70 rounded-tr-2xl" />
+                                    <div className="absolute bottom-0 left-0 w-16 h-16 border-b-4 border-l-4 border-violet-400/70 rounded-bl-2xl" />
+                                    <div className="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4 border-violet-400/70 rounded-br-2xl" />
 
                                     {/* Header */}
-                                    <div className="relative border-b border-yellow-500/30 bg-black/50 px-6 py-4 shrink-0">
+                                    <div className="relative border-b border-violet-500/30 bg-black/50 px-6 py-4 shrink-0">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-3 h-3 rounded-full bg-yellow-400 animate-pulse shadow-[0_0_10px_rgba(250,204,21,1)]" />
-                                                <h2 className="text-xl md:text-2xl font-bold text-yellow-400 font-mono tracking-wider">
+                                                <div className="w-3 h-3 rounded-full bg-violet-400 animate-pulse shadow-[0_0_10px_rgba(139,92,246,1)]" />
+                                                <h2 className="text-xl md:text-2xl font-bold text-violet-400 font-mono tracking-wider">
                                                     {t.logbook.title}
                                                 </h2>
                                             </div>
@@ -153,20 +158,22 @@ export function LogbookMenu() {
                                             {/* TABS */}
                                             <div className="flex gap-2">
                                                 <button
-                                                    onClick={() => {
-                                                        setActiveTab('navigation');
-                                                    }}
-                                                    className={`px-4 py-1 rounded text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'navigation' ? 'bg-yellow-500 text-black' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
+                                                    onClick={() => setActiveTab('navigation')}
+                                                    className={`px-4 py-1 rounded text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'navigation' ? 'bg-violet-500 text-white shadow-[0_0_10px_rgba(139,92,246,0.5)]' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
                                                 >
                                                     {t.logbook.tab1}
                                                 </button>
                                                 <button
-                                                    onClick={() => {
-                                                        setActiveTab('achievements');
-                                                    }}
-                                                    className={`px-4 py-1 rounded text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'achievements' ? 'bg-yellow-500 text-black' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
+                                                    onClick={() => setActiveTab('achievements')}
+                                                    className={`px-4 py-1 rounded text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'achievements' ? 'bg-violet-500 text-white shadow-[0_0_10px_rgba(139,92,246,0.5)]' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
                                                 >
                                                     {t.logbook.tab2} [{unlockedSecrets.length}/{secretsList.length}]
+                                                </button>
+                                                <button
+                                                    onClick={() => setActiveTab('help')}
+                                                    className={`px-4 py-1 rounded text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'help' ? 'bg-amber-500 text-black shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
+                                                >
+                                                    {t.logbook.tab3}
                                                 </button>
                                             </div>
                                         </div>
@@ -191,11 +198,13 @@ export function LogbookMenu() {
                                                                 : section.title;
 
                                                             const colors = [
-                                                                { border: 'border-cyan-500/50', bg: 'bg-cyan-500/10', text: 'text-cyan-400', glow: 'shadow-[0_0_20px_rgba(6,182,212,0.3)]', line: 'bg-cyan-500' },
-                                                                { border: 'border-purple-500/50', bg: 'bg-purple-500/10', text: 'text-purple-400', glow: 'shadow-[0_0_20px_rgba(168,85,247,0.3)]', line: 'bg-purple-500' },
-                                                                { border: 'border-yellow-500/50', bg: 'bg-yellow-500/10', text: 'text-yellow-400', glow: 'shadow-[0_0_20px_rgba(250,204,21,0.3)]', line: 'bg-yellow-500' },
-                                                                { border: 'border-green-500/50', bg: 'bg-green-500/10', text: 'text-green-400', glow: 'shadow-[0_0_20px_rgba(34,197,94,0.3)]', line: 'bg-green-500' },
-                                                                { border: 'border-pink-500/50', bg: 'bg-pink-500/10', text: 'text-pink-400', glow: 'shadow-[0_0_20px_rgba(236,72,153,0.3)]', line: 'bg-pink-500' },
+                                                                { border: 'border-sky-400/50', bg: 'bg-sky-400/10', text: 'text-sky-300', glow: 'shadow-[0_0_20px_rgba(14,165,233,0.4)]', line: 'bg-sky-400' },
+                                                                { border: 'border-rose-400/50', bg: 'bg-rose-400/10', text: 'text-rose-300', glow: 'shadow-[0_0_20px_rgba(244,63,94,0.4)]', line: 'bg-rose-400' },
+                                                                { border: 'border-emerald-400/50', bg: 'bg-emerald-400/10', text: 'text-emerald-300', glow: 'shadow-[0_0_20px_rgba(16,185,129,0.4)]', line: 'bg-emerald-400' },
+                                                                { border: 'border-amber-400/50', bg: 'bg-amber-400/10', text: 'text-amber-300', glow: 'shadow-[0_0_20px_rgba(245,158,11,0.4)]', line: 'bg-amber-400' },
+                                                                { border: 'border-violet-400/50', bg: 'bg-violet-400/10', text: 'text-violet-300', glow: 'shadow-[0_0_20px_rgba(139,92,246,0.4)]', line: 'bg-violet-400' },
+                                                                { border: 'border-lime-400/50', bg: 'bg-lime-400/10', text: 'text-lime-300', glow: 'shadow-[0_0_20px_rgba(132,204,22,0.4)]', line: 'bg-lime-400' },
+                                                                { border: 'border-indigo-400/50', bg: 'bg-indigo-400/10', text: 'text-indigo-300', glow: 'shadow-[0_0_20px_rgba(99,102,241,0.4)]', line: 'bg-indigo-400' },
                                                             ];
                                                             const color = colors[index % colors.length];
 
@@ -233,7 +242,7 @@ export function LogbookMenu() {
                                                             );
                                                         })}
                                                     </motion.div>
-                                                ) : (
+                                                ) : activeTab === 'achievements' ? (
                                                     <motion.div
                                                         key="achievements"
                                                         initial={{ opacity: 0 }}
@@ -241,6 +250,7 @@ export function LogbookMenu() {
                                                         exit={{ opacity: 0 }}
                                                         className="space-y-4"
                                                     >
+                                                        {/* ... existing achievements code ... */}
                                                         {secretsList.map((secret) => {
                                                             const isUnlocked = unlockedSecrets.includes(secret.id);
                                                             const secretData = (t as any).secrets?.[secret.id];
@@ -252,7 +262,7 @@ export function LogbookMenu() {
                                                                 <div
                                                                     key={secret.id}
                                                                     className={`relative p-6 rounded-xl border-2 transition-all duration-300 ${isUnlocked
-                                                                        ? 'border-yellow-500/50 bg-yellow-500/10'
+                                                                        ? 'border-violet-500/50 bg-violet-500/10'
                                                                         : 'border-gray-800 bg-gray-900/50 opacity-50 grayscale'
                                                                         }`}
                                                                 >
@@ -261,7 +271,7 @@ export function LogbookMenu() {
                                                                             {isUnlocked ? secret.icon : '🔒'}
                                                                         </div>
                                                                         <div className="flex-1">
-                                                                            <h3 className={`text-lg font-bold font-mono uppercase tracking-wider ${isUnlocked ? 'text-yellow-400' : 'text-gray-500'}`}>
+                                                                            <h3 className={`text-lg font-bold font-mono uppercase tracking-wider ${isUnlocked ? 'text-violet-400' : 'text-gray-500'}`}>
                                                                                 {title}
                                                                             </h3>
                                                                             <p className="text-sm text-gray-400 font-mono mt-1">
@@ -276,7 +286,7 @@ export function LogbookMenu() {
                                                                                     const contactSection = sections.find(s => s.id === 'contact');
                                                                                     handleSectionClick('contact', contactSection?.target || null);
                                                                                 }}
-                                                                                className="ml-auto px-4 py-2 bg-yellow-500 hover:bg-yellow-400 text-black rounded font-bold text-xs uppercase tracking-widest flex items-center gap-2 transition-colors shadow-[0_0_15px_rgba(250,204,21,0.4)]"
+                                                                                className="ml-auto px-4 py-2 bg-violet-500 hover:bg-violet-400 text-white rounded font-bold text-xs uppercase tracking-widest flex items-center gap-2 transition-colors shadow-[0_0_15px_rgba(139,92,246,0.4)]"
                                                                             >
                                                                                 <Send size={16} /> {t.logbook.copy}
                                                                             </button>
@@ -286,16 +296,117 @@ export function LogbookMenu() {
                                                             );
                                                         })}
                                                     </motion.div>
+                                                ) : (
+                                                    <motion.div
+                                                        key="help"
+                                                        initial={{ opacity: 0, y: 10 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        exit={{ opacity: 0, y: -10 }}
+                                                        className="space-y-6 max-w-2xl mx-auto py-2"
+                                                    >
+                                                        {/* HEADER DECORATION */}
+                                                        <div className="flex items-center gap-4 mb-2">
+                                                            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
+                                                            <span className="text-[10px] font-mono text-amber-500/80 tracking-[0.5em] uppercase">Tactical System Override</span>
+                                                            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
+                                                        </div>
+
+                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                            {/* 01. NAVIGATION */}
+                                                            <div className="group relative p-5 rounded-2xl border border-sky-500/20 bg-sky-950/20 backdrop-blur-md hover:border-sky-400/50 transition-all duration-500 overflow-hidden">
+                                                                <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-30 transition-opacity">
+                                                                    <Map size={48} className="text-sky-400" />
+                                                                </div>
+                                                                <div className="relative z-10">
+                                                                    <div className="flex items-center gap-2 mb-3">
+                                                                        <div className="w-8 h-8 rounded-lg bg-sky-500/20 flex items-center justify-center text-sky-400 border border-sky-500/40">
+                                                                            <Map size={18} />
+                                                                        </div>
+                                                                        <h3 className="font-bold font-mono text-sky-300 tracking-tighter text-base">{t.logbook.help.navTitle}</h3>
+                                                                    </div>
+                                                                    <p className="text-xs text-sky-100/60 leading-relaxed font-mono pl-10 border-l border-sky-500/30">
+                                                                        {t.logbook.help.navDesc}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* 02. PROBES */}
+                                                            <div className="group relative p-5 rounded-2xl border border-violet-500/20 bg-violet-950/20 backdrop-blur-md hover:border-violet-400/50 transition-all duration-500 overflow-hidden">
+                                                                <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-30 transition-opacity">
+                                                                    <Radio size={48} className="text-violet-400" />
+                                                                </div>
+                                                                <div className="relative z-10">
+                                                                    <div className="flex items-center gap-2 mb-3">
+                                                                        <div className="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center text-violet-400 border border-violet-500/40">
+                                                                            <Radio size={18} />
+                                                                        </div>
+                                                                        <h3 className="font-bold font-mono text-violet-300 tracking-tighter text-base">{t.logbook.help.secretsTitle}</h3>
+                                                                    </div>
+                                                                    <p className="text-xs text-violet-100/60 leading-relaxed font-mono pl-10 border-l border-violet-500/30">
+                                                                        {t.logbook.help.secretsDesc}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* 03. REDEEM */}
+                                                            <div className="group relative p-5 rounded-2xl border border-amber-500/20 bg-amber-950/20 backdrop-blur-md hover:border-amber-400/50 transition-all duration-500 overflow-hidden">
+                                                                <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-30 transition-opacity">
+                                                                    <Copy size={48} className="text-amber-400" />
+                                                                </div>
+                                                                <div className="relative z-10">
+                                                                    <div className="flex items-center gap-2 mb-3">
+                                                                        <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400 border border-amber-500/40">
+                                                                            <Copy size={18} />
+                                                                        </div>
+                                                                        <h3 className="font-bold font-mono text-amber-300 tracking-tighter text-base">{t.logbook.help.redeemTitle}</h3>
+                                                                    </div>
+                                                                    <p className="text-xs text-amber-100/60 leading-relaxed font-mono pl-10 border-l border-amber-500/30">
+                                                                        {t.logbook.help.redeemDesc}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* 04. CONTROLS */}
+                                                            <div className="group relative p-5 rounded-2xl border border-emerald-500/20 bg-emerald-950/20 backdrop-blur-md hover:border-emerald-400/50 transition-all duration-500 overflow-hidden">
+                                                                <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-30 transition-opacity">
+                                                                    <Headphones size={48} className="text-emerald-400" />
+                                                                </div>
+                                                                <div className="relative z-10">
+                                                                    <div className="flex items-center gap-2 mb-3">
+                                                                        <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400 border border-emerald-500/40">
+                                                                            <Headphones size={18} />
+                                                                        </div>
+                                                                        <h3 className="font-bold font-mono text-emerald-300 tracking-tighter text-base">{t.logbook.help.controlsTitle}</h3>
+                                                                    </div>
+                                                                    <div className="text-xs font-mono text-emerald-100/80 bg-emerald-500/10 p-3 rounded-lg border border-emerald-500/20 leading-loose">
+                                                                        {t.logbook.help.controlsDesc.split(' - ').map((part, i) => (
+                                                                            <div key={i} className="flex justify-between items-center border-b border-emerald-500/10 last:border-0 py-0.5">
+                                                                                <span>{part.split(' ')[0]}</span>
+                                                                                <span className="text-emerald-400/70 text-[10px] uppercase font-bold tracking-widest">{part.split(' ').slice(1).join(' ')}</span>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="p-4 rounded-xl bg-black/60 border border-gray-800/50 text-center relative overflow-hidden group">
+                                                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-violet-500/5 to-transparent animate-pulse" />
+                                                            <span className="relative z-10 text-[10px] text-gray-500 font-mono tracking-[0.2em] uppercase">
+                                                                {t.logbook.help.footer}
+                                                            </span>
+                                                        </div>
+                                                    </motion.div>
                                                 )}
                                             </AnimatePresence>
                                         </div>
                                     </div>
 
                                     {/* Footer Status */}
-                                    <div className="border-t border-yellow-500/30 bg-black/50 px-6 py-3 shrink-0">
+                                    <div className="border-t border-violet-500/30 bg-black/50 px-6 py-3 shrink-0">
                                         <div className="flex items-center justify-between text-xs font-mono text-gray-500">
-                                            <span>GIT v2.3.1</span>
-                                            <span className="text-yellow-400">francismollica.it</span>
+                                            <span>GIT v3.1</span>
+                                            <span className="text-violet-400">francismollica.it</span>
                                         </div>
                                     </div>
                                 </div>

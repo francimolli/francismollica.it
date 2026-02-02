@@ -100,82 +100,7 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
                             transition={{ duration: 0.6, delay: 0.2 }}
                             className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 w-full"
                         >
-                            {/* 1. IMMERSIVE */}
-                            <button
-                                onClick={() => onComplete("immersive")}
-                                className={`${buttonBaseStyle} group border-cyan-700/50 hover:border-cyan-400 bg-black shadow-cyan-900/10 hover:shadow-cyan-400/20`}
-                            >
-                                <div className="absolute inset-0 z-0 overflow-hidden">
-                                    <img src="/images/banner.png" alt="" className="w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform duration-700" />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
-                                </div>
-                                <div className="relative z-10 flex flex-col h-full">
-                                    <div className="flex items-center justify-between mb-auto">
-                                        <div className="p-3 bg-cyan-900/40 rounded-lg border border-cyan-800 text-cyan-400">
-                                            <Telescope className="w-6 h-6" />
-                                        </div>
-                                        <span className="text-[10px] font-bold tracking-widest text-cyan-300 bg-cyan-950/50 px-3 py-1 rounded-full border border-cyan-700/50">
-                                            {t.onboarding.immersive.tag}
-                                        </span>
-                                    </div>
-                                    <div className="mt-12">
-                                        <h3 className="text-2xl font-bold text-white mb-3">{t.onboarding.immersive.title}</h3>
-                                        <p className="text-sm text-gray-400 leading-relaxed max-w-[90%]">{t.onboarding.immersive.description}</p>
-                                    </div>
-                                </div>
-                            </button>
-
-                            {/* 2. TECHNICAL */}
-                            <button
-                                onClick={() => onComplete("technical")}
-                                className={`${buttonBaseStyle} group border-purple-700/50 hover:border-purple-400 bg-black shadow-purple-900/10 hover:shadow-purple-400/20`}
-                            >
-                                <div className="absolute inset-0 z-0 overflow-hidden">
-                                    <img src="/images/onboarding/technical.png" alt="" className="w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-700" />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
-                                </div>
-                                <div className="relative z-10 flex flex-col h-full">
-                                    <div className="flex items-center justify-between mb-auto">
-                                        <div className="p-3 bg-purple-900/40 rounded-lg border border-purple-800 text-purple-400">
-                                            <Briefcase className="w-6 h-6" />
-                                        </div>
-                                        <span className="text-[10px] font-bold tracking-widest text-purple-300 bg-purple-950/50 px-3 py-1 rounded-full border border-purple-700/50">
-                                            {(t as any).onboarding.technical.tag}
-                                        </span>
-                                    </div>
-                                    <div className="mt-12">
-                                        <h3 className="text-2xl font-bold text-white mb-3">{(t as any).onboarding.technical.title}</h3>
-                                        <p className="text-sm text-gray-400 leading-relaxed max-w-[90%]">{(t as any).onboarding.technical.description}</p>
-                                    </div>
-                                </div>
-                            </button>
-
-                            {/* 3. UPLINK */}
-                            <button
-                                onClick={() => onComplete("uplink")}
-                                className={`${buttonBaseStyle} group border-green-700/50 hover:border-green-400 bg-black shadow-green-900/10 hover:shadow-green-400/20`}
-                            >
-                                <div className="absolute inset-0 z-0 overflow-hidden">
-                                    <img src="/images/onboarding/uplink.png" alt="" className="w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-700" />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
-                                </div>
-                                <div className="relative z-10 flex flex-col h-full">
-                                    <div className="flex items-center justify-between mb-auto">
-                                        <div className="p-3 bg-green-900/40 rounded-lg border border-green-800 text-green-400">
-                                            <Send className="w-6 h-6" />
-                                        </div>
-                                        <span className="text-[10px] font-bold tracking-widest text-green-300 bg-green-950/50 px-3 py-1 rounded-full border border-green-700/50">
-                                            {(t as any).onboarding.uplink.tag}
-                                        </span>
-                                    </div>
-                                    <div className="mt-12">
-                                        <h3 className="text-2xl font-bold text-white mb-3">{(t as any).onboarding.uplink.title}</h3>
-                                        <p className="text-sm text-gray-400 leading-relaxed max-w-[90%]">{(t as any).onboarding.uplink.description}</p>
-                                    </div>
-                                </div>
-                            </button>
-
-                            {/* 4. PROJECTS */}
+                            {/* 1. PROJECTS */}
                             <button
                                 onClick={() => onComplete("projects")}
                                 className={`${buttonBaseStyle} group border-blue-700/50 hover:border-blue-400 bg-black shadow-blue-900/10 hover:shadow-blue-400/20`}
@@ -196,6 +121,87 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
                                     <div className="mt-12">
                                         <h3 className="text-2xl font-bold text-white mb-3">{(t as any).onboarding.projects.title}</h3>
                                         <p className="text-sm text-gray-400 leading-relaxed max-w-[90%]">{(t as any).onboarding.projects.description}</p>
+                                    </div>
+                                </div>
+                            </button>
+
+                            {/* 2. TECHNICAL */}
+                            <button
+                                onClick={() => onComplete("technical")}
+                                className={`${buttonBaseStyle} group border-violet-700/50 hover:border-violet-400 bg-black shadow-violet-900/10 hover:shadow-violet-400/20`}
+                            >
+                                <div className="absolute inset-0 z-0 overflow-hidden">
+                                    <img src="/images/onboarding/technical.png" alt="" className="w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-700" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
+                                </div>
+                                <div className="relative z-10 flex flex-col h-full">
+                                    <div className="flex items-center justify-between mb-auto">
+                                        <div className="p-3 bg-violet-900/40 rounded-lg border border-violet-800 text-violet-400">
+                                            <Briefcase className="w-6 h-6" />
+                                        </div>
+                                        <span className="text-[10px] font-bold tracking-widest text-violet-300 bg-violet-950/50 px-3 py-1 rounded-full border border-violet-700/50">
+                                            {(t as any).onboarding.technical.tag}
+                                        </span>
+                                    </div>
+                                    <div className="mt-12">
+                                        <h3 className="text-2xl font-bold text-white mb-3">{(t as any).onboarding.technical.title}</h3>
+                                        <p className="text-sm text-gray-400 leading-relaxed max-w-[90%]">{(t as any).onboarding.technical.description}</p>
+                                    </div>
+                                </div>
+                            </button>
+
+                            {/* 3. IMMERSIVE */}
+                            <button
+                                onClick={() => onComplete("immersive")}
+                                className={`${buttonBaseStyle} group border-cyan-700/50 hover:border-violet-400 bg-black shadow-cyan-900/10 hover:shadow-violet-400/20`}
+                            >
+                                <div className="absolute inset-0 z-0 overflow-hidden">
+                                    <img src="/images/banner.png" alt="" className="w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform duration-700" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+                                </div>
+                                <div className="relative z-10 flex flex-col h-full">
+                                    <div className="flex items-center justify-between mb-auto">
+                                        <div className="flex gap-2">
+                                            <div className="p-3 bg-cyan-900/40 rounded-lg border border-cyan-800 text-cyan-400 group-hover:text-violet-400 group-hover:border-violet-400 transition-colors">
+                                                <Telescope className="w-6 h-6" />
+                                            </div>
+                                            <div className="p-3 bg-violet-900/40 rounded-lg border border-violet-800 text-violet-400 opacity-0 group-hover:opacity-100 transition-all transform scale-75 group-hover:scale-100 flex items-center gap-2">
+                                                <span className="text-[10px] font-bold uppercase tracking-tighter">START</span>
+                                                <div className="w-2 h-2 bg-violet-400 rounded-full animate-pulse" />
+                                            </div>
+                                        </div>
+                                        <span className="text-[10px] font-bold tracking-widest text-cyan-300 bg-cyan-950/50 px-3 py-1 rounded-full border border-cyan-700/50 group-hover:text-violet-300 group-hover:border-violet-700/50">
+                                            {t.onboarding.immersive.tag}
+                                        </span>
+                                    </div>
+                                    <div className="mt-12">
+                                        <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-violet-200 transition-colors">{t.onboarding.immersive.title}</h3>
+                                        <p className="text-sm text-gray-400 leading-relaxed max-w-[90%]">{t.onboarding.immersive.description}</p>
+                                    </div>
+                                </div>
+                            </button>
+
+                            {/* 4. UPLINK */}
+                            <button
+                                onClick={() => onComplete("uplink")}
+                                className={`${buttonBaseStyle} group border-green-700/50 hover:border-green-400 bg-black shadow-green-900/10 hover:shadow-green-400/20`}
+                            >
+                                <div className="absolute inset-0 z-0 overflow-hidden">
+                                    <img src="/images/onboarding/uplink.png" alt="" className="w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-700" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
+                                </div>
+                                <div className="relative z-10 flex flex-col h-full">
+                                    <div className="flex items-center justify-between mb-auto">
+                                        <div className="p-3 bg-green-900/40 rounded-lg border border-green-800 text-green-400">
+                                            <Send className="w-6 h-6" />
+                                        </div>
+                                        <span className="text-[10px] font-bold tracking-widest text-green-300 bg-green-950/50 px-3 py-1 rounded-full border border-green-700/50">
+                                            {(t as any).onboarding.uplink.tag}
+                                        </span>
+                                    </div>
+                                    <div className="mt-12">
+                                        <h3 className="text-2xl font-bold text-white mb-3">{(t as any).onboarding.uplink.title}</h3>
+                                        <p className="text-sm text-gray-400 leading-relaxed max-w-[90%]">{(t as any).onboarding.uplink.description}</p>
                                     </div>
                                 </div>
                             </button>

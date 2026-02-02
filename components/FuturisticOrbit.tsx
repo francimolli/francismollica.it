@@ -291,25 +291,25 @@ export function FuturisticOrbit() {
 
     // --- NAVIGATION POIs ---
     const pois = [
-        { id: 'home', label: 'F23A541289', pos: new THREE.Vector3(0, 0, 0), color: '#06b6d4' },
-        { id: 'nova', label: 'Excelsa', pos: new THREE.Vector3(-2500, 500, -2500), color: '#ffffff' },
-        { id: 'cyber', label: 'GOLV101100110', pos: new THREE.Vector3(1600, 400, -1600), color: '#4400ff' },
-        { id: 'magma', label: 'M4GUNA', pos: new THREE.Vector3(-1800, -600, 1000), color: '#ff0055' },
-        { id: 'toxic', label: 'stash', pos: new THREE.Vector3(800, 1200, 1800), color: '#00ffaa' },
+        { id: 'home', label: 'Sol (Home)', pos: new THREE.Vector3(0, 0, 0), color: '#06b6d4' },
+        { id: 'nova', label: 'Andromeda (M31)', pos: new THREE.Vector3(-2500, 500, -2500), color: '#ffffff' },
+        { id: 'cyber', label: 'HD 189733 b', pos: new THREE.Vector3(1600, 400, -1600), color: '#4400ff' },
+        { id: 'magma', label: '55 Cancri e', pos: new THREE.Vector3(-1800, -600, 1000), color: '#ff0055' },
+        { id: 'toxic', label: 'K2-18 b', pos: new THREE.Vector3(800, 1200, 1800), color: '#00ffaa' },
     ];
 
     // --- SECRETS (Gamification) ---
     // Randomize positions near planets (pushed out to avoid clipping)
     const secretPositions = useRef([
-        new THREE.Vector3(1600 + 200 + (Math.random() - 0.5) * 100, 400 + (Math.random() - 0.5) * 100, -1600 + (Math.random() - 0.5) * 100), // Near Cyber Prime
-        new THREE.Vector3(-1800 - 250 + (Math.random() - 0.5) * 100, -600 + (Math.random() - 0.5) * 100, 1000 + (Math.random() - 0.5) * 100), // Near Magma Giant
-        new THREE.Vector3(800 + 150 + (Math.random() - 0.5) * 100, 1200 + (Math.random() - 0.5) * 100, 1800 + (Math.random() - 0.5) * 100)   // Near Toxic Moon
+        new THREE.Vector3(1600 + 200 + (Math.random() - 0.5) * 100, 400 + (Math.random() - 0.5) * 100, -1600 + (Math.random() - 0.5) * 100), // Near HD 189733 b
+        new THREE.Vector3(-1800 - 250 + (Math.random() - 0.5) * 100, -600 + (Math.random() - 0.5) * 100, 1000 + (Math.random() - 0.5) * 100), // Near 55 Cancri e
+        new THREE.Vector3(800 + 150 + (Math.random() - 0.5) * 100, 1200 + (Math.random() - 0.5) * 100, 1800 + (Math.random() - 0.5) * 100)   // Near K2-18 b
     ]).current;
 
     const secrets = [
-        { id: 'satellite', label: 'ANCIENT SATELLITE', pos: secretPositions[0], threshold: 300, message: (t as any).secrets.satellite.message },
-        { id: 'monolith', label: 'BLACK MONOLITH', pos: secretPositions[1], threshold: 300, message: (t as any).secrets.monolith.message },
-        { id: 'void_ship', label: 'DERELICT SHIP', pos: secretPositions[2], threshold: 350, message: (t as any).secrets.void_ship.message }
+        { id: 'satellite', label: 'KEPLER TELESCOPE', pos: secretPositions[0], threshold: 300, message: (t as any).secrets.satellite.message },
+        { id: 'monolith', label: 'GLIESE 436 B', pos: secretPositions[1], threshold: 300, message: (t as any).secrets.monolith.message },
+        { id: 'void_ship', label: "'OUMUAMUA", pos: secretPositions[2], threshold: 350, message: (t as any).secrets.void_ship.message }
     ];
 
     const [toast, setToast] = useState<{ message: string, visible: boolean }>({ message: "", visible: false });
@@ -400,7 +400,7 @@ export function FuturisticOrbit() {
             stencil: false
         });
         renderer.setSize(container.clientWidth, container.clientHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
         container.appendChild(renderer.domElement);
 
@@ -715,7 +715,7 @@ export function FuturisticOrbit() {
         const reactiveDust = new THREE.Points(reactiveDustGeo, reactiveDustMat);
         scene.add(reactiveDust);
 
-        // --- NEW: DISTANT STELLAR SYSTEM "NOVA PRIME" ---
+        // --- NEW: DISTANT STELLAR SYSTEM "ANDROMEDA GALAXY (M31)" ---
         // A completely separate system far away to test scale and performance
         const novaSystemGroup = new THREE.Group();
         novaSystemGroup.position.set(-2500, 500, -2500); // Far away
@@ -770,7 +770,7 @@ export function FuturisticOrbit() {
         novaStar.add(novaGlow);
         novaSystemGroup.add(novaStar);
 
-        // 2. Orbiting Planets (Nova System)
+        // 2. Orbiting Planets (Andromeda System)
         const novaPlanets: THREE.Mesh[] = [];
         const novaPlanetConfigs = [
             { dist: 300, size: 20, color: 0xffaa00, speed: 0.02 },
@@ -812,7 +812,7 @@ export function FuturisticOrbit() {
             novaSystemGroup.add(line);
         });
 
-        // 3. Nova System Debris Field (Instanced)
+        // 3. Andromeda System Debris Field (Instanced)
         const novaDebrisCount = 1000;
         const novaDebrisGeo = new THREE.TetrahedronGeometry(2, 0);
         const novaDebrisMat = new THREE.MeshBasicMaterial({ color: 0x88ccff, transparent: true, opacity: 0.6 });
@@ -926,9 +926,9 @@ export function FuturisticOrbit() {
         // --- PLANET CREATION ---
         const planets: THREE.Mesh[] = [];
         const planetConfigs = [
-            { pos: new THREE.Vector3(1600, 400, -1600), size: 120, colorA: 0x4400ff, colorB: 0x00ffff, colorC: 0xffffff, seed: 1.0 }, // Cyber Prime
-            { pos: new THREE.Vector3(-1800, -600, 1000), size: 180, colorA: 0xff0055, colorB: 0xffaa00, colorC: 0xffddaa, seed: 2.0 }, // Magma Giant
-            { pos: new THREE.Vector3(800, 1200, 1800), size: 90, colorA: 0x00ffaa, colorB: 0x004433, colorC: 0xaaffff, seed: 3.0 }   // Toxic Moon
+            { pos: new THREE.Vector3(1600, 400, -1600), size: 120, colorA: 0x4400ff, colorB: 0x00ffff, colorC: 0xffffff, seed: 1.0 }, // HD 189733 b
+            { pos: new THREE.Vector3(-1800, -600, 1000), size: 180, colorA: 0xff0055, colorB: 0xffaa00, colorC: 0xffddaa, seed: 2.0 }, // 55 Cancri e
+            { pos: new THREE.Vector3(800, 1200, 1800), size: 90, colorA: 0x00ffaa, colorB: 0x004433, colorC: 0xaaffff, seed: 3.0 }   // K2-18 b
         ];
 
         const planetGeo = new THREE.SphereGeometry(1, 64, 64);
@@ -966,7 +966,7 @@ export function FuturisticOrbit() {
 
         // --- VISIBLE ARTIFACTS (3D Models) ---
 
-        // 1. ANCIENT SATELLITE (Near Cyber Prime)
+        // 1. KEPLER SPACE TELESCOPE (Near HD 189733 b)
         const visSatelliteGroup = new THREE.Group();
         visSatelliteGroup.position.copy(secretPositions[0]);
 
@@ -1008,7 +1008,7 @@ export function FuturisticOrbit() {
         scene.add(visSatelliteGroup);
 
 
-        // 2. BLACK MONOLITH (Near Magma Giant)
+        // 2. GLIESE 436 B (Near 55 Cancri e)
         const visMonolithGeo = new THREE.BoxGeometry(20, 60, 5);
         const visMonolithMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.1, metalness: 0.1 });
         const visMonolith = new THREE.Mesh(visMonolithGeo, visMonolithMat);
@@ -1027,7 +1027,7 @@ export function FuturisticOrbit() {
         scene.add(visMonolith);
 
 
-        // 3. DERELICT SHIP (Near Toxic Moon)
+        // 3. 'OUMUAMUA (Near K2-18 b)
         const visShipGroup = new THREE.Group();
         visShipGroup.position.copy(secretPositions[2]);
         visShipGroup.rotation.set(Math.random(), Math.random(), Math.random()); // Tumble
@@ -1153,9 +1153,9 @@ export function FuturisticOrbit() {
             }
 
             void main() {
-                // Slow moving noise
-                float n1 = snoise(vWorldPos * 0.002 + uTime * 0.05);
-                float n2 = snoise(vWorldPos * 0.005 - uTime * 0.02);
+                // Slow moving noise - Slightly simplified for performance
+                float n1 = snoise(vWorldPos * 0.002 + uTime * 0.04);
+                float n2 = snoise(vWorldPos * 0.005 - uTime * 0.015);
                 
                 float noise = n1 * 0.5 + n2 * 0.5;
                 
@@ -1163,8 +1163,8 @@ export function FuturisticOrbit() {
                 vec3 color = mix(uColor1, uColor2, n1 * 0.5 + 0.5);
                 color = mix(color, uColor3, n2 * 0.5 + 0.5);
                 
-                // Fade out based on noise (transparency)
-                float alpha = smoothstep(-0.2, 0.8, noise) * 0.4;
+                // Fade out based on noise (transparency) - Reduced density
+                float alpha = smoothstep(-0.3, 0.7, noise) * 0.35;
                 
                 gl_FragColor = vec4(color, alpha);
             }
@@ -1186,9 +1186,8 @@ export function FuturisticOrbit() {
             fog: false // Ignore scene fog so it doesn't turn black
         });
 
-        const nebulaGeo = new THREE.SphereGeometry(1200, 64, 64);
+        const nebulaGeo = new THREE.SphereGeometry(1200, 32, 32); // Reduced segments
         const nebulaMesh = new THREE.Mesh(nebulaGeo, nebulaMat);
-        nebulaMesh.frustumCulled = false; // Prevent disappearing when camera moves inside/outside bounds
         scene.add(nebulaMesh);
 
         // --- GIANT ORBITAL RINGS ---
@@ -1244,6 +1243,9 @@ export function FuturisticOrbit() {
 
         const clock = new THREE.Clock();
         let animationId: number;
+        let lastFrameTime = 0;
+        const fpsLimit = 1 / 45; // ~45 FPS Limit
+
         const moveRef = { x: 0, z: 0, y: 0, yaw: 0, pitch: 0 };
         const resetAnimation = { active: false, startTime: 0, startPos: new THREE.Vector3(), startTarget: new THREE.Vector3(), endPos: new THREE.Vector3(), lastTrigger: resetTrigger };
         const escapeAnimation = { active: false, startTime: 0, startPos: new THREE.Vector3(), startTarget: new THREE.Vector3(), targetPos: new THREE.Vector3(), approachPos: new THREE.Vector3(), reEntryColor: new THREE.Color(), lastTrigger: escapeTrigger };
@@ -1252,6 +1254,10 @@ export function FuturisticOrbit() {
             animationId = requestAnimationFrame(animate);
             const elapsed = clock.getElapsedTime();
             const delta = clock.getDelta();
+
+            // FPS Throttle
+            if (elapsed - lastFrameTime < fpsLimit) return;
+            lastFrameTime = elapsed;
             const { time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger } = stateRef.current;
 
             // Update Dust Twinkle
@@ -2097,8 +2103,12 @@ export function FuturisticOrbit() {
                 {/* Status Indicator */}
                 <div className="absolute top-32 left-8 hidden md:flex items-center gap-3 bg-black/40 backdrop-blur-sm p-3 rounded border border-cyan-900/30">
                     <div className={`w-2 h-2 rounded-full ${systemStatus === 'NORMAL' ? 'bg-green-500 animate-pulse' : 'bg-red-500 animate-ping'}`} />
-                    <span className={`text-xs font-mono tracking-widest ${systemStatus === 'NORMAL' ? 'text-cyan-400' : 'text-red-500'}`}>
-                        {t.hud.systemStatus}: {systemStatus}
+                    <span className={`text-xs font-mono tracking-widest ${systemStatus === 'NORMAL' ? (isEscaping ? 'text-amber-400' : 'text-cyan-400') : 'text-red-500'}`}>
+                        {t.hud.systemStatus}: {
+                            systemStatus === 'NORMAL'
+                                ? (isEscaping ? t.hud.statusExploring : t.hud.statusNormal)
+                                : (systemStatus === 'REBOOTING' ? t.hud.statusRebooting : t.hud.statusBlackout)
+                        }
                     </span>
                 </div>
 
@@ -2209,11 +2219,11 @@ export function FuturisticOrbit() {
                             transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
                             className="relative z-10 flex flex-col items-center gap-4 p-12 bg-black/30 rounded-xl border border-red-500/30 backdrop-blur-md"
                         >
-                            <div className="text-6xl md:text-9xl font-black text-red-500 tracking-tighter uppercase glitch-text" data-text="COLLISION">
-                                COLLISION
+                            <div className="text-6xl md:text-9xl font-black text-red-500 tracking-tighter uppercase glitch-text" data-text="ENTROPIA INTRUSA">
+                                ENTROPIA INTRUSA
                             </div>
                             <div className="text-2xl md:text-4xl font-mono font-bold text-red-400 tracking-[1em] uppercase animate-pulse">
-                                DETECTED
+                                RILEVATA
                             </div>
                         </motion.div>
 

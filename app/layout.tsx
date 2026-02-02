@@ -15,8 +15,8 @@ const lato = Lato({
 
 const siteConfig = {
   name: "Francesco Mollica",
-  title: "Francesco Mollica | Softare Engineer & Digital Architect",
-  description: "Portfolio of Francesco Mollica, a Full Stack Engineer and Architect specialized in high-performance web applications, Three.js, and complex digital solutions.",
+  title: "Francesco Mollica | Software Engineer & Digital Architect",
+  description: "Portfolio of Francesco Mollica, a Full Stack Engineer and Architect specialized in high-performance web applications, Three.js, and complex digital and automation solutions.",
   url: "https://francismollica.it", // Replace with your actual domain
   ogImage: "/og-image.png", // Make sure to create this image
   links: {
