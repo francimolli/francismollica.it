@@ -65,7 +65,7 @@ export function Contact() {
                     </p>
                 </div>
 
-                <div className="max-w-3xl mx-auto bg-gray-900/20 border border-white/5 p-8 rounded-2xl backdrop-blur-md">
+                <div className="max-w-3xl mx-auto bg-gray-900/20 border border-white/5 p-4 md:p-8 rounded-2xl backdrop-blur-md">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {/* --- LEFT COLUMN: DIRECT CONTACT --- */}
                         <div className="space-y-6">

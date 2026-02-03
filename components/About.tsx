@@ -156,7 +156,7 @@ export function About() {
     ];
 
     return (
-        <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-black text-white py-20">
+        <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-black text-white py-10 md:py-20">
 
             {/* Scanlines layer */}
             <div className="absolute inset-0 z-10 pointer-events-none opacity-20">
@@ -167,7 +167,7 @@ export function About() {
 
 
             {/* --- CONTENUTO PRINCIPALE --- */}
-            <div className="container relative z-20 px-6 md:px-8 max-w-6xl">
+            <div className="container relative z-20 px-4 md:px-8 max-w-6xl">
 
                 <div className="w-full border-b border-cyan-900/50 mb-12 pb-2 flex items-center justify-between text-xs font-mono text-cyan-600/60 uppercase tracking-widest">
                     <div className="flex gap-4">

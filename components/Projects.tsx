@@ -47,7 +47,7 @@ export function Projects() {
     }));
 
     return (
-        <section id="timeline" className="relative w-full min-h-screen py-20 bg-black overflow-hidden font-mono text-cyan-500">
+        <section id="timeline" className="relative w-full min-h-screen py-10 md:py-20 bg-black overflow-hidden font-mono text-cyan-500">
 
             {/* --- BACKGROUND EFFECTS --- */}
             <div className="absolute inset-0 z-0 pointer-events-none opacity-15">
@@ -55,7 +55,7 @@ export function Projects() {
             </div>
             <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_50%,rgba(6,182,212,0.05)_0%,rgba(0,0,0,1)_100%)]" />
 
-            <div className="container relative z-10 px-6 md:px-8 max-w-7xl mx-auto">
+            <div className="container relative z-10 px-4 md:px-8 max-w-7xl mx-auto">
 
                 {/* --- HEADER TERMINALE --- */}
                 <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 border-b border-cyan-900/50 pb-4 gap-4">
@@ -98,7 +98,7 @@ export function Projects() {
                                 <div className="hidden md:block flex-1" />
 
                                 {/* Project Card */}
-                                <div className="w-full md:w-[calc(50%-2rem)] pl-12 md:pl-0">
+                                <div className="w-full md:w-[calc(50%-2rem)] pl-7 md:pl-0">
                                     <div className="group relative bg-black/60 border border-cyan-900/60 hover:border-cyan-400/80 transition-all duration-500 rounded-sm overflow-hidden hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] hover:-translate-y-1">
 
                                         {/* Holographic Scan Effect */}

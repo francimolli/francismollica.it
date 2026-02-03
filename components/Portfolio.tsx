@@ -27,14 +27,14 @@ export function Portfolio() {
     const displayItems = shuffledItems.length > 0 ? shuffledItems : portfolio.items;
 
     return (
-        <section id="portfolio" className="relative w-full min-h-screen py-24 bg-black overflow-hidden font-mono text-cyan-500">
+        <section id="portfolio" className="relative w-full min-h-screen py-10 md:py-24 bg-black overflow-hidden font-mono text-cyan-500">
             {/* Background Effects */}
             <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(6,182,212,0.1)_0%,rgba(0,0,0,1)_100%)]" />
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.05)_1px,transparent_1px)] bg-[size:30px_30px]" />
             </div>
 
-            <div className="container relative z-10 px-6 md:px-8 max-w-7xl mx-auto">
+            <div className="container relative z-10 px-4 md:px-8 max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-16 border-l-4 border-cyan-500 pl-6 space-y-2">
                     <span className="text-xs uppercase tracking-[0.5em] text-cyan-600 font-bold">{portfolio.sectionSubtitle}</span>
@@ -81,7 +81,7 @@ export function Portfolio() {
                                 </div>
 
                                 {/* Content */}
-                                <div className="p-8 flex-1 flex flex-col">
+                                <div className="p-4 md:p-8 flex-1 flex flex-col">
                                     <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">
                                         {project.title}
                                     </h3>
