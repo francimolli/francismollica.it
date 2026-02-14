@@ -173,28 +173,12 @@ export const translations = {
                     repo: "https://stissistudio.it/"
                 },
                 {
-                    title: "Ovest Meeting Planner",
-                    description: "Piattaforma gestionale per l'organizzazione di eventi e meeting con integrazione di calendari e mappe interattive.",
-                    tags: ["PHP", "Management", "UX", "JAVASCRIPT", "SEO", "WORDPRESS"],
-                    image: "/projects/ovest.jpeg",
-                    url: "https://ovestmeetingplanner.com",
-                    repo: "https://ovestmeetingplanner.com"
-                },
-                {
                     title: "Ristorante Italia",
                     description: "Sito web elegante per lo storico ristorante dell'Isola dei Pescatori. Ottimizzazione SEO locale e gestione della presenza digitale.",
                     tags: ["HTML", "SCSS", "JS", "SEO", "Local Marketing", "WORDPRESS"],
                     image: "/projects/italia.jpg",
                     url: "https://www.ristoranteitalia.eu/",
                     repo: "https://www.ristoranteitalia.eu/"
-                },
-                {
-                    title: "56MX",
-                    description: "Portale dinamico per il mondo del motocross con shop.",
-                    tags: ["Next.js", "React", "E-commerce", "Motocross"],
-                    image: "/projects/56mx.png",
-                    url: "https://56mx.it/",
-                    repo: "https://56mx.it/"
                 },
                 {
                     title: "Motorlaghi",
@@ -563,28 +547,12 @@ export const translations = {
                     repo: "https://stissistudio.it/"
                 },
                 {
-                    title: "Ovest Meeting Planner",
-                    description: "Management platform for event and meeting organization with calendar integration and interactive maps.",
-                    tags: ["PHP", "Management", "UX", "Web App"],
-                    image: "/projects/ovest.jpeg",
-                    url: "https://ovestmeetingplanner.com",
-                    repo: "https://ovestmeetingplanner.com"
-                },
-                {
                     title: "Ristorante Italia",
                     description: "Elegant website for the historic restaurant on Isola dei Pescatori. Local SEO optimization and digital presence management.",
                     tags: ["HTML", "SCSS", "JS", "SEO", "Local Marketing", "WORDPRESS"],
                     image: "/projects/italia.jpg",
                     url: "https://www.ristoranteitalia.eu/",
                     repo: "https://www.ristoranteitalia.eu/"
-                },
-                {
-                    title: "56MX",
-                    description: "Dynamic portal for the motocross world featuring shop.",
-                    tags: ["Next.js", "React", "E-commerce", "Motocross"],
-                    image: "/projects/56mx.png",
-                    url: "https://56mx.it/",
-                    repo: "https://56mx.it/"
                 },
                 {
                     title: "Motorlaghi",
