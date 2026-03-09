@@ -338,7 +338,7 @@ export function FuturisticOrbit() {
     }, []);
 
     // --- SESSION TIMER ---
-    const [sessionDuration, setSessionDuration] = useState("00:00:00");
+    // const [sessionDuration, setSessionDuration] = useState("00:00:00");
     const [missionClock, setMissionClock] = useState<number | null>(null);
 
     useEffect(() => {
@@ -354,11 +354,11 @@ export function FuturisticOrbit() {
             const now = Date.now();
             setMissionClock(now);
 
-            const diff = now - start;
-            const h = Math.floor(diff / 3600000);
-            const m = Math.floor((diff % 3600000) / 60000);
-            const s = Math.floor((diff % 60000) / 1000);
-            setSessionDuration(`${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`);
+            // const diff = now - start;
+            // const h = Math.floor(diff / 3600000);
+            // const m = Math.floor((diff % 3600000) / 60000);
+            // const s = Math.floor((diff % 60000) / 1000);
+            // setSessionDuration(`${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`);
         }, 1000);
         return () => clearInterval(timer);
     }, []);
