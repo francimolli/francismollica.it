@@ -89,6 +89,8 @@ Found a bug in the matrix? Want to collaborate on a new galaxy?
 ## ⚖️ PROTOCOLS
 
 CC BY-NC 4.0 License
+
+
 This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.
 
 In summary, you are free to:
@@ -105,6 +107,7 @@ NonCommercial: You may not use the material for commercial purposes.
 
 
 Licenza CC BY-NC 4.0
+
 
 Quest'opera è distribuita con Licenza Creative Commons Attribuzione - Non commerciale 4.0 Internazionale.
 
