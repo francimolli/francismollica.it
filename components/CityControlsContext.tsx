@@ -71,13 +71,14 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
     const [boostCooldown, setBoostCooldown] = useState(0);
 
     // SOUND SYSTEM
-    const [soundEnabled, setSoundEnabledState] = useState(() => {
-        if (typeof window !== 'undefined') {
-            const stored = localStorage.getItem('orbit_sound_enabled');
-            return stored ? stored === 'true' : false;
+    const [soundEnabled, setSoundEnabledState] = useState(false);
+
+    useEffect(() => {
+        const stored = localStorage.getItem('orbit_sound_enabled');
+        if (stored) {
+            setSoundEnabledState(stored === 'true');
         }
-        return false;
-    });
+    }, []);
 
     const [unlockVisualTrigger, setUnlockVisualTrigger] = useState(0);
 
@@ -89,19 +90,18 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
     };
 
     // GAMIFICATION: UNLOCKED SECRETS
-    const [unlockedSecrets, setUnlockedSecrets] = useState<string[]>(() => {
-        if (typeof window !== 'undefined') {
-            const stored = localStorage.getItem('orbit_unlocked_secrets');
-            if (stored) {
-                try {
-                    return JSON.parse(stored);
-                } catch {
-                    return [];
-                }
+    const [unlockedSecrets, setUnlockedSecrets] = useState<string[]>([]);
+
+    useEffect(() => {
+        const stored = localStorage.getItem('orbit_unlocked_secrets');
+        if (stored) {
+            try {
+                setUnlockedSecrets(JSON.parse(stored));
+            } catch {
+                setUnlockedSecrets([]);
             }
         }
-        return [];
-    });
+    }, []);
 
     // Ambient Music (Procedural Synth Pad)
     useEffect(() => {

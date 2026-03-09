@@ -339,15 +339,21 @@ export function FuturisticOrbit() {
 
     // --- SESSION TIMER ---
     const [sessionDuration, setSessionDuration] = useState("00:00:00");
+    const [missionClock, setMissionClock] = useState<number | null>(null);
+
     useEffect(() => {
-        const cookieName = "galactic_session_start";
-        let start = Date.now();
-        const match = document.cookie.match(new RegExp('(^| )' + cookieName + '=([^;]+)'));
-        if (match) start = parseInt(match[2]);
-        else document.cookie = `${cookieName}=${start}; path=/`;
+        // const cookieName = "galactic_session_start";
+        // let start = Date.now();
+        // const match = document.cookie.match(new RegExp('(^| )' + cookieName + '=([^;]+)'));
+        // if (match) start = parseInt(match[2]);
+        // else document.cookie = `${cookieName}=${start}; path=/`;
+        const start = Date.now();
+        setMissionClock(start);
 
         const timer = setInterval(() => {
             const now = Date.now();
+            setMissionClock(now);
+
             const diff = now - start;
             const h = Math.floor(diff / 3600000);
             const m = Math.floor((diff % 3600000) / 60000);
@@ -2096,7 +2102,7 @@ export function FuturisticOrbit() {
                 <div className="absolute top-32 right-8 flex flex-col items-end gap-1 pointer-events-none z-20">
                     <div className="text-[10px] text-cyan-600 font-mono tracking-widest uppercase">{t.hud.missionTime}</div>
                     <div className="text-xl font-bold text-cyan-400 font-mono tracking-widest drop-shadow-[0_0_5px_rgba(0,255,255,0.8)]">
-                        {sessionDuration}
+                        {missionClock || "..."}
                     </div>
                 </div>
 

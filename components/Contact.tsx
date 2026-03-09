@@ -10,6 +10,8 @@ import {
 import Link from "next/link";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
+import { Footer } from "./Footer";
+
 
 export function Contact() {
     const { t, language } = useLanguage();
@@ -293,6 +295,10 @@ export function Contact() {
                     100% { background-position: 0% 50%; }
                 }
             `}</style>
+
+            <div className="mt-12 md:mt-24">
+                <Footer />
+            </div>
         </section>
     );
 }
