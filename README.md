@@ -1,8 +1,9 @@
-# 🌌 MISSION CONTROL: THE UNIVERSAL PORTFOLIO
+# 🌌 GROUND CONTROL: THE UNIVERSAL PORTFOLIO
 
 > "Trajectory calculation in progress... Destined for the edge of the Full-Stack Universe."
 
-Welcome to the command center of **Francesco Mollica**, Architect Engineer and Digital Explorer. This isn't just a portfolio; it's a fully operational intergalactic interface designed to navigate through professional experiences, technical artifacts, and creative nebulae.
+Welcome to the command center of **Francesco Mollica**, Architect Engineer and Digital Explorer. 
+This isn't just a portfolio; it's a fully operational intergalactic interface designed to navigate through professional experiences, technical artifacts, and creative nebulae.
 
 ---
 
@@ -87,8 +88,37 @@ Found a bug in the matrix? Want to collaborate on a new galaxy?
 
 ## ⚖️ PROTOCOLS
 
-This project is an **Open Source System**. Feel free to explore, clone, and build upon it. Just remember to keep the entropy increasing!
+CC BY-NC 4.0 License
+This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.
 
+In summary, you are free to:
+
+Share: copy and redistribute the material in any medium or format.
+
+Adapt: remix, transform, and build upon the material.
+
+Under the following terms:
+
+Attribution: You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+
+NonCommercial: You may not use the material for commercial purposes.
+
+
+Licenza CC BY-NC 4.0
+
+Quest'opera è distribuita con Licenza Creative Commons Attribuzione - Non commerciale 4.0 Internazionale.
+
+In sintesi, sei libero di:
+
+Condividere: copiare e ridistribuire il materiale in qualsiasi formato.
+
+Modificare: rielaborare e trasformare il materiale.
+
+Alle seguenti condizioni:
+
+Attribuzione: Devi citare l'autore in modo appropriato e indicare se sono state effettuate modifiche.
+
+Non commerciale: Non puoi utilizzare il materiale per scopi commerciali.
 ---
 
 *Safe travels, Commander.* 👨‍🚀✨
