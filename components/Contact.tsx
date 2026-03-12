@@ -20,8 +20,8 @@ export function Contact() {
     // Obfuscation: Split email and phone to prevent simple crawler scraping
     const contactData = useMemo(() => {
         const emailParts = {
-            user: "francesco.mollica",
-            domain: "outlook",
+            user: "francescomollicat",
+            domain: "gmail",
             tld: "com"
         };
         const phoneParts = {
