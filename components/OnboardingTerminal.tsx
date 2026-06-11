@@ -84,7 +84,7 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="relative z-10 mt-4 text-[10px] md:text-xs font-mono tracking-[0.3em] text-cyan-500/60 uppercase text-center max-w-[80%]"
+                            className="relative z-10 mt-4 text-[10px] md:text-xs font-mono tracking-[0.3em] text-cyan-500/60 text-center max-w-[80%]"
                         >
                             {(t as any).onboarding.creator}
                         </motion.div>

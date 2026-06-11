@@ -7,6 +7,7 @@ export const translations = {
             portfolio: "Progetti",
             contact: "Contatti",
             music: "Musica",
+            market: "Market",
             roadmap: "Roadmap",
         },
         hero: {
@@ -21,7 +22,7 @@ export const translations = {
             title: "Chi sono",
             headline: "Appassionato di",
             headlineSuffix: "Software Engineer - Appassionato di Making (Hardware)",
-            bio1: "Design dall'architettura allo sviluppo software. Batterista e super appassionato di musica, faccio parte della Banda Musicale di Baveno.",
+            bio1: "Design dall'architettura allo sviluppo software. Batterista e super appassionato di musica, per molti anni sono stato membro della Banda Musicale di Baveno.",
             bio2: "Il mio obiettivo è colmare il divario tra ingegneria e business development. Organizzo jam session e sperimento nuove sonorità su [jamsession.me](https://jamsession.me).",
             techStack: "Stack Tecnologico",
             techStackLoading: "TECH STACK...",
@@ -48,8 +49,8 @@ export const translations = {
                     title: "Architect Engineer",
                     company: "Freelance",
                     period: "2025 - Presente",
-                    description: "Sviluppo di web application scalabili (React/Next.js) e architetture robuste. Specializzato in Sistemi Operativi, Backend (C++, Go) e Cyber Security (Hacking/Pentesting). Esperto in infrastrutture di telecomunicazione e gestione della fornitura di servizi IT.",
-                    tags: ["Go", "C++", "Cybersecurity", "Hacking", "Telecom", "TypeScript", "Next.js", "React.js", "Node.js", "Python", "Three.js", "Tailwind CSS", "ecc."],
+                    description: "Sviluppo di web application scalabili (React/Next.js) e architetture robuste. Specializzato in Sistemi Operativi, Backend (C++).",
+                    tags: ["C++", "TypeScript", "Next.js", "React.js", "Node.js", "Python", "Three.js", "Tailwind CSS", "ecc."],
                     url: "https://github.com/francimolli",
                 },
                 {
@@ -93,12 +94,20 @@ export const translations = {
             viewCode: "CODICE SORGENTE",
             items: [
                 {
-                    title: "Orbit Portfolio",
+                    title: "Portfolio",
                     description: "Un universo interattivo 3D costruito con Three.js e React. Esplorazione spaziale, artefatti nascosti e menu HUD futuristico.",
                     tags: ["Three.js", "React", "Next.js", "Framer Motion"],
                     image: "/projects/orbit.png",
                     url: "https://github.com/francimolli",
                     repo: "https://github.com/francimolli/"
+                },
+                {
+                    title: "Jam Session",
+                    description: "Piattaforma web per musicisti che vogliono organizzare o partecipare a jam session. Funzionalità di ricerca, prenotazione e gestione eventi musicali.",   
+                    tags: ["Next.js", "React", "Node.js", "Express", "MongoDB", "Socket.io"],
+                    image: "/projects/jam_session.png",
+                    url: "https://jamsession.me/",
+                    repo: "https://github.com/francimolli/" 
                 },
                 {
                     title: "Tre Gocce d'Oro - Valutazione",
@@ -109,20 +118,20 @@ export const translations = {
                     repo: "https://giurie-valutazione.sistematregoccedoro.it/login"
                 },
                 {
+                    title: "Il Gioco dell'Oca Matta",
+                    description: "Realizzato in C++ per il primo anno della laurea in Informatica, con regole insolite. Dai un'occhiata se ti serve del codice molto semplice per principianti.",
+                    tags: ["C++", "OpenGL", "Game Development"],
+                    image: "/projects/oca.png",
+                    url: "https://github.com/francimolli/GameOfTheMadGoose/blob/master/README.md",
+                    repo: "https://github.com/francimolli/GameOfTheMadGoose/blob/master/README.md"
+                },
+                {
                     title: "Tre Gocce d'Oro - Giuria",
                     description: "Dashboard di visualizzazione real-time risultati e analisi statistica per il concorso nazionale Grandi Mieli d'Italia.",
                     tags: ["Next.js", "Typescript", "Load Balancing", "Laravel", "Tailwind CSS", "Real-time Data"],
                     image: "/projects/miele_risultati.png",
                     url: "https://giurie-risultati.sistematregoccedoro.it/login",
                     repo: "https://giurie-risultati.sistematregoccedoro.it/login"
-                },
-                {
-                    title: "Arbitraggio Bookmakers",
-                    description: "Algoritmo avanzato e dashboard per l'individuazione di opportunità di arbitraggio sportivo tra molteplici bookmakers.",
-                    tags: ["Next.js", "TypeScript", "Algorithms", "Real-time"],
-                    image: "/projects/arbitrage.png",
-                    url: "https://bookmakers-kill-9.vercel.app/login",
-                    repo: "https://bookmakers-kill-9.vercel.app/login"
                 },
                 {
                     title: "Miss Convenienza 3D",
@@ -133,7 +142,7 @@ export const translations = {
                     repo: "https://github.com/francimolli"
                 },
                 {
-                    title: "L'Hobbista Verbania",
+                    title: "L'Hobbysta Verbania",
                     description: "Sito e catalogo digitale per lo storico negozio di hobbistica, belle arti e modellismo di Verbania.",
                     tags: ["Next.js", "E-commerce", "Local Marketing", "SEO"],
                     image: "/projects/hobbysta.jpeg",
@@ -156,14 +165,14 @@ export const translations = {
                 //     url: "#",
                 //     repo: "https://github.com/francimolli/smart-mirror"
                 // },
-                {
-                    title: "AI Neural Weaver (In Arrivo)",
-                    description: "Generatore di immagini basato su modelli di diffusione stabili con interfaccia web ottimizzata per la velocità e il controllo dei parametri.",
-                    tags: ["Python", "TensorFlow", "React", "FastAPI"],
-                    image: "/projects/ai.png",
-                    url: "https://github.com/francimolli",
-                    repo: "https://github.com/francimolli/neural-weaver"
-                },
+                //{
+                //  title: "AI Neural Weaver (In Arrivo)",
+                //  description: "Generatore di immagini basato su modelli di diffusione stabili con interfaccia web ottimizzata per la velocità e il controllo dei parametri.",
+                //  tags: ["Python", "TensorFlow", "React", "FastAPI"],
+                //  image: "/projects/ai.png",
+                //  url: "https://github.com/francimolli",
+                //    repo: "https://github.com/francimolli/neural-weaver"
+                //},
                 {
                     title: "Stissi Studio",
                     description: "Sito web professionale con ottimizzazione SEO, hosting dedicato e sviluppo custom in HTML/SCSS/PHP.",
@@ -187,6 +196,14 @@ export const translations = {
                     image: "/projects/motorlaghi.avif",
                     url: "https://www.motorlaghi.com/",
                     repo: "https://www.motorlaghi.com/"
+                },
+                {
+                    title: "56MX",
+                    description: "Piattaforma di e-commerce per la vendita di componenti e accessori per moto da cross. Design moderno e funzionalità avanzate di ricerca e filtro.",
+                    tags: ["Next.js", "React", "Node.js", "Express", "MongoDB", "Socket.io"],
+                    image: "/projects/56mx.png",
+                    url: "https://www.56mx.it/",
+                    repo: "https://github.com/francimolli/56mx-ecommerce"
                 }
             ]
         },
@@ -331,7 +348,7 @@ export const translations = {
         },
         onboarding: {
             loadingText: "BENVENUTO IN ORB",
-            creator: "Un progetto ideato e creato da Francesco Mollica",
+            creator: "Un progetto creato da Francesco, a Baveno... o meglio, in un piccolo pianeta che fa orbita attorno a Baveno. Prendo ispirazione da un album giovane di Caparezza, ma non sono un rapper, sono un ingegnere. Ho creato questo portfolio come un'esperienza interattiva, un piccolo universo da esplorare, con segreti nascosti e artefatti da scoprire. Buona esplorazione!",
             immersive: {
                 title: "Esploratore e Avventuriero",
                 description: "Esperienza 3D interattiva. Scopri segreti, naviga l'universo e trova easter egg nascosti.",
@@ -359,7 +376,7 @@ export const translations = {
                 description: "Esplora la galleria dei lavori selezionati e delle innovazioni realizzate.",
                 tag: "PORTFOLIO",
             },
-            footer: "SISTEMA CREATO CON PASSIONE"
+            footer: "obitizzazione in corso..."
         },
         secrets: {
             alert: {
@@ -397,6 +414,7 @@ export const translations = {
             portfolio: "Portfolio",
             contact: "Contact",
             music: "Music",
+            market: "Market",
             roadmap: "Roadmap",
         },
         hero: {
@@ -411,7 +429,7 @@ export const translations = {
             title: "Profile",
             headline: "Passionate about",
             headlineSuffix: "Software Engineer - Passionate about Making (Hardware)",
-            bio1: "Design from architecture to software development. Drummer and music enthusiast, member of the Baveno Musical Band.",
+            bio1: "Design from architecture to software development. Drummer and music enthusiast, for many years he was a member of the Baveno Musical Band.",
             bio2: "My goal is to bridge the gap between engineering and business development. I organize jam sessions and experiment with new sounds at [jamsession.me](https://jamsession.me).",
             techStack: "Tech Stack",
             techStackLoading: "TECH STACK...",
@@ -431,15 +449,15 @@ export const translations = {
                     company: "BitBang",
                     period: "2024 - Present",
                     description: "",
-                    tags: ["Google Suite", "JavaScript", "Data Integrity", "Python", "Adobe Analytics", "OSINT"],
+                    tags: ["Google Suite", "JavaScript", "Data Integrity", "Python", "Adobe Analytics"],
                     url: "https://bitbang.com/",
                 },
                 {
                     title: "Architect Engineer",
                     company: "Freelance",
                     period: "2025 - Present",
-                    description: "Developing scalable web applications (React/Next.js) and robust architectures. Specialized in Operating Systems, Backend (C++, Go), and Cyber Security (Hacking/Pentesting). Expertise in telecommunication infrastructures and IT service provision management.",
-                    tags: ["Go", "C++", "Cybersecurity", "Hacking", "Telecom", "TypeScript", "Next.js", "React.js", "Node.js", "Python", "Three.js", "Tailwind CSS", "etc."],
+                    description: "Developing scalable web applications (React/Next.js) and robust architectures. Specialized in Operating Systems, Backend (C++).",
+                    tags: ["C++", "TypeScript", "Next.js", "React.js", "Node.js", "Python", "Three.js", "Tailwind CSS", "etc."],
                     url: "https://github.com/francimolli",
                 },
                 {
@@ -483,11 +501,19 @@ export const translations = {
             viewCode: "SOURCE CODE",
             items: [
                 {
-                    title: "Orbit Portfolio",
+                    title: "Portfolio",
                     description: "An interactive 3D universe built with Three.js and React. Space exploration, hidden artifacts, and a futuristic HUD menu.",
                     tags: ["Three.js", "React", "Next.js", "Framer Motion"],
                     image: "/projects/orbit.png",
                     url: "https://github.com/francimolli",
+                    repo: "https://github.com/francimolli/"
+                },
+                {
+                    title: "Jam Session",
+                    description: "Web platform for musicians who want to organize or join jam sessions. Search, booking, and music event management features.",
+                    tags: ["Next.js", "React", "Node.js", "Express", "MongoDB", "Socket.io"],
+                    image: "/projects/jam_session.png",
+                    url: "https://jamsession.me/",
                     repo: "https://github.com/francimolli/"
                 },
                 {
@@ -499,20 +525,20 @@ export const translations = {
                     repo: "https://giurie-valutazione.sistematregoccedoro.it/login"
                 },
                 {
+                    title: "Game of The Mad Goose",
+                    description: "Realized in C++ for the First Year - Computer Science Degree, with unusual rules. Check it if you need some very simple code for beginners.",
+                    tags: ["C++", "OpenGL", "Game Development"],
+                    image: "/projects/oca.png",
+                    url: "https://github.com/francimolli/GameOfTheMadGoose/blob/master/README.md",
+                    repo: "https://github.com/francimolli/GameOfTheMadGoose/blob/master/README.md"
+                },
+                {
                     title: "Tre Gocce d'Oro - Jury",
                     description: "Real-time results display dashboard and statistical analysis for the National 'Grandi Mieli d'Italia' competition.",
                     tags: ["Next.js", "TypeScript", "Laravel", "Load Balancing", "Tailwind CSS", "Real-time Data"],
                     image: "/projects/miele_risultati.png",
                     url: "https://giurie-risultati.sistematregoccedoro.it/login",
                     repo: "https://giurie-risultati.sistematregoccedoro.it/login"
-                },
-                {
-                    title: "Bookmakers Arbitrage",
-                    description: "Advanced algorithm and dashboard for identifying sporting arbitrage opportunities across multiple bookmakers.",
-                    tags: ["Next.js", "TypeScript", "Algorithms", "Real-time"],
-                    image: "/projects/arbitrage.png",
-                    url: "https://bookmakers-kill-9.vercel.app/login",
-                    repo: "https://bookmakers-kill-9.vercel.app/login"
                 },
                 {
                     title: "Miss Convenienza 3D",
@@ -523,20 +549,12 @@ export const translations = {
                     repo: "https://github.com/francimolli"
                 },
                 {
-                    title: "L'Hobbista Verbania",
+                    title: "L'Hobbysta Verbania",
                     description: "E-commerce website and digital catalog for the historic hobby, fine arts, and modeling shop in Verbania.",
                     tags: ["WORDPRESS", "E-commerce", "Local Marketing", "SEO"],
                     image: "/projects/hobbysta.jpeg",
                     url: "https://www.hobbystaverbania.it/",
                     repo: "https://www.hobbystaverbania.it/"
-                },
-                {
-                    title: "AI Neural Weaver (Coming Soon)",
-                    description: "Image generator based on stable diffusion models with a web interface optimized for speed and parameter control.",
-                    tags: ["Python", "TensorFlow", "React", "FastAPI"],
-                    image: "/projects/ai.png",
-                    url: "https://github.com/francimolli",
-                    repo: "https://github.com/francimolli/"
                 },
                 {
                     title: "Stissi Studio",
@@ -561,6 +579,14 @@ export const translations = {
                     image: "/projects/motorlaghi.avif",
                     url: "https://www.motorlaghi.com/",
                     repo: "https://www.motorlaghi.com/"
+                },
+                {
+                    title: "56MX",
+                    description: "E-commerce platform for selling motocross bike components and accessories. Modern design and advanced search and filter features.",
+                    tags: ["Next.js", "React", "Node.js", "Express", "MongoDB", "Socket.io"],
+                    image: "/projects/56mx.png",
+                    url: "https://www.56mx.it/",
+                    repo: "https://github.com/francimolli/56mx-ecommerce"
                 }
             ]
         },
@@ -703,7 +729,7 @@ export const translations = {
         },
         onboarding: {
             loadingText: "WELCOME TO ORB",
-            creator: "A project designed and created by Francesco Mollica",
+            creator: "A project created by Francesco, in Baveno... or rather, on a small planet orbiting around Baveno. I take inspiration from an early Caparezza album, but I'm not a rapper — I'm an engineer. I built this portfolio as an interactive experience, a little universe to explore, with hidden secrets and artifacts to discover. Enjoy the journey!",
             immersive: {
                 title: "Explorer and Adventurer",
                 description: "Interactive 3D experience. Discover secrets, navigate the universe, and find hidden easter eggs.",
@@ -731,7 +757,7 @@ export const translations = {
                 description: "Explore the gallery of selected works and realized innovations.",
                 tag: "PORTFOLIO",
             },
-            footer: "SYSTEM CREATED WITH PASSION"
+            footer: "orbitizing in progress..."
         },
         secrets: {
             alert: {
