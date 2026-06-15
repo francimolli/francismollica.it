@@ -123,5 +123,3 @@ Attribuzione: Devi citare l'autore in modo appropriato e indicare se sono state 
 
 Non commerciale: Non puoi utilizzare il materiale per scopi commerciali.
 ---
-
-*Safe travels, Commander.* 👨‍🚀✨
