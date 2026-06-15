@@ -366,7 +366,7 @@ export const translations = {
                 description: "Esplora la galleria dei lavori selezionati e delle innovazioni realizzate.",
                 tag: "PORTFOLIO",
             },
-            footer: "obitizzazione in corso..."
+            footer: "diagramma lunare in corso..."
         },
         secrets: {
             alert: {
