@@ -257,16 +257,6 @@ export const translations = {
                     description: "I pionieri che hanno cambiato la storia della musica moderna, portando l'innovazione in studio e melodie immortali alla cultura pop."
                 },
                 {
-                    name: "Lucio Battisti",
-                    genre: "Pop / Rock Progressivo",
-                    description: "L'innovatore della canzone italiana. Ha saputo unire la melodia mediterranea alle sperimentazioni internazionali più avanzate."
-                },
-                {
-                    name: "Chet Baker",
-                    genre: "Jazz / Cool Jazz",
-                    description: "Il 'principe del cool jazz'. La sua tromba e la sua voce sono sinonimo di malinconia pura, eleganza e improvvisazione intima."
-                },
-                {
                     name: "Ludwig van Beethoven",
                     genre: "Musica Classica / Romantica",
                     description: "La forza della natura fatta musica. Un ponte tra classicismo e romanticismo, capace di esprimere l'eroismo e la profondità umana."
@@ -348,7 +338,7 @@ export const translations = {
         },
         onboarding: {
             loadingText: "BENVENUTO IN ORB",
-            creator: "Un progetto creato da Francesco, a Baveno... o meglio, in un piccolo pianeta che fa orbita attorno a Baveno. Prendo ispirazione da un album giovane di Caparezza, ma non sono un rapper, sono un ingegnere. Ho creato questo portfolio come un'esperienza interattiva, un piccolo universo da esplorare, con segreti nascosti e artefatti da scoprire. Buona esplorazione!",
+            creator: "Un progetto creato da Francesco, a Baveno... o meglio, in un piccolo pianeta che fa orbita attorno a questa giungla. Prendo ispirazione da un album giovane di Michele Salvemini, ma non sono un rapper, sono un ingegnere. Ho creato questo portfolio come un'esperienza interattiva ....",
             immersive: {
                 title: "Esploratore e Avventuriero",
                 description: "Esperienza 3D interattiva. Scopri segreti, naviga l'universo e trova easter egg nascosti.",
@@ -639,16 +629,6 @@ export const translations = {
                     description: "The pioneers who changed the history of modern music, bringing studio innovation and immortal melodies to pop culture."
                 },
                 {
-                    name: "Lucio Battisti",
-                    genre: "Pop / Progressive Rock",
-                    description: "The innovator of the Italian song. He managed to combine Mediterranean melody with the most advanced international experimentations."
-                },
-                {
-                    name: "Chet Baker",
-                    genre: "Jazz / Cool Jazz",
-                    description: "The 'prince of cool jazz'. His trumpet and his voice are synonymous with pure melancholy, elegance, and intimate improvisation."
-                },
-                {
                     name: "Ludwig van Beethoven",
                     genre: "Classical / Romantic",
                     description: "The force of nature turned into music. A bridge between classicism and romanticism, capable of expressing human heroism and depth."
@@ -729,7 +709,7 @@ export const translations = {
         },
         onboarding: {
             loadingText: "WELCOME TO ORB",
-            creator: "A project created by Francesco, in Baveno... or rather, on a small planet orbiting around Baveno. I take inspiration from an early Caparezza album, but I'm not a rapper — I'm an engineer. I built this portfolio as an interactive experience, a little universe to explore, with hidden secrets and artifacts to discover. Enjoy the journey!",
+            creator: "A project created by Francesco, in Baveno... or rather, on a small planet orbiting around Baveno. I take inspiration from an early Michele Salvemini album, but I'm not a rapper — I'm an engineer. I built this portfolio as an interactive experience, a little universe to explore, with hidden secrets and artifacts to discover. Enjoy the journey!",
             immersive: {
                 title: "Explorer and Adventurer",
                 description: "Interactive 3D experience. Discover secrets, navigate the universe, and find hidden easter eggs.",

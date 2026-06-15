@@ -103,23 +103,33 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
                             {/* 1. PROJECTS */}
                             <button
                                 onClick={() => onComplete("projects")}
-                                className={`${buttonBaseStyle} group border-blue-700/50 hover:border-blue-400 bg-black shadow-blue-900/10 hover:shadow-blue-400/20`}
+                                className={`${buttonBaseStyle} group border-blue-500/20 hover:border-blue-400 bg-[#040816]/80 backdrop-blur-md shadow-blue-900/5 hover:shadow-blue-500/10`}
                             >
                                 <div className="absolute inset-0 z-0 overflow-hidden">
-                                    <img src="/images/onboarding/projects.png" alt="" className="w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-700" />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
+                                    {/* Minimalist Tech/Circuit SVG instead of PNG */}
+                                    <svg className="absolute inset-0 w-full h-full text-blue-500/10 opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M 0 60 H 160 L 210 110 H 400" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" />
+                                        <path d="M 120 0 V 130 L 160 170 H 280 L 310 200 V 300" stroke="currentColor" strokeWidth="1" />
+                                        <path d="M 0 240 H 120 L 170 190 V 90 L 200 60 H 400" stroke="currentColor" strokeWidth="1" />
+                                        <circle cx="160" cy="60" r="3" className="fill-blue-400 animate-pulse" />
+                                        <circle cx="210" cy="110" r="3" className="fill-blue-400" />
+                                        <circle cx="160" cy="170" r="3" className="fill-blue-400 animate-ping [animation-duration:3s]" />
+                                        <circle cx="280" cy="170" r="3" className="fill-blue-400" />
+                                        <circle cx="170" cy="190" r="3" className="fill-blue-400" />
+                                    </svg>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#020410] via-[#020410]/40 to-transparent" />
                                 </div>
                                 <div className="relative z-10 flex flex-col h-full">
                                     <div className="flex items-center justify-between mb-auto">
-                                        <div className="p-3 bg-blue-900/40 rounded-lg border border-blue-800 text-blue-400">
+                                        <div className="p-3 bg-blue-950/40 rounded-lg border border-blue-900/50 text-blue-400 group-hover:border-blue-400 transition-colors">
                                             <Zap className="w-6 h-6" />
                                         </div>
-                                        <span className="text-[10px] font-bold tracking-widest text-blue-300 bg-blue-950/50 px-3 py-1 rounded-full border border-blue-700/50">
+                                        <span className="text-[10px] font-bold tracking-widest text-blue-300 bg-blue-950/50 px-3 py-1 rounded-full border border-blue-800/30 group-hover:border-blue-500/50 transition-colors">
                                             {(t as any).onboarding.projects.tag}
                                         </span>
                                     </div>
                                     <div className="mt-12">
-                                        <h3 className="text-2xl font-bold text-white mb-3">{(t as any).onboarding.projects.title}</h3>
+                                        <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-blue-200 transition-colors">{(t as any).onboarding.projects.title}</h3>
                                         <p className="text-sm text-gray-400 leading-relaxed max-w-[90%]">{(t as any).onboarding.projects.description}</p>
                                     </div>
                                 </div>
@@ -128,23 +138,45 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
                             {/* 2. TECHNICAL */}
                             <button
                                 onClick={() => onComplete("technical")}
-                                className={`${buttonBaseStyle} group border-violet-700/50 hover:border-violet-400 bg-black shadow-violet-900/10 hover:shadow-violet-400/20`}
+                                className={`${buttonBaseStyle} group border-violet-500/20 hover:border-violet-400 bg-[#040816]/80 backdrop-blur-md shadow-violet-900/5 hover:shadow-violet-500/10`}
                             >
                                 <div className="absolute inset-0 z-0 overflow-hidden">
-                                    <img src="/images/onboarding/technical.png" alt="" className="w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-700" />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
+                                    {/* Minimalist Isometric Blueprint Grid SVG instead of PNG */}
+                                    <svg className="absolute inset-0 w-full h-full text-violet-500/10 opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <defs>
+                                            <linearGradient id="grid-fade" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                <stop offset="0%" stopColor="currentColor" stopOpacity="0" />
+                                                <stop offset="100%" stopColor="currentColor" stopOpacity="1" />
+                                            </linearGradient>
+                                        </defs>
+                                        <path d="M-50 300 L200 80" stroke="url(#grid-fade)" strokeWidth="1" />
+                                        <path d="M50 300 L200 80" stroke="url(#grid-fade)" strokeWidth="1" />
+                                        <path d="M150 300 L200 80" stroke="url(#grid-fade)" strokeWidth="1" />
+                                        <path d="M250 300 L200 80" stroke="url(#grid-fade)" strokeWidth="1" />
+                                        <path d="M350 300 L200 80" stroke="url(#grid-fade)" strokeWidth="1" />
+                                        <path d="M450 300 L200 80" stroke="url(#grid-fade)" strokeWidth="1" />
+                                        <line x1="0" y1="280" x2="400" y2="280" stroke="url(#grid-fade)" strokeWidth="1" />
+                                        <line x1="0" y1="245" x2="400" y2="245" stroke="url(#grid-fade)" strokeWidth="1" />
+                                        <line x1="0" y1="200" x2="400" y2="200" stroke="url(#grid-fade)" strokeWidth="1" />
+                                        <line x1="0" y1="150" x2="400" y2="150" stroke="url(#grid-fade)" strokeWidth="1" />
+                                        <line x1="0" y1="95" x2="400" y2="95" stroke="url(#grid-fade)" strokeWidth="1" />
+                                        {/* Code lines representation */}
+                                        <rect x="250" y="20" width="80" height="4" rx="2" fill="currentColor" opacity="0.3" className="animate-pulse" />
+                                        <rect x="250" y="30" width="50" height="4" rx="2" fill="currentColor" opacity="0.2" />
+                                    </svg>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#020410] via-[#020410]/40 to-transparent" />
                                 </div>
                                 <div className="relative z-10 flex flex-col h-full">
                                     <div className="flex items-center justify-between mb-auto">
-                                        <div className="p-3 bg-violet-900/40 rounded-lg border border-violet-800 text-violet-400">
+                                        <div className="p-3 bg-violet-950/40 rounded-lg border border-violet-900/50 text-violet-400 group-hover:border-violet-400 transition-colors">
                                             <Briefcase className="w-6 h-6" />
                                         </div>
-                                        <span className="text-[10px] font-bold tracking-widest text-violet-300 bg-violet-950/50 px-3 py-1 rounded-full border border-violet-700/50">
+                                        <span className="text-[10px] font-bold tracking-widest text-violet-300 bg-violet-950/50 px-3 py-1 rounded-full border border-violet-800/30 group-hover:border-violet-500/50 transition-colors">
                                             {(t as any).onboarding.technical.tag}
                                         </span>
                                     </div>
                                     <div className="mt-12">
-                                        <h3 className="text-2xl font-bold text-white mb-3">{(t as any).onboarding.technical.title}</h3>
+                                        <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-violet-200 transition-colors">{(t as any).onboarding.technical.title}</h3>
                                         <p className="text-sm text-gray-400 leading-relaxed max-w-[90%]">{(t as any).onboarding.technical.description}</p>
                                     </div>
                                 </div>
@@ -153,29 +185,40 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
                             {/* 3. IMMERSIVE */}
                             <button
                                 onClick={() => onComplete("immersive")}
-                                className={`${buttonBaseStyle} group border-cyan-700/50 hover:border-violet-400 bg-black shadow-cyan-900/10 hover:shadow-violet-400/20`}
+                                className={`${buttonBaseStyle} group border-cyan-500/20 hover:border-cyan-400 bg-[#040816]/80 backdrop-blur-md shadow-cyan-900/5 hover:shadow-cyan-500/10`}
                             >
                                 <div className="absolute inset-0 z-0 overflow-hidden">
-                                    <img src="/images/banner.png" alt="" className="w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform duration-700" />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+                                    {/* Minimalist Astral Orbits / Radar SVG instead of PNG */}
+                                    <svg className="absolute inset-0 w-full h-full text-cyan-500/10 opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="200" cy="150" r="110" stroke="currentColor" strokeWidth="0.75" strokeDasharray="4 4" className="animate-[spin_60s_linear_infinite]" />
+                                        <circle cx="200" cy="150" r="85" stroke="currentColor" strokeWidth="1" />
+                                        <circle cx="200" cy="150" r="55" stroke="currentColor" strokeWidth="0.75" strokeDasharray="10 5" className="animate-[spin_30s_linear_infinite_reverse]" />
+                                        <circle cx="200" cy="150" r="25" stroke="currentColor" strokeWidth="1" />
+                                        <line x1="200" y1="10" x2="200" y2="290" stroke="currentColor" strokeWidth="0.5" strokeDasharray="2 4" />
+                                        <line x1="10" y1="150" x2="390" y2="150" stroke="currentColor" strokeWidth="0.5" strokeDasharray="2 4" />
+                                        <circle cx="115" cy="150" r="4" className="fill-cyan-400 animate-ping [animation-duration:4s]" />
+                                        <circle cx="115" cy="150" r="2.5" className="fill-cyan-400" />
+                                        <circle cx="255" cy="150" r="2" className="fill-violet-400" />
+                                    </svg>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#020410] via-[#020410]/40 to-transparent" />
                                 </div>
                                 <div className="relative z-10 flex flex-col h-full">
                                     <div className="flex items-center justify-between mb-auto">
                                         <div className="flex gap-2">
-                                            <div className="p-3 bg-cyan-900/40 rounded-lg border border-cyan-800 text-cyan-400 group-hover:text-violet-400 group-hover:border-violet-400 transition-colors">
+                                            <div className="p-3 bg-cyan-950/40 rounded-lg border border-cyan-900/50 text-cyan-400 group-hover:text-cyan-300 group-hover:border-cyan-400 transition-colors">
                                                 <Telescope className="w-6 h-6" />
                                             </div>
-                                            <div className="p-3 bg-violet-900/40 rounded-lg border border-violet-800 text-violet-400 opacity-0 group-hover:opacity-100 transition-all transform scale-75 group-hover:scale-100 flex items-center gap-2">
-                                                <span className="text-[10px] font-bold uppercase tracking-tighter">START</span>
+                                            <div className="p-3 bg-violet-950/40 rounded-lg border border-violet-900/50 text-violet-400 opacity-0 group-hover:opacity-100 transition-all transform scale-75 group-hover:scale-100 flex items-center gap-2">
+                                                <span className="text-[10px] font-bold uppercase tracking-tighter text-violet-300">START</span>
                                                 <div className="w-2 h-2 bg-violet-400 rounded-full animate-pulse" />
                                             </div>
                                         </div>
-                                        <span className="text-[10px] font-bold tracking-widest text-cyan-300 bg-cyan-950/50 px-3 py-1 rounded-full border border-cyan-700/50 group-hover:text-violet-300 group-hover:border-violet-700/50">
+                                        <span className="text-[10px] font-bold tracking-widest text-cyan-300 bg-cyan-950/50 px-3 py-1 rounded-full border border-cyan-800/30 group-hover:border-cyan-500/50 group-hover:text-cyan-200 transition-colors">
                                             {t.onboarding.immersive.tag}
                                         </span>
                                     </div>
                                     <div className="mt-12">
-                                        <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-violet-200 transition-colors">{t.onboarding.immersive.title}</h3>
+                                        <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-cyan-200 transition-colors">{t.onboarding.immersive.title}</h3>
                                         <p className="text-sm text-gray-400 leading-relaxed max-w-[90%]">{t.onboarding.immersive.description}</p>
                                     </div>
                                 </div>
@@ -184,23 +227,33 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
                             {/* 4. UPLINK */}
                             <button
                                 onClick={() => onComplete("uplink")}
-                                className={`${buttonBaseStyle} group border-green-700/50 hover:border-green-400 bg-black shadow-green-900/10 hover:shadow-green-400/20`}
+                                className={`${buttonBaseStyle} group border-green-500/20 hover:border-green-400 bg-[#040816]/80 backdrop-blur-md shadow-green-900/5 hover:shadow-green-500/10`}
                             >
                                 <div className="absolute inset-0 z-0 overflow-hidden">
-                                    <img src="/images/onboarding/uplink.png" alt="" className="w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-700" />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
+                                    {/* Minimalist Transmitter / Waves SVG instead of PNG */}
+                                    <svg className="absolute inset-0 w-full h-full text-green-500/10 opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M 50 250 Q 100 130, 150 250 T 250 250 T 350 250" stroke="currentColor" strokeWidth="1" />
+                                        <path d="M 50 250 Q 100 80, 150 250 T 250 250 T 350 250" stroke="currentColor" strokeWidth="0.75" strokeDasharray="3 3" opacity="0.5" />
+                                        <path d="M 170 210 A 30 30 0 0 1 230 210" stroke="currentColor" strokeWidth="1" className="animate-pulse" />
+                                        <path d="M 150 190 A 60 60 0 0 1 250 190" stroke="currentColor" strokeWidth="1.5" />
+                                        <path d="M 130 170 A 90 90 0 0 1 270 170" stroke="currentColor" strokeWidth="1" strokeDasharray="4 2" />
+                                        <path d="M 110 150 A 120 120 0 0 1 290 150" stroke="currentColor" strokeWidth="0.5" />
+                                        <circle cx="200" cy="220" r="3.5" className="fill-green-400 animate-pulse" />
+                                        <circle cx="200" cy="130" r="1.5" className="fill-green-400/70" />
+                                    </svg>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#020410] via-[#020410]/40 to-transparent" />
                                 </div>
                                 <div className="relative z-10 flex flex-col h-full">
                                     <div className="flex items-center justify-between mb-auto">
-                                        <div className="p-3 bg-green-900/40 rounded-lg border border-green-800 text-green-400">
+                                        <div className="p-3 bg-green-950/40 rounded-lg border border-green-900/50 text-green-400 group-hover:border-green-400 transition-colors">
                                             <Send className="w-6 h-6" />
                                         </div>
-                                        <span className="text-[10px] font-bold tracking-widest text-green-300 bg-green-950/50 px-3 py-1 rounded-full border border-green-700/50">
+                                        <span className="text-[10px] font-bold tracking-widest text-green-300 bg-green-950/50 px-3 py-1 rounded-full border border-green-800/30 group-hover:border-green-500/50 transition-colors">
                                             {(t as any).onboarding.uplink.tag}
                                         </span>
                                     </div>
                                     <div className="mt-12">
-                                        <h3 className="text-2xl font-bold text-white mb-3">{(t as any).onboarding.uplink.title}</h3>
+                                        <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-green-200 transition-colors">{(t as any).onboarding.uplink.title}</h3>
                                         <p className="text-sm text-gray-400 leading-relaxed max-w-[90%]">{(t as any).onboarding.uplink.description}</p>
                                     </div>
                                 </div>
