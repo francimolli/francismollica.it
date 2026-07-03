@@ -312,7 +312,7 @@ export const translations = {
         },
         onboarding: {
             loadingText: "BENVENUTO NEL COSMO DI FRANCESCO",
-            creator: "Un progetto nato a Baveno... su un piccolo pianeta che orbita attorno a questa giungla. Sono un ingegnere con l'anima di un esploratore. Ho costruito questo portfolio come un universo interattivo da scoprire, con reliquie nascoste e misteri universali. Buon viaggio!",
+            creator: "su un piccolo pianeta che orbita attorno a questa giungla. Sono un ingegnere con l'anima di un esploratore. Buon viaggio!",
             immersive: {
                 title: "Viaggiatore dell'Universo",
                 description: "Esplora il cosmo in 3D. Scopri reliquie antiche, naviga tra le stelle e trova misteri nascosti.",
@@ -683,7 +683,7 @@ export const translations = {
         },
         onboarding: {
             loadingText: "WELCOME TO FRANCESCO'S COSMOS",
-            creator: "A project born in Baveno… on a small planet orbiting this jungle. I'm an engineer with the soul of an explorer. I built this portfolio as an interactive universe to discover, with hidden relics and mysteries to unveil. Enjoy the journey!",
+            creator: "on a small planet orbiting this jungle. I'm an engineer with the soul of an explorer. I built this portfolio as an interactive universe to discover, with hidden relics and mysteries to unveil. Enjoy the journey!",
             immersive: {
                 title: "Traveller of the Universe",
                 description: "Explore the cosmos in 3D. Discover ancient relics, navigate the stars, and find hidden mysteries.",
