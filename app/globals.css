@@ -266,12 +266,12 @@
 
 .glitch-hover:hover::before {
   left: 2px;
-  text-shadow: -1px 0 #ff00c1;
-  animation: glitch-anim-1 0.3s infinite linear alternate-reverse;
+  text-shadow: -1px 0 #c4a8d4;
+  animation: glitch-anim-1 0.5s infinite linear alternate-reverse;
 }
 
 .glitch-hover:hover::after {
   left: -2px;
-  text-shadow: -1px 0 #00fff9;
-  animation: glitch-anim-2 0.3s infinite linear alternate-reverse;
+  text-shadow: -1px 0 #a8c8d4;
+  animation: glitch-anim-2 0.5s infinite linear alternate-reverse;
 }

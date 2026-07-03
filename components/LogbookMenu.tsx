@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { Book, X, Home, User, Briefcase, Mail, Headphones, Copy, Send, Map, Radio } from "lucide-react";
+import { Book, X, Home, User, Briefcase, Mail, Headphones, Copy, Send, Map, Radio, TrendingUp } from "lucide-react";
 import { useFloatingSection } from "./FloatingSectionContext";
 import { useCityControls } from "./CityControlsContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,6 +16,7 @@ const sections = [
     { id: "portfolio", title: "nav.portfolio", icon: Book, target: { x: -250, z: -150 } },
     { id: "contact", title: "nav.contact", icon: Mail, target: { x: -200, z: 0 } },
     { id: "music", title: "nav.music", icon: Headphones, target: { x: 0, z: 200 } },
+    { id: "market", title: "nav.market", icon: TrendingUp, target: null },
     { id: "roadmap", title: "nav.roadmap", icon: Map, target: null },
 ];
 
@@ -23,7 +24,7 @@ export function LogbookMenu() {
     const [isOpen, setIsOpen] = useState(false);
     const [activeTab, setActiveTab] = useState<'navigation' | 'achievements' | 'help'>('navigation');
     const { setExpandedSection } = useFloatingSection();
-    const { flyTo, resetView, coordinates, unlockedSecrets } = useCityControls();
+    const { flyArcToSection, resetView, coordinates, unlockedSecrets } = useCityControls();
     const { language } = useLanguage();
     const t = translations[language];
     const [mounted, setMounted] = useState(false);
@@ -41,20 +42,18 @@ export function LogbookMenu() {
     const handleSectionClick = (id: string, target: { x: number, z: number } | null) => {
         setIsOpen(false);
 
-        // 1. Trigger Navigation
-        let delay = 2000;
         if (id === 'home') {
             resetView();
-        } else if (target) {
-            flyTo(target.x, target.z);
-        } else {
-            delay = 500; // Shorter delay for items without flight
+            return;
         }
 
-        // 2. Delay opening the card
-        setTimeout(() => {
-            setExpandedSection(id);
-        }, delay);
+        // Open section immediately on click for all sections
+        setTimeout(() => setExpandedSection(id), 300);
+
+        // Also fly the camera to the beacon if one exists
+        if (target) {
+            flyArcToSection(id);
+        }
     };
 
     return (
@@ -76,8 +75,7 @@ export function LogbookMenu() {
                     {/* Radar Ping Effect */}
                     {!isOpen && (
                         <>
-                            <span className="absolute inset-0 rounded-full border border-violet-400/50 animate-ping opacity-20" />
-                            <span className="absolute inset-0 rounded-full border border-violet-400/30 animate-[ping_3s_linear_infinite] opacity-10 delay-75" />
+                            <span className="absolute inset-0 rounded-full border border-violet-300/30 animate-[ping_4s_ease-out_infinite] opacity-10" />
                         </>
                     )}
 

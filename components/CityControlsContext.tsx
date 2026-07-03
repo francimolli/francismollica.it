@@ -43,6 +43,9 @@ interface CityControls {
     unlockVisualTrigger: number;
     playExplosionSound: () => void;
     playBoostSound: (duration: number) => void;
+    flyArcTarget: string | null;
+    setFlyArcTarget: (id: string | null) => void;
+    flyArcToSection: (id: string) => void;
 }
 
 const CityControlsContext = createContext<CityControls | undefined>(undefined);
@@ -81,6 +84,8 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const [unlockVisualTrigger, setUnlockVisualTrigger] = useState(0);
+    const [flyArcTarget, setFlyArcTarget] = useState<string | null>(null);
+    const flyArcToSection = (id: string) => setFlyArcTarget(id);
 
     const setSoundEnabled = (enabled: boolean) => {
         setSoundEnabledState(enabled);
@@ -445,7 +450,8 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
                 soundEnabled, setSoundEnabled,
                 unlockVisualTrigger,
                 playExplosionSound,
-                playBoostSound
+                playBoostSound,
+                flyArcTarget, setFlyArcTarget, flyArcToSection
             }}>
             {children}
         </CityControlsContext.Provider>

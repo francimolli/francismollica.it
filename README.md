@@ -2,7 +2,7 @@
 
 > "Trajectory calculation in progress... Destined for the edge of the Full-Stack Universe."
 
-Welcome to the command center of **Francesco Mollica**, Architect Engineer and Digital Explorer. 
+Welcome to the command center of **Francesco Molli**, Architect Engineer and Digital Explorer. 
 This isn't just a portfolio; it's a fully operational intergalactic interface designed to navigate through professional experiences, technical artifacts, and creative nebulae.
 
 ---
@@ -53,35 +53,10 @@ Check your **Logbook** (Diario di Bordo) frequently to analyze collected telemet
 
 ---
 
-## 🛸 LAUNCH SEQUENCE
-
-To initialize this system on your local node:
-
-1. **Clone the Uplink**:
-   ```bash
-   git clone https://github.com/francimolli/portfolio.git
-   ```
-
-2. **Refuel Dependencies**:
-   ```bash
-   pnpm install
-   ```
-
-3. **Ignition**:
-   ```bash
-   pnpm dev
-   ```
-
-4. **Access the Interface**:
-   Open `http://localhost:3000` to begin the onboarding sequence.
-
----
-
 ## 📡 DIRECT UPLINK
 
 Found a bug in the matrix? Want to collaborate on a new galaxy?
 - **Email**: [Available in the Contact section]
-- **Instagram**: [@francimolli](https://instagram.com/francimolli)
 - **GitHub**: [github.com/francimolli](https://github.com/francimolli)
 
 ---

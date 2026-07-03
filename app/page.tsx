@@ -10,30 +10,16 @@ import { Portfolio } from "@/components/Portfolio";
 import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
 import { Music } from "@/components/Music";
+import { MarketArt } from "@/components/MarketArt";
+import { TrendingUp } from "lucide-react";
 import { CityControlsProvider } from "@/components/CityControlsContext";
 import { FloatingSectionProvider } from "@/components/FloatingSectionContext";
+import { UniverseColorProvider } from "@/components/UniverseColorContext";
 import { LogbookMenu } from "@/components/LogbookMenu";
+import { VisualModeSwitch } from "@/components/VisualModeSwitch";
 import { OnboardingTerminal } from "@/components/OnboardingTerminal";
 import { useLanguage } from "@/lib/language-context";
 import { translations } from "@/lib/translations";
-import { useFloatingSection } from "@/components/FloatingSectionContext";
-import { useEffect } from "react";
-
-function InitialSectionSetter({ section }: { section: string | null }) {
-  const { setExpandedSection } = useFloatingSection();
-
-  useEffect(() => {
-    if (section) {
-      // Small timeout to ensure the layout is ready
-      const timer = setTimeout(() => {
-        setExpandedSection(section);
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-  }, [section, setExpandedSection]);
-
-  return null;
-}
 
 export default function Home() {
   const { onboardingComplete, setOnboardingComplete, language } = useLanguage();
@@ -45,11 +31,10 @@ export default function Home() {
     setOnboardingComplete(true);
   };
 
-  // Determine final mode and initial section
   const finalMode = (mode === "technical" || mode === "uplink" || mode === "projects") ? "immersive" : mode;
-  const initialSection = mode === "technical" ? "timeline" : mode === "uplink" ? "contact" : mode === "projects" ? "portfolio" : null;
 
   return (
+    <UniverseColorProvider>
     <>
       {!onboardingComplete && (
         <div className="fixed inset-0 z-[100]">
@@ -100,10 +85,10 @@ export default function Home() {
         ) : (
           <CityControlsProvider>
             <FloatingSectionProvider>
-              <InitialSectionSetter section={initialSection} />
               <Layout>
                 <Header />
                 <LogbookMenu />
+                <VisualModeSwitch />
                 <SectionCard id="home" title="Home">
                   <Hero />
                 </SectionCard>
@@ -121,6 +106,9 @@ export default function Home() {
                 </SectionCard>
                 <SectionCard id="music" title="Music">
                   <Music />
+                </SectionCard>
+                <SectionCard id="market" title="Market" icon={TrendingUp}>
+                  <MarketArt />
                 </SectionCard>
                 <SectionCard id="roadmap" title="Roadmap">
                   <div className="flex flex-col items-center justify-center min-h-[40vh] text-center space-y-6 p-8">
@@ -141,5 +129,6 @@ export default function Home() {
         )}
       </div>
     </>
+    </UniverseColorProvider>
   );
 }

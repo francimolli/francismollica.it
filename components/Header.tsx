@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
 import { RotateCcw, Settings2, SlidersHorizontal, RefreshCw, Aperture, Zap, Menu as MenuIcon } from "lucide-react";
@@ -10,7 +11,7 @@ import { useCityControls } from "@/components/CityControlsContext";
 import { useFloatingSection } from "@/components/FloatingSectionContext";
 import { translations } from "@/lib/translations";
 import React from "react";
-import { HackerGliderAnimated } from "@/components/HackerGlider";
+import { useUniverseColor } from "@/components/UniverseColorContext";
 
 // --- PROFESSIONAL SLIDER COMPONENT (Bigger & Better) ---
 const ControlSlider = ({
@@ -102,6 +103,7 @@ export function Header() {
     } = useCityControls();
 
     const { setExpandedSection } = useFloatingSection();
+    const { mode: colorMode } = useUniverseColor();
 
     // Escape Coordinates
     const escapeCoordinates = [
@@ -182,7 +184,12 @@ export function Header() {
                         setTimeout(() => setOnboardingComplete(false), 500);
                     }}
                 >
-                    <HackerGliderAnimated className="w-10 h-10 shrink-0" />
+                    <div
+                        className="shrink-0 w-12 h-12 relative"
+                        style={{ filter: colorMode === 'normal' ? 'invert(1)' : undefined }}
+                    >
+                        <Image src="/unnamed.png" alt="Francis Mollica" fill className="object-contain" priority />
+                    </div>
                     <div className="flex flex-col justify-center">
                         <span className="font-bold text-base text-white tracking-tight group-hover:text-cyan-400 transition-colors">
                             Francesco Mollica

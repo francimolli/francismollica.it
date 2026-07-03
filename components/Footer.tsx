@@ -2,6 +2,7 @@
 
 import { useLanguage } from "@/lib/language-context";
 import Link from "next/link";
+import { HackerGlider } from "@/components/HackerGlider";
 
 export function Footer() {
     const { language } = useLanguage();
@@ -57,6 +58,11 @@ export function Footer() {
                     <span>&copy; {new Date().getFullYear()} Francesco Mollica</span>
                     <span className="w-1 h-1 bg-gray-800 rounded-full" />
                     <span>All Rights Reserved</span>
+                </div>
+
+                <div className="flex items-center gap-2 opacity-20 hover:opacity-40 transition-opacity duration-500">
+                    <HackerGlider className="w-5 h-5 text-cyan-400" />
+                    <span className="text-[8px] font-mono text-cyan-600 tracking-[0.3em] uppercase">Hacker Emblem</span>
                 </div>
             </div>
         </footer>

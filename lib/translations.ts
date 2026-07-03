@@ -3,34 +3,34 @@ export const translations = {
         nav: {
             home: "Home",
             about: "Chi sono",
-            timeline: "Percorso",
-            portfolio: "Progetti",
+            timeline: "Sentiero",
+            portfolio: "Creazioni",
             contact: "Contatti",
             music: "Musica",
-            market: "Market",
-            roadmap: "Roadmap",
+            market: "Bottega",
+            roadmap: "Oracolo",
         },
         hero: {
             role: "Web",
             roleSuffix: "Engineer",
-            headline: "Graphic-|-Oriented",
-            description: "Soluzioni complesse su web, esperienza, performance.",
-            ctaWork: "Timeline Esperienze",
-            ctaContact: "Contattami",
+            headline: "Arte-|-Codice",
+            description: "Architetture incantate per il web. Magia, performance, esperienza.",
+            ctaWork: "Sentiero delle Esperienze",
+            ctaContact: "Invia un Messaggio",
         },
         about: {
             title: "Chi sono",
             headline: "Appassionato di",
             headlineSuffix: "Software Engineer - Appassionato di Making (Hardware)",
-            bio1: "Design dall'architettura allo sviluppo software. Batterista e super appassionato di musica, per molti anni sono stato membro della Banda Musicale di Baveno.",
-            bio2: "Il mio obiettivo è colmare il divario tra ingegneria e business development. Organizzo jam session e sperimento nuove sonorità su [jamsession.me](https://jamsession.me).",
-            techStack: "Stack Tecnologico",
-            techStackLoading: "TECH STACK...",
+            bio1: "Dal design architetturale allo sviluppo software. Batterista e grande appassionato di musica, per molti anni membro della Banda Musicale di Baveno.",
+            bio2: "Il mio obiettivo è costruire ponti tra ingegneria e business. Organizzo jam session e sperimento nuove sonorità su [jamsession.me](https://jamsession.me).",
+            techStack: "Strumenti Magici",
+            techStackLoading: "INVENTARIO STRUMENTI...",
             ageLabel: "anni",
             imageAlt: "Francesco Mollica",
         },
         projects: {
-            sectionTitle: "Percorso Professionale",
+            sectionTitle: "Sentiero Professionale",
             sectionSubtitle: "Esperienza",
             preview: "Ruolo",
             demo: "Azienda",
@@ -57,7 +57,7 @@ export const translations = {
                     title: "Full Stack Web Developer",
                     company: "Strixia",
                     period: "2021 - 2023",
-                    description: "Deployment di web app complesse e soluzioni e-commerce. (Spearheaded) l'implementazione tecnica e fatto mentorship a sviluppatori jr.",
+                    description: "Deployment di web app complesse e soluzioni e-commerce. Implementazione tecnica e mentorship a sviluppatori jr.",
                     tags: ["Come sopra + ", "SEO", "Google Analytics", "Performance", "Optimization"],
                     url: "",
                 },
@@ -88,14 +88,14 @@ export const translations = {
             ],
         },
         portfolio: {
-            sectionTitle: "Progetti Recenti",
+            sectionTitle: "Galleria delle Creazioni",
             sectionSubtitle: "Showcase",
             viewProject: "VEDI PROGETTO",
             viewCode: "CODICE SORGENTE",
             items: [
                 {
                     title: "Portfolio",
-                    description: "Un universo interattivo 3D costruito con Three.js e React. Esplorazione spaziale, artefatti nascosti e menu HUD futuristico.",
+                    description: "Un universo interattivo 3D costruito con Three.js e React. Esplorazione cosmica, reliquie nascoste e menu del grimorio.",
                     tags: ["Three.js", "React", "Next.js", "Framer Motion"],
                     image: "/projects/orbit.png",
                     url: "https://github.com/francimolli",
@@ -103,11 +103,11 @@ export const translations = {
                 },
                 {
                     title: "Jam Session",
-                    description: "Piattaforma web per musicisti che vogliono organizzare o partecipare a jam session. Funzionalità di ricerca, prenotazione e gestione eventi musicali.",   
+                    description: "Piattaforma web per musicisti che vogliono organizzare o partecipare a jam session. Ricerca, prenotazione e gestione eventi musicali.",
                     tags: ["Next.js", "React", "Node.js", "Express", "MongoDB", "Socket.io"],
                     image: "/projects/jam_session.png",
                     url: "https://jamsession.me/",
-                    repo: "https://github.com/francimolli/" 
+                    repo: "https://github.com/francimolli/"
                 },
                 {
                     title: "Tre Gocce d'Oro - Valutazione",
@@ -119,7 +119,7 @@ export const translations = {
                 },
                 {
                     title: "Il Gioco dell'Oca Matta",
-                    description: "Realizzato in C++ per il primo anno della laurea in Informatica, con regole insolite. Dai un'occhiata se ti serve del codice molto semplice per principianti.",
+                    description: "Realizzato in C++ per il primo anno della laurea in Informatica, con regole insolite. Codice semplice ideale per principianti curiosi.",
                     tags: ["C++", "OpenGL", "Game Development"],
                     image: "/projects/oca.png",
                     url: "https://github.com/francimolli/GameOfTheMadGoose/blob/master/README.md",
@@ -149,30 +149,6 @@ export const translations = {
                     url: "https://www.hobbystaverbania.it/",
                     repo: "https://www.hobbystaverbania.it/"
                 },
-                // {
-                //     title: "Cyber-Sentinel Dashboard",
-                //     description: "Piattaforma di monitoraggio per la sicurezza delle reti in tempo reale. Analisi pacchetti e rilevamento intrusioni con visualizzazione grafica avanzata.",
-                //     tags: ["Go", "TypeScript", "D3.js", "Cybersecurity"],
-                //     image: "/projects/cyber.png",
-                //     url: "#",
-                //     repo: "https://github.com/francimolli/cyber-sentinel"
-                // },
-                // {
-                //     title: "Smart Mirror OS",
-                //     description: "Sistema operativo custom per specchi intelligenti basato su Raspberry Pi. Integrazione domotica, widget meteo e controllo vocale.",
-                //     tags: ["Python", "Node.js", "Hardware", "Raspberry Pi"],
-                //     image: "/projects/mirror.png",
-                //     url: "#",
-                //     repo: "https://github.com/francimolli/smart-mirror"
-                // },
-                //{
-                //  title: "AI Neural Weaver (In Arrivo)",
-                //  description: "Generatore di immagini basato su modelli di diffusione stabili con interfaccia web ottimizzata per la velocità e il controllo dei parametri.",
-                //  tags: ["Python", "TensorFlow", "React", "FastAPI"],
-                //  image: "/projects/ai.png",
-                //  url: "https://github.com/francimolli",
-                //    repo: "https://github.com/francimolli/neural-weaver"
-                //},
                 {
                     title: "Stissi Studio",
                     description: "Sito web professionale con ottimizzazione SEO, hosting dedicato e sviluppo custom in HTML/SCSS/PHP.",
@@ -199,7 +175,7 @@ export const translations = {
                 },
                 {
                     title: "56MX",
-                    description: "Piattaforma di e-commerce per la vendita di componenti e accessori per moto da cross. Design moderno e funzionalità avanzate di ricerca e filtro.",
+                    description: "Piattaforma e-commerce per componenti e accessori moto da cross. Design moderno e funzionalità avanzate di ricerca e filtro.",
                     tags: ["Next.js", "React", "Node.js", "Express", "MongoDB", "Socket.io"],
                     image: "/projects/56mx.png",
                     url: "https://www.56mx.it/",
@@ -208,30 +184,29 @@ export const translations = {
             ]
         },
         contact: {
-            labelCTA: "CONTATTAMI",
-            sectionTitle: "Partendo da zero",
-            sectionTitleSuffix: "creiamo Forza.",
+            labelCTA: "INVIA UN MESSAGGIO",
+            sectionTitle: "Dall'idea nasce",
+            sectionTitleSuffix: "la magia.",
             subtitle: "Contatti",
             description: "Scrivimi direttamente.",
-            openForOpportunities: "ONLINE",
-            lets: "Dare vita",
-            initialize: "al tuo progetto!",
-            directUplink: "Contattami",
-            primaryEmail: "Emails",
-            instantMessaging: "Scrivimi qui, potrei doverti rispondere prima",
+            openForOpportunities: "IN ASCOLTO",
+            lets: "Tessere insieme",
+            initialize: "il tuo incantesimo.",
+            directUplink: "Scrivi un messaggio",
+            primaryEmail: "Email",
+            instantMessaging: "Scrivimi qui, potrei risponderti prima del previsto",
             publicNodes: "Altri canali",
             followUpdates: "Instagram",
             location: "Vivo in Italia",
-            systemStatus: "SISTEMA ONLINE",
-            processingData: "IN AGGIORNAMENTO",
-            //vedi se serve qui sotto
+            systemStatus: "ARALDO IN ASCOLTO",
+            processingData: "STUDIANDO GLI ASTRI",
             name: "Nome",
             email: "Email",
             message: "Messaggio",
             send: "Invia Messaggio",
             placeholderName: "Il tuo nome",
             placeholderEmail: "tua@email.com",
-            placeholderMessage: "Parlami del tuo progetto...",
+            placeholderMessage: "Raccontami della tua idea...",
         },
         music: {
             sectionTitle: "QUALCHE ARTISTA CHE ASCOLTO",
@@ -239,7 +214,7 @@ export const translations = {
                 {
                     name: "Caparezza",
                     genre: "Alternative Hip Hop / Rock",
-                    description: "Un visionario della scena italiana, noto per i suoi testi colti, la critica sociale e uno stile eclettico che unisce rap, rock e teatro."
+                    description: "Un visionario della scena italiana, noto per i suoi testi colti e uno stile eclettico che unisce rap, rock e teatro."
                 },
                 {
                     name: "Bassi Maestro",
@@ -249,7 +224,7 @@ export const translations = {
                 {
                     name: "System of a Down",
                     genre: "Alternative Metal",
-                    description: "La band che ha ridefinito il metal. Energia caotica, testi politici e un mix unico di riff pesanti e melodie tradizionali armene."
+                    description: "La band che ha ridefinito il metal. Energia caotica, testi visionari e un mix unico di riff potenti e melodie tradizionali armene."
                 },
                 {
                     name: "The Beatles",
@@ -259,7 +234,7 @@ export const translations = {
                 {
                     name: "Ludwig van Beethoven",
                     genre: "Musica Classica / Romantica",
-                    description: "La forza della natura fatta musica. Un ponte tra classicismo e romanticismo, capace di esprimere l'eroismo e la profondità umana."
+                    description: "La forza della natura fatta musica. Un ponte tra classicismo e romanticismo, capace di esprimere eroismo e profondità umana."
                 },
                 {
                     name: "Johann Sebastian Bach",
@@ -274,155 +249,154 @@ export const translations = {
                 asleep: "è notte qui",
             },
             controls: {
-                systemConfiguration: "Configurazione Sistema",
-                // environmentVariables: "Variabili Ambiente",
-                restoreDefaults: "Ripristina Default",
-                reloadUniverse: "Aumenta entropia",
-                cooldown: "Cooldown",
+                systemConfiguration: "Consiglio degli Anziani",
+                restoreDefaults: "Azzera gli Incantesimi",
+                reloadUniverse: "Agita la Bacchetta",
+                cooldown: "Ricarica",
                 localization: "Localizzazione",
-                escapeTooltip: "Teletrasporto a coordinate casuali",
+                escapeTooltip: "Portale verso l'ignoto",
                 timeOfDay: "Orario Locale",
-                systemControls: "Controlli Sistema",
+                systemControls: "Controlli Magici",
                 localTime: "Ora Locale",
-                timeWarp: "Scorrere del tempo",
+                timeWarp: "Flusso del Tempo",
                 traffic: "Densità",
                 invertX: "Inverti Controllo X",
                 invertY: "Inverti Controllo Y",
-                sound: "Suono di fondo",
+                sound: "Canto delle Sfere",
             },
         },
         hud: {
-            missionTime: "Tempo Missione",
-            systemStatus: "Sistema",
-            statusNormal: "NORMALE",
-            statusExploring: "ESPLORANDO SPAZIO-TEMPO",
-            statusRebooting: "ANOMALIA RILEVATA",
-            statusBlackout: "SALTO QUANTICO",
+            missionTime: "Tempo di Volo",
+            systemStatus: "Magia",
+            statusNormal: "EQUILIBRIO",
+            statusExploring: "ATTRAVERSANDO IL VELO",
+            statusRebooting: "SIGILLO IN ATTIVAZIONE",
+            statusBlackout: "PORTALE APERTO",
             move: "MUOVI",
             lookFly: "GUARDA/VOLA",
             initializing: "CARICAMENTO SISTEMA A0BK4TTO-14AKQO10-00G1A4D9-H1JPKF IN CORSO...",
-            spaceExploration: "Esplorazione Spaziale",
-            enjoyTheJourney: "La fuori c'è uno splendido panorama, godiamoci la veduta. (PER TORNARE RAPIDAMENTE ALLA GALASSIA MADRE PREMI L'ICONA DEL WORMHOLE VIOLA)",
+            spaceExploration: "Viaggio Astrale",
+            enjoyTheJourney: "Uno splendido cosmo ti attende. Esplora e scopri i segreti nascosti. (PER TORNARE RAPIDAMENTE AL CENTRO DEL COSMO PREMI L'ICONA DEL PORTALE VIOLA)",
             tutorial: {
-                move: "USA I TASTI WASD OPPURE LE FRECCIE PER MUOVERTI",
+                move: "USA I TASTI WASD OPPURE LE FRECCE PER MUOVERTI",
                 dismiss: "PREMI SPAZIO PER CHIUDERE",
                 artifacts: {
-                    title: "ARTEFATTI & SEGRETI",
-                    description: "Esplora il cosmo per trovare antichi artefatti, sbloccare tecnologie e ottenere vantaggi segreti."
+                    title: "RELIQUIE & MISTERI",
+                    description: "Esplora il cosmo per trovare antiche reliquie, sbloccare poteri e ottenere favori magici."
                 },
                 logbook: {
-                    title: "DIARIO DI BORDO",
-                    description: "Tieni traccia delle tue scoperte e analizza i dati raccolti nel menu Diario."
+                    title: "IL GRIMORIO",
+                    description: "Tieni traccia delle tue scoperte e delle reliquie sbloccate nel menu del Grimorio."
                 },
                 continue: "CLICCA O PREMI SPAZIO"
             }
         },
         logbook: {
-            title: "Diario di Bordo",
-            tab1: "Navigazione",
-            tab2: "Artefatti",
-            tab3: "Legenda",
-            copy: "CONTATTA LA CASA MADRE",
-            copied: "COPIATO",
+            title: "Il Grimorio",
+            tab1: "Rotte",
+            tab2: "Reliquie",
+            tab3: "Incantesimi",
+            copy: "INVIA PERGAMENA",
+            copied: "INVIATA",
             help: {
-                navTitle: "01. MANUALE DI VOLO",
-                navDesc: "Usa i portali colorati per il teletrasporto rapido. Controlli avanzati (Tempo, Sound, Config) sono situati nella Header (Desktop) o nel Menu laterale (Mobile).",
-                secretsTitle: "02. RILEVAZIONE SEGNALI",
-                secretsDesc: "Individua le anomalie visive nello spazio. Avvicinati a < 15 AU per decriptare i pacchetti dati.",
-                redeemTitle: "03. PROTOCOLLO RISCATTO",
-                redeemDesc: "Copia il codice univoco dell'artefatto e invialo via uplink per attivare i benefici nel mondo reale.",
-                controlsTitle: "04. UNITÀ DI COMANDO",
-                controlsDesc: "[WASD] Propulsori - [SPACE] Post-bruciatore - [CLICK] Analisi Waypoint.",
-                footer: "Inertial Navigation System v3.14 // SOLIS SECTOR // NO SIGNAL INTERFERENCE"
+                navTitle: "01. ROTTE DEL COSMO",
+                navDesc: "Usa i portali colorati per viaggiare tra le stelle. Controlli avanzati (Tempo, Suono, Config) sono nella Header (Desktop) o nel Menu laterale (Mobile).",
+                secretsTitle: "02. CACCIA ALLE RELIQUIE",
+                secretsDesc: "Individua le anomalie visive nel cosmo. Avvicinati a < 15 AU per decifrare i messaggi nascosti.",
+                redeemTitle: "03. RISCATTO DEL FAVORE",
+                redeemDesc: "Copia il codice della reliquia e invialo per attivare i benefici nel mondo reale.",
+                controlsTitle: "04. PERGAMENA DEI CONTROLLI",
+                controlsDesc: "[WASD] Movimento - [SPACE] Accelerazione - [CLICK] Analizza Waypoint.",
+                footer: "Archivio delle Arti Arcane v3.14 // SETTORE SOLIS // SILENZIO ASSOLUTO"
             }
         },
         onboarding: {
-            loadingText: "BENVENUTO IN ORB",
-            creator: "Un progetto creato da Francesco, a Baveno... o meglio, in un piccolo pianeta che fa orbita attorno a questa giungla. Prendo ispirazione da un album giovane di Michele Salvemini, ma non sono un rapper, sono un ingegnere. Ho creato questo portfolio come un'esperienza interattiva ....",
+            loadingText: "BENVENUTO NEL COSMO DI FRANCESCO",
+            creator: "Un progetto nato a Baveno... su un piccolo pianeta che orbita attorno a questa giungla. Sono un ingegnere con l'anima di un esploratore. Ho costruito questo portfolio come un universo interattivo da scoprire, con reliquie nascoste e misteri universali. Buon viaggio!",
             immersive: {
-                title: "Esploratore e Avventuriero",
-                description: "Esperienza 3D interattiva. Scopri segreti, naviga l'universo e trova easter egg nascosti.",
-                tag: "GAMEPLAY",
-                recommendation: "[ DIVERTENTE MA PIÙ COMPLICATO ]"
+                title: "Viaggiatore dell'Universo",
+                description: "Esplora il cosmo in 3D. Scopri reliquie antiche, naviga tra le stelle e trova misteri nascosti.",
+                tag: "AVVENTURA",
+                recommendation: "[ MAGICO MA PIÙ MISTERIOSO ]"
             },
             classic: {
-                title: "Minimalista (vado di fretta)",
-                description: "Interfaccia pulita e veloce. Vai dritto al punto senza distrazioni.",
+                title: "Rapido e Preciso",
+                description: "Interfaccia essenziale e immediata. Vai dritto alla meta senza distrazioni.",
                 tag: "ESSENZIALE",
-                recommendation: "[ PIACEVOLE ALLA VISTA E ALLA FRUIZIONE ]"
+                recommendation: "[ CHIARO E IMMEDIATO ]"
             },
             technical: {
-                title: "Dossier Tecnico",
-                description: "Accesso diretto alla timeline professionale e alle competenze ingegneristiche.",
+                title: "Archivio delle Competenze",
+                description: "Accesso diretto al sentiero professionale e alle arti ingegneristiche.",
                 tag: "ESPERIENZA",
             },
             uplink: {
-                title: "Esplora la mia galassia",
-                description: "Contatto diretto. Avvia una trasmissione dedicata per collaborazioni.",
+                title: "Inizia un Dialogo",
+                description: "Contatto diretto. Manda un messaggio per collaborazioni e avventure creative.",
                 tag: "CONTATTO",
             },
             projects: {
-                title: "Archivio Progetti",
-                description: "Esplora la galleria dei lavori selezionati e delle innovazioni realizzate.",
+                title: "Galleria delle Creazioni",
+                description: "Esplora la raccolta dei lavori selezionati e delle realizzazioni più significative.",
                 tag: "PORTFOLIO",
             },
-            footer: "diagramma lunare in corso..."
+            footer: "mappa astrale in aggiornamento..."
         },
         secrets: {
             alert: {
-                wow: "Rilevazione avvenuta",
+                wow: "Reliquia scoperta!",
             },
             satellite: {
-                title: "Telescopio Kepler-186f",
+                title: "Cristallo di Kepler",
                 description: "Vantaggio: Bonus 10% su Consulenza Tecnica. [Fai uno screenshot e invialo]",
-                message: "SEGNALE CRIPTATO: BONUS 10% RILEVATO",
-                copyText: "Ho trovato il Telescopio Kepler. Richiedo Bonus Consulenza. Codice: SAT-ORBIT-77"
+                message: "SEGNALE DECIFRATO: BONUS 10% RILEVATO",
+                copyText: "Ho trovato il Cristallo di Kepler. Richiedo Bonus Consulenza. Codice: SAT-ORBIT-77"
             },
             monolith: {
-                title: "Gliese 436 b",
+                title: "La Pietra Oscura",
                 description: "Vantaggio: Sconto 15% sul primo progetto. [Fai uno screenshot e invialo]",
-                message: "ARTEFATTO ANALIZZATO: SCONTO 15% ATTIVATO",
-                copyText: "Ho analizzato Gliese 436 b. Richiedo Sconto 15%. Codice: MONO-ORBIT-15"
+                message: "RELIQUIA ANALIZZATA: SCONTO 15% ATTIVATO",
+                copyText: "Ho analizzato la Pietra Oscura. Richiedo Sconto 15%. Codice: MONO-ORBIT-15"
             },
             void_ship: {
-                title: "'Oumuamua",
+                title: "Il Vascello Errante",
                 description: "Vantaggio: Audit Tecnico Gratuito (SEO/Perf). [Fai uno screenshot e invialo]",
-                message: "LOG RECUPERATO: AUDIT TECNICO DISPONIBILE",
-                copyText: "Ho scoperto 'Oumuamua. Richiedo Audit Gratuito. Codice: VOID-ORBIT-X"
+                message: "MESSAGGIO RECUPERATO: AUDIT TECNICO DISPONIBILE",
+                copyText: "Ho scoperto il Vascello Errante. Richiedo Audit Gratuito. Codice: VOID-ORBIT-X"
             }
         },
         roadmap: {
-            title: "IN FASE DI SVILUPPO",
-            description: "Calcolo traiettoria in corso...",
+            title: "PROFEZIA IN ELABORAZIONE",
+            description: "Le stelle stanno rivelando il sentiero...",
         }
     },
     en: {
         nav: {
             home: "Home",
             about: "About",
-            timeline: "Timeline",
-            portfolio: "Portfolio",
+            timeline: "Path",
+            portfolio: "Creations",
             contact: "Contact",
             music: "Music",
-            market: "Market",
-            roadmap: "Roadmap",
+            market: "Emporium",
+            roadmap: "Oracle",
         },
         hero: {
             role: "Web",
             roleSuffix: "Engineer",
-            headline: "Graphic-|-Oriented",
-            description: "Complex web solutions, experience, performance.",
-            ctaWork: "Experience Timeline",
-            ctaContact: "Contact Me",
+            headline: "Art-|-Code",
+            description: "Enchanted architectures for the web. Magic, performance, experience.",
+            ctaWork: "Path of Experience",
+            ctaContact: "Send a Message",
         },
         about: {
             title: "Profile",
             headline: "Passionate about",
             headlineSuffix: "Software Engineer - Passionate about Making (Hardware)",
-            bio1: "Design from architecture to software development. Drummer and music enthusiast, for many years he was a member of the Baveno Musical Band.",
-            bio2: "My goal is to bridge the gap between engineering and business development. I organize jam sessions and experiment with new sounds at [jamsession.me](https://jamsession.me).",
-            techStack: "Tech Stack",
-            techStackLoading: "TECH STACK...",
+            bio1: "From architectural design to software development. Drummer and music enthusiast, for many years a member of the Baveno Musical Band.",
+            bio2: "My goal is to bridge engineering and business development. I organise jam sessions and experiment with new sounds at [jamsession.me](https://jamsession.me).",
+            techStack: "Magical Tools",
+            techStackLoading: "LOADING INVENTORY...",
             ageLabel: "years",
             imageAlt: "Francesco Mollica",
         },
@@ -446,7 +420,7 @@ export const translations = {
                     title: "Architect Engineer",
                     company: "Freelance",
                     period: "2025 - Present",
-                    description: "Developing scalable web applications (React/Next.js) and robust architectures. Specialized in Operating Systems, Backend (C++).",
+                    description: "Developing scalable web applications (React/Next.js) and robust architectures. Specialised in Operating Systems, Backend (C++).",
                     tags: ["C++", "TypeScript", "Next.js", "React.js", "Node.js", "Python", "Three.js", "Tailwind CSS", "etc."],
                     url: "https://github.com/francimolli",
                 },
@@ -454,7 +428,7 @@ export const translations = {
                     title: "Full Stack Web Developer",
                     company: "Strixia",
                     period: "2021 - 2023",
-                    description: "Deployment of complex web apps and e-commerce solutions. Spearheaded technical implementation and mentored junior developers.",
+                    description: "Deployment of complex web apps and e-commerce solutions. Technical implementation and mentoring of junior developers.",
                     tags: ["Same as above + ", "SEO", "Google Analytics", "Performance", "Optimization"],
                     url: "",
                 },
@@ -462,7 +436,7 @@ export const translations = {
                     title: "Software Developer",
                     company: "Altea Federation",
                     period: "Apr 2021 - Sep 2021",
-                    description: "Developed automation scripts (PowerShell) to optimize workflows on Microsoft management infrastructures.",
+                    description: "Developed automation scripts (PowerShell) to optimise workflows on Microsoft management infrastructures.",
                     tags: ["PowerShell", "Bash", "Programming Automation", "Microsoft Ecosystem Enterprise", "MySQL"],
                     url: "https://alteafederation.it/",
                 },
@@ -478,21 +452,21 @@ export const translations = {
                     title: "Service Desk Specialist",
                     company: "KPMG",
                     period: "2016 - 2017",
-                    description: "Process optimization and development of an internal web app (.NET) for advanced ticket management and workflow automation.",
+                    description: "Process optimisation and development of an internal web app (.NET) for advanced ticket management and workflow automation.",
                     tags: [".NET", "Service Desk", "Workflow Automation"],
                     url: "https://kpmg.it/",
                 }
             ],
         },
         portfolio: {
-            sectionTitle: "Selected Projects",
+            sectionTitle: "Gallery of Creations",
             sectionSubtitle: "Showcase",
             viewProject: "VIEW PROJECT",
             viewCode: "SOURCE CODE",
             items: [
                 {
                     title: "Portfolio",
-                    description: "An interactive 3D universe built with Three.js and React. Space exploration, hidden artifacts, and a futuristic HUD menu.",
+                    description: "An interactive 3D universe built with Three.js and React. Cosmic exploration, hidden relics, and a grimoire menu.",
                     tags: ["Three.js", "React", "Next.js", "Framer Motion"],
                     image: "/projects/orbit.png",
                     url: "https://github.com/francimolli",
@@ -500,7 +474,7 @@ export const translations = {
                 },
                 {
                     title: "Jam Session",
-                    description: "Web platform for musicians who want to organize or join jam sessions. Search, booking, and music event management features.",
+                    description: "Web platform for musicians who want to organise or join jam sessions. Search, booking, and music event management features.",
                     tags: ["Next.js", "React", "Node.js", "Express", "MongoDB", "Socket.io"],
                     image: "/projects/jam_session.png",
                     url: "https://jamsession.me/",
@@ -516,7 +490,7 @@ export const translations = {
                 },
                 {
                     title: "Game of The Mad Goose",
-                    description: "Realized in C++ for the First Year - Computer Science Degree, with unusual rules. Check it if you need some very simple code for beginners.",
+                    description: "Built in C++ for the first year of a Computer Science degree, with unusual rules. Great for curious beginners looking for simple code.",
                     tags: ["C++", "OpenGL", "Game Development"],
                     image: "/projects/oca.png",
                     url: "https://github.com/francimolli/GameOfTheMadGoose/blob/master/README.md",
@@ -532,7 +506,7 @@ export const translations = {
                 },
                 {
                     title: "Miss Convenienza 3D",
-                    description: "PWA application for 3D visualization and graphic rendering of household appliances in customizable home environments.",
+                    description: "PWA application for 3D visualisation and graphic rendering of household appliances in customisable home environments.",
                     tags: ["React", "Three.js", "PWA", "3D Rendering"],
                     image: "/projects/miss_convenienza.png",
                     url: "http://miss-convenienza-3d-pwa.vercel.app/",
@@ -540,7 +514,7 @@ export const translations = {
                 },
                 {
                     title: "L'Hobbysta Verbania",
-                    description: "E-commerce website and digital catalog for the historic hobby, fine arts, and modeling shop in Verbania.",
+                    description: "E-commerce website and digital catalogue for the historic hobby, fine arts, and modelling shop in Verbania.",
                     tags: ["WORDPRESS", "E-commerce", "Local Marketing", "SEO"],
                     image: "/projects/hobbysta.jpeg",
                     url: "https://www.hobbystaverbania.it/",
@@ -548,7 +522,7 @@ export const translations = {
                 },
                 {
                     title: "Stissi Studio",
-                    description: "Professional website with SEO optimization, dedicated hosting, and custom development in HTML/SCSS/PHP.",
+                    description: "Professional website with SEO optimisation, dedicated hosting, and custom development in HTML/SCSS/PHP.",
                     tags: ["HTML", "SCSS", "PHP", "SEO"],
                     image: "/projects/stissi.jpg",
                     url: "https://stissistudio.it/",
@@ -556,7 +530,7 @@ export const translations = {
                 },
                 {
                     title: "Ristorante Italia",
-                    description: "Elegant website for the historic restaurant on Isola dei Pescatori. Local SEO optimization and digital presence management.",
+                    description: "Elegant website for the historic restaurant on Isola dei Pescatori. Local SEO optimisation and digital presence management.",
                     tags: ["HTML", "SCSS", "JS", "SEO", "Local Marketing", "WORDPRESS"],
                     image: "/projects/italia.jpg",
                     url: "https://www.ristoranteitalia.eu/",
@@ -581,17 +555,17 @@ export const translations = {
             ]
         },
         contact: {
-            labelCTA: "CONTACT ME",
-            sectionTitle: "Starting from zero",
-            sectionTitleSuffix: "we create Strength.",
+            labelCTA: "SEND A MESSAGE",
+            sectionTitle: "From a spark",
+            sectionTitleSuffix: "magic begins.",
             subtitle: "Contacts",
             description: "Write me directly.",
-            openForOpportunities: "ONLINE",
-            lets: "Bring",
-            initialize: "your project to life!",
-            directUplink: "Contact Me",
-            primaryEmail: "Emails",
-            instantMessaging: "Write me here, I might have to answer you sooner",
+            openForOpportunities: "LISTENING",
+            lets: "Weave together",
+            initialize: "your enchantment.",
+            directUplink: "Send a Message",
+            primaryEmail: "Email",
+            instantMessaging: "Write me here — I might reply sooner than you expect",
             publicNodes: "Other channels",
             followUpdates: "Instagram",
             location: "Based in Italy",
@@ -601,9 +575,9 @@ export const translations = {
             send: "Send Message",
             placeholderName: "Your Name",
             placeholderEmail: "you@email.com",
-            placeholderMessage: "Tell me about your project...",
-            systemStatus: "SYSTEM ONLINE",
-            processingData: "UPDATING...",
+            placeholderMessage: "Tell me about your idea...",
+            systemStatus: "HERALD LISTENING",
+            processingData: "READING THE STARS...",
         },
         music: {
             sectionTitle: "SOME ARTISTS I LISTEN TO",
@@ -611,17 +585,17 @@ export const translations = {
                 {
                     name: "Caparezza",
                     genre: "Alternative Hip Hop / Rock",
-                    description: "A visionary of the Italian scene, known for his cultured lyrics, social criticism, and an eclectic style that blends rap, rock, and theater."
+                    description: "A visionary of the Italian scene, known for his cultured lyrics and an eclectic style that blends rap, rock, and theatre."
                 },
                 {
                     name: "Bassi Maestro",
                     genre: "Hip Hop / Lo-Fi",
-                    description: "A legend of Italian rap. Rapper, DJ, and producer who has shaped the underground sound for decades, now also an explorer of Lo-Fi sounds."
+                    description: "A legend of Italian rap. Rapper, DJ, and producer who shaped the underground sound for decades, now also an explorer of Lo-Fi sounds."
                 },
                 {
                     name: "System of a Down",
                     genre: "Alternative Metal",
-                    description: "The band that redefined metal. Chaotic energy, political lyrics, and a unique mix of heavy riffs and traditional Armenian melodies."
+                    description: "The band that redefined metal. Chaotic energy, visionary lyrics, and a unique mix of heavy riffs and traditional Armenian melodies."
                 },
                 {
                     name: "The Beatles",
@@ -642,129 +616,129 @@ export const translations = {
         },
         header: {
             status: {
-                awake: "daytime",
-                asleep: "nighttime",
+                awake: "daytime here",
+                asleep: "nighttime here",
             },
             controls: {
-                systemConfiguration: "System Configuration",
-                restoreDefaults: "Restore Defaults",
-                reloadUniverse: "Increase Entropy",
+                systemConfiguration: "Council of Elders",
+                restoreDefaults: "Reset All Spells",
+                reloadUniverse: "Wave the Wand",
                 cooldown: "Cooldown",
                 localization: "Localization",
-                escapeTooltip: "Teleport to random coordinates",
+                escapeTooltip: "Portal to the unknown",
                 timeOfDay: "Local Time",
-                systemControls: "System Controls",
+                systemControls: "Magical Controls",
                 localTime: "Local Time",
-                timeWarp: "Time Flow",
+                timeWarp: "Flow of Time",
                 traffic: "Density",
                 invertX: "Invert Control X",
                 invertY: "Invert Control Y",
-                sound: "Background Sound",
+                sound: "Song of the Spheres",
             },
         },
         hud: {
-            missionTime: "Mission Time",
-            systemStatus: "System",
-            statusNormal: "NORMAL",
-            statusExploring: "EXPLORING SPACE-TIME",
-            statusRebooting: "ANOMALY DETECTED",
-            statusBlackout: "QUANTUM LEAP",
+            missionTime: "Flight Time",
+            systemStatus: "Magic",
+            statusNormal: "BALANCED",
+            statusExploring: "CROSSING THE VEIL",
+            statusRebooting: "SEAL ACTIVATING",
+            statusBlackout: "PORTAL OPEN",
             move: "MOVE",
             lookFly: "LOOK/FLY",
             initializing: "SYSTEM LOADING A0BK4TTO-14AKQO10-00G1A4D9-H1JPKF IN PROGRESS...",
-            spaceExploration: "Space Exploration",
-            enjoyTheJourney: "It's a beautiful view out there, let's enjoy it. (TO QUICKLY RETURN TO THE MOTHER GALAXY, PRESS THE VIOLET WORMHOLE ICON)",
+            spaceExploration: "Astral Journey",
+            enjoyTheJourney: "A beautiful cosmos awaits you. Explore and discover hidden secrets. (TO QUICKLY RETURN TO THE COSMOS CENTRE, PRESS THE VIOLET PORTAL ICON)",
             tutorial: {
                 move: "USE WASD OR ARROW KEYS TO MOVE",
                 dismiss: "PRESS SPACE TO DISMISS",
                 artifacts: {
-                    title: "ARTIFACTS & SECRETS",
-                    description: "Explore the cosmos to find ancient artifacts, unlock technologies, and get secret advantages."
+                    title: "RELICS & MYSTERIES",
+                    description: "Explore the cosmos to find ancient relics, unlock powers, and receive magical favours."
                 },
                 logbook: {
-                    title: "LOGBOOK",
-                    description: "Track your discoveries and analyze collected data in the Logbook menu."
+                    title: "THE GRIMOIRE",
+                    description: "Track your discoveries and unlocked relics in the Grimoire menu."
                 },
                 continue: "CLICK OR PRESS SPACE"
             }
         },
         logbook: {
-            title: "Logbook",
-            tab1: "Navigation",
-            tab2: "Artifacts",
-            tab3: "Legend",
-            copy: "CONTACT HEADQUARTERS",
-            copied: "COPIED",
+            title: "The Grimoire",
+            tab1: "Routes",
+            tab2: "Relics",
+            tab3: "Spells",
+            copy: "SEND SCROLL",
+            copied: "SENT",
             help: {
-                navTitle: "01. FLIGHT MANUAL",
-                navDesc: "Use colored portals for rapid teleportation. Advanced controls (Time, Sound, Config) are located in the Header (Desktop) or Side Menu (Mobile).",
-                secretsTitle: "02. SIGNAL DETECTION",
-                secretsDesc: "Locate visual anomalies in space. Approach within < 15 AU to decrypt data packets.",
-                redeemTitle: "03. REDEMPTION PROTOCOL",
-                redeemDesc: "Copy the unique artifact code and send it via uplink to activate real-world benefits.",
-                controlsTitle: "04. COMMAND UNIT",
-                controlsDesc: "[WASD] Thrusters - [SPACE] Afterburner - [CLICK] Waypoint Analysis.",
-                footer: "Inertial Navigation System v3.14 // SOLIS SECTOR // NO SIGNAL INTERFERENCE"
+                navTitle: "01. COSMIC ROUTES",
+                navDesc: "Use coloured portals to travel between the stars. Advanced controls (Time, Sound, Config) are in the Header (Desktop) or Side Menu (Mobile).",
+                secretsTitle: "02. RELIC HUNT",
+                secretsDesc: "Locate visual anomalies in the cosmos. Approach within < 15 AU to decipher hidden messages.",
+                redeemTitle: "03. FAVOUR REDEMPTION",
+                redeemDesc: "Copy the relic code and send it to activate real-world benefits.",
+                controlsTitle: "04. SCROLL OF CONTROLS",
+                controlsDesc: "[WASD] Movement - [SPACE] Acceleration - [CLICK] Analyse Waypoint.",
+                footer: "Archive of Arcane Arts v3.14 // SOLIS SECTOR // ABSOLUTE SILENCE"
             }
         },
         onboarding: {
-            loadingText: "WELCOME TO ORB",
-            creator: "A project created by Francesco, in Baveno... or rather, on a small planet orbiting around Baveno. I take inspiration from an early Michele Salvemini album, but I'm not a rapper — I'm an engineer. I built this portfolio as an interactive experience, a little universe to explore, with hidden secrets and artifacts to discover. Enjoy the journey!",
+            loadingText: "WELCOME TO FRANCESCO'S COSMOS",
+            creator: "A project born in Baveno… on a small planet orbiting this jungle. I'm an engineer with the soul of an explorer. I built this portfolio as an interactive universe to discover, with hidden relics and mysteries to unveil. Enjoy the journey!",
             immersive: {
-                title: "Explorer and Adventurer",
-                description: "Interactive 3D experience. Discover secrets, navigate the universe, and find hidden easter eggs.",
-                tag: "GAMEPLAY",
-                recommendation: "[ FUN BUT MORE COMPLEX ]"
+                title: "Traveller of the Universe",
+                description: "Explore the cosmos in 3D. Discover ancient relics, navigate the stars, and find hidden mysteries.",
+                tag: "ADVENTURE",
+                recommendation: "[ MAGICAL BUT MORE MYSTERIOUS ]"
             },
             classic: {
-                title: "Minimalist (I'm in a hurry)",
-                description: "Clean and fast interface. Get straight to the point without distractions.",
+                title: "Quick and Precise",
+                description: "A clean, immediate interface. Get straight to the point without distractions.",
                 tag: "ESSENTIAL",
-                recommendation: "[ PLEASANT TO LOOK AT AND USE ]"
+                recommendation: "[ CLEAR AND IMMEDIATE ]"
             },
             technical: {
-                title: "Technical Dossier",
-                description: "Direct access to the professional timeline and engineering skills.",
+                title: "Archive of Skills",
+                description: "Direct access to the professional path and engineering arts.",
                 tag: "EXPERIENCE",
             },
             uplink: {
-                title: "Explore my galaxy",
-                description: "Direct contact. Start a dedicated transmission for collaborations.",
+                title: "Start a Dialogue",
+                description: "Direct contact. Send a message for collaborations and creative adventures.",
                 tag: "CONTACT",
             },
             projects: {
-                title: "Project Archive",
-                description: "Explore the gallery of selected works and realized innovations.",
+                title: "Gallery of Creations",
+                description: "Explore the collection of selected works and most meaningful achievements.",
                 tag: "PORTFOLIO",
             },
-            footer: "orbitizing in progress..."
+            footer: "astral map updating..."
         },
         secrets: {
             alert: {
-                wow: "Detection Confirmed",
+                wow: "Relic discovered!",
             },
             satellite: {
-                title: "Kepler-186f Telescope",
+                title: "Kepler Crystal",
                 description: "Perk: 10% Bonus on Technical Consulting. [Take a screenshot and send it]",
-                message: "ENCRYPTED SIGNAL: 10% BONUS DETECTED",
-                copyText: "I found the Kepler Telescope. Requesting Consulting Bonus. Code: SAT-ORBIT-77"
+                message: "SIGNAL DECIPHERED: 10% BONUS DETECTED",
+                copyText: "I found the Kepler Crystal. Requesting Consulting Bonus. Code: SAT-ORBIT-77"
             },
             monolith: {
-                title: "Gliese 436 b",
+                title: "The Dark Stone",
                 description: "Perk: 15% Discount on first project. [Take a screenshot and send it]",
-                message: "ARTIFACT ANALYZED: 15% DISCOUNT ACTIVATED",
-                copyText: "I analyzed Gliese 436 b. Requesting 15% Discount. Code: MONO-ORBIT-15"
+                message: "RELIC ANALYSED: 15% DISCOUNT ACTIVATED",
+                copyText: "I analysed the Dark Stone. Requesting 15% Discount. Code: MONO-ORBIT-15"
             },
             void_ship: {
-                title: "'Oumuamua",
+                title: "The Wandering Vessel",
                 description: "Perk: Free Technical Audit (SEO/Perf). [Take a screenshot and send it]",
-                message: "LOG RECOVERED: TECHNICAL AUDIT AVAILABLE",
-                copyText: "I discovered 'Oumuamua. Requesting Free Audit. Code: VOID-ORBIT-X"
+                message: "MESSAGE RECOVERED: TECHNICAL AUDIT AVAILABLE",
+                copyText: "I discovered the Wandering Vessel. Requesting Free Audit. Code: VOID-ORBIT-X"
             }
         },
         roadmap: {
-            title: "UNDER DEVELOPMENT",
-            description: "Trajectory calculation in progress...",
+            title: "PROPHECY UNFOLDING",
+            description: "The stars are revealing the path...",
         }
     },
 };

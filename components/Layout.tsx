@@ -2,8 +2,11 @@
 
 import { ReactNode } from "react";
 import { FuturisticOrbit } from "./FuturisticOrbit";
+import { useUniverseColor } from "./UniverseColorContext";
 
 export default function Layout({ children }: { children: ReactNode }) {
+    const { canvasFilter } = useUniverseColor();
+
     return (
         // MAIN CONTAINER: Occupa tutto lo schermo, sfondo nero per evitare flash bianchi
         <main className="relative h-screen w-full overflow-hidden bg-black">
@@ -11,7 +14,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             {/* ------------------------------------------------------ */}
             {/* LIVELLO 0: CITTÀ 3D (Interattiva)                      */}
             {/* ------------------------------------------------------ */}
-            <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 z-0" style={{ filter: canvasFilter }}>
                 <FuturisticOrbit />
             </div>
 
