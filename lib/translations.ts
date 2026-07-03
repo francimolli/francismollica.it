@@ -311,7 +311,7 @@ export const translations = {
             }
         },
         onboarding: {
-            loadingText: "BENVENUTO NEL COSMO DI FRANCESCO",
+            loadingText: "BENVENUTO NEL COSMO DI FRANCESCO", 
             creator: "su un piccolo pianeta che orbita attorno a questa giungla. Sono un ingegnere con l'anima di un esploratore. Buon viaggio!",
             immersive: {
                 title: "Viaggiatore dell'Universo",
