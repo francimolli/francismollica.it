@@ -102,6 +102,14 @@ export const translations = {
                     repo: "https://github.com/francimolli/"
                 },
                 {
+                    title: "MR Real Estate",
+                    description: "Web App per un'agenzia immobiliare sul Lago Maggiore. Sviluppato con Next.js, offre ricerca avanzata, integrazione virtual tour 3D e design minimale ed elegante.",
+                    tags: ["Next.js", "TypeScript", "Tailwind CSS", "Real Estate", "3D Virtual Tour"],
+                    image: "/projects/orbit.png",
+                    url: "https://www.mrealestate.it/",
+                    repo: "https://github.com/francimolli/"
+                },
+                {
                     title: "Jam Session",
                     description: "Piattaforma web per musicisti che vogliono organizzare o partecipare a jam session. Ricerca, prenotazione e gestione eventi musicali.",
                     tags: ["Next.js", "React", "Node.js", "Express", "MongoDB", "Socket.io"],
@@ -311,7 +319,7 @@ export const translations = {
             }
         },
         onboarding: {
-            loadingText: "BENVENUTO NEL COSMO DI FRANCESCO", 
+            loadingText: "BENVENUTO NEL COSMO DI FRANCESCO",
             creator: "su un piccolo pianeta che orbita attorno a questa giungla. Sono un ingegnere con l'anima di un esploratore. Buon viaggio!",
             immersive: {
                 title: "Viaggiatore dell'Universo",
@@ -470,6 +478,14 @@ export const translations = {
                     tags: ["Three.js", "React", "Next.js", "Framer Motion"],
                     image: "/projects/orbit.png",
                     url: "https://github.com/francimolli",
+                    repo: "https://github.com/francimolli/"
+                },
+                {
+                    title: "MR Real Estate",
+                    description: "Premium website and real estate platform for a luxury agency on Lake Maggiore. Built with Next.js, featuring advanced property search, 3D virtual tour integration, and a sleek, minimal design.",
+                    tags: ["Next.js", "TypeScript", "Tailwind CSS", "Real Estate", "3D Virtual Tour"],
+                    image: "/projects/orbit.png",
+                    url: "https://www.mrealestate.it/",
                     repo: "https://github.com/francimolli/"
                 },
                 {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Sun, Moon, Shuffle, type LucideIcon } from "lucide-react";
+import { Sun, Shuffle, type LucideIcon } from "lucide-react";
 import { useUniverseColor, type ColorMode } from "./UniverseColorContext";
 
 const MODES: { id: ColorMode; label: string; Icon: LucideIcon; active: string; idle: string }[] = [
