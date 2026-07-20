@@ -10,7 +10,7 @@ import { Portfolio } from "@/components/Portfolio";
 import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
 import { Music } from "@/components/Music";
-// import { MarketArt } from "@/components/MarketArt";
+import { MarketArt } from "@/components/MarketArt";
 import { TrendingUp } from "lucide-react";
 import { CityControlsProvider } from "@/components/CityControlsContext";
 import { FloatingSectionProvider } from "@/components/FloatingSectionContext";
@@ -107,9 +107,9 @@ export default function Home() {
                 <SectionCard id="music" title="Music">
                   <Music />
                 </SectionCard>
-                {/* <SectionCard id="market" title="Market" icon={TrendingUp}>
+                <SectionCard id="market" title={(t as any).nav.market}>
                   <MarketArt />
-                </SectionCard> */}
+                </SectionCard>
                 <SectionCard id="roadmap" title="Roadmap">
                   <div className="flex flex-col items-center justify-center min-h-[40vh] text-center space-y-6 p-8">
                     <div className="w-20 h-20 rounded-full bg-yellow-500/10 border-2 border-yellow-500/50 flex items-center justify-center shadow-[0_0_30px_rgba(250,204,21,0.2)]">

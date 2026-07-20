@@ -85,7 +85,23 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
 
     const [unlockVisualTrigger, setUnlockVisualTrigger] = useState(0);
     const [flyArcTarget, setFlyArcTarget] = useState<string | null>(null);
-    const flyArcToSection = (id: string) => setFlyArcTarget(id);
+    const flyArcToSection = (id: string) => {
+        setFlyArcTarget(id);
+        const sectionCoords: Record<string, { x: number, z: number }> = {
+            "about": { x: 0, z: -200 },
+            "timeline": { x: 200, z: 0 },
+            "projects": { x: 200, z: 0 },
+            "portfolio": { x: -250, z: -150 },
+            "contact": { x: -200, z: 0 },
+            "music": { x: 0, z: 200 },
+            "market": { x: 250, z: 150 },
+            "roadmap": { x: -250, z: 150 },
+        };
+        const coords = sectionCoords[id];
+        if (coords) {
+            flyTo(coords.x, coords.z, 110);
+        }
+    };
 
     const setSoundEnabled = (enabled: boolean) => {
         setSoundEnabledState(enabled);

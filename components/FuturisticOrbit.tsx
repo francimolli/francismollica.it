@@ -281,9 +281,13 @@ export function FuturisticOrbit() {
     const lastTriggerMap = useRef<Record<string, number>>({});
     const sectionTargets = [
         { id: "about", x: 0, y: 110, z: -200 },
+        { id: "timeline", x: 200, y: 110, z: 0 },
         { id: "projects", x: 200, y: 110, z: 0 },
+        { id: "portfolio", x: -250, y: 110, z: -150 },
         { id: "contact", x: -200, y: 110, z: 0 },
         { id: "music", x: 0, y: 110, z: 200 },
+        { id: "market", x: 250, y: 110, z: 150 },
+        { id: "roadmap", x: -250, y: 110, z: 150 },
     ];
     const pendingSectionOpen = useRef<{ id: string, startTime: number, startPos: THREE.Vector3 } | null>(null);
     const stateRef = useRef({ time, timeSpeed, fogDensity, trafficLevel, zoom, systemStatus, cameraTarget, resetTrigger, escapeTrigger, boostActive, unlockedSecrets });
@@ -504,7 +508,10 @@ export function FuturisticOrbit() {
             { x: 0, z: -200, color: CONFIG.colors.poi1 }, // North
             { x: 200, z: 0, color: CONFIG.colors.poi2 },  // East
             { x: -200, z: 0, color: CONFIG.colors.poi3 }, // West
-            { x: 0, z: 200, color: CONFIG.colors.active } // South
+            { x: 0, z: 200, color: CONFIG.colors.active }, // South
+            { x: -250, z: -150, color: CONFIG.colors.poi1 }, // North-West: portfolio
+            { x: 250, z: 150, color: CONFIG.colors.poi2 }, // South-East: market
+            { x: -250, z: 150, color: CONFIG.colors.poi3 } // South-West: roadmap
         ];
 
         const beaconGeo = new THREE.IcosahedronGeometry(6, 1);

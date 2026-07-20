@@ -16,8 +16,8 @@ const sections = [
     { id: "portfolio", title: "nav.portfolio", icon: Book, target: { x: -250, z: -150 } },
     { id: "contact", title: "nav.contact", icon: Mail, target: { x: -200, z: 0 } },
     { id: "music", title: "nav.music", icon: Headphones, target: { x: 0, z: 200 } },
-    { id: "market", title: "nav.market", icon: TrendingUp, target: null },
-    { id: "roadmap", title: "nav.roadmap", icon: Map, target: null },
+    { id: "market", title: "nav.market", icon: TrendingUp, target: { x: 250, z: 150 } },
+    { id: "roadmap", title: "nav.roadmap", icon: Map, target: { x: -250, z: 150 } },
 ];
 
 export function LogbookMenu() {
