@@ -26,6 +26,9 @@
   --color-u-sky: #9ad1f5;
   --color-u-rose: #f5a8c0;
   --color-u-coral: #e06a5a;
+  /* colori del logo (unnamed.png): verde fosfo della scritta e ciano del gatto */
+  --color-u-lime: #bdd241;
+  --color-u-cat: #11b8d5;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);

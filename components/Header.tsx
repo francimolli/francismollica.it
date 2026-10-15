@@ -11,7 +11,6 @@ import { useCityControls } from "@/components/CityControlsContext";
 import { useFloatingSection } from "@/components/FloatingSectionContext";
 import { translations } from "@/lib/translations";
 import React from "react";
-import { useUniverseColor } from "@/components/UniverseColorContext";
 
 // --- PROFESSIONAL SLIDER COMPONENT (Bigger & Better) ---
 const ControlSlider = ({
@@ -38,7 +37,7 @@ const ControlSlider = ({
     <div className={`group flex flex-col gap-2 relative ${width}`}>
         {/* Label Row */}
         <div className="flex justify-between items-end text-[11px] font-heading tracking-widest uppercase font-extrabold">
-            <span className="text-u-lilac/80 group-hover:text-u-sun transition-colors">{label}</span>
+            <span className="text-u-lime/90 group-hover:text-u-sun transition-colors">{label}</span>
             <span className="text-u-cream font-mono font-bold drop-shadow-[0_0_6px_rgba(255,217,138,0.4)]">{displayValue || value}{unit}</span>
         </div>
 
@@ -100,7 +99,6 @@ export function Header() {
     } = useCityControls();
 
     const { setExpandedSection } = useFloatingSection();
-    const { mode: colorMode } = useUniverseColor();
 
     // Online Status
     const [isOnline, setIsOnline] = useState(false);
@@ -139,19 +137,17 @@ export function Header() {
                         setTimeout(() => setOnboardingComplete(false), 500);
                     }}
                 >
-                    <div
-                        className="shrink-0 w-12 h-12 relative"
-                        style={{ filter: colorMode === 'normal' ? 'invert(1)' : undefined }}
-                    >
+                    {/* logo coi suoi colori veri (niente filtri) e ben visibile */}
+                    <div className="shrink-0 w-16 h-16 md:w-[4.5rem] md:h-[4.5rem] relative drop-shadow-[0_0_10px_rgba(17,184,213,0.35)]">
                         <Image src="/unnamed.png" alt="Francis Mollica" fill className="object-contain" priority />
                     </div>
                     <div className="flex flex-col justify-center">
-                        <span className="font-heading font-extrabold text-base text-u-milk tracking-tight group-hover:text-u-sun transition-colors">
+                        <span className="font-heading font-extrabold text-base text-u-lime tracking-tight group-hover:text-u-sun transition-colors drop-shadow-[0_0_8px_rgba(189,210,65,0.35)]">
                             Francesco Mollica
                         </span>
                         <div className="flex items-center gap-2">
-                            <span className={`w-2 h-2 rounded-full ${isOnline ? 'bg-u-mint shadow-[0_0_8px_rgba(159,232,199,0.9)] animate-pulse' : 'bg-gray-600'}`} />
-                            <span className="text-[10px] font-heading font-bold uppercase tracking-widest text-u-lilac/70">
+                            <span className={`w-2 h-2 rounded-full ${isOnline ? 'bg-u-lime shadow-[0_0_8px_rgba(189,210,65,0.9)] animate-pulse' : 'bg-gray-600'}`} />
+                            <span className="text-[10px] font-heading font-bold uppercase tracking-widest text-u-lime/80">
                                 {isOnline ? t.header.status.awake : t.header.status.asleep}
                             </span>
                         </div>
@@ -188,7 +184,7 @@ export function Header() {
                 <div className="flex items-center justify-end gap-3 lg:gap-4 lg:w-[400px] shrink-0">
 
                     {/* Telemetry (Desktop Only) */}
-                    <div className="hidden xl:flex flex-col items-end text-[10px] font-mono text-u-sky/60 leading-tight tracking-widest mr-4">
+                    <div className="hidden xl:flex flex-col items-end text-[10px] font-mono text-u-lime/70 leading-tight tracking-widest mr-4">
                         <span>LAT {coordinates.lat.toFixed(4)}</span>
                         <span>LON {coordinates.long.toFixed(4)}</span>
                     </div>

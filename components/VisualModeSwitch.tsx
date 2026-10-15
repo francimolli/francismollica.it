@@ -39,7 +39,7 @@ export function VisualModeSwitch() {
             aria-label="Visual mode selector"
         >
             <div className="flex flex-row md:flex-col gap-1 bg-u-surface/80 backdrop-blur-md border-2 border-u-lilac/20 rounded-2xl p-2 shadow-[0_4px_24px_rgba(10,10,35,0.4)]">
-                <span className="text-[8px] font-heading font-bold text-u-lilac/40 uppercase tracking-[0.2em] text-center px-1 pb-0.5 md:block hidden">
+                <span className="text-[8px] font-heading font-bold text-u-lime/60 uppercase tracking-[0.2em] text-center px-1 pb-0.5 md:block hidden">
                     VISUALE
                 </span>
                 {MODES.map(({ id, label, Icon, active, idle }) => (

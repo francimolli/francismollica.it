@@ -134,12 +134,12 @@ export function Planet({ config, label, phrases }: PlanetProps) {
                         onClick={() => requestFlight(id)}
                         className={`pointer-events-auto flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-full border-2 px-3 py-1 font-heading font-bold text-[11px] tracking-[0.15em] uppercase backdrop-blur-sm transition-all duration-300 ${
                             hovered
-                                ? "border-[#ffd98a] bg-[#2a2150]/90 text-[#ffd98a] shadow-[0_0_18px_rgba(255,217,138,0.35)]"
-                                : "border-[#c9b6f5]/40 bg-[#1c1433]/70 text-[#c9b6f5]"
+                                ? "border-u-sun bg-u-surface2/90 text-u-sun shadow-[0_0_18px_rgba(255,217,138,0.35)]"
+                                : "border-u-lime/40 bg-u-surface/80 text-u-lime"
                         }`}
                     >
                         ✦ {label}
-                        <span ref={distEl} className="text-[9px] text-[#9ad1f5]/80" />
+                        <span ref={distEl} className="text-[9px] text-u-sky/80" />
                     </button>
                 </Html>
             )}

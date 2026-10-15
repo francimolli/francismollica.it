@@ -346,7 +346,7 @@ export function CartoonUniverse() {
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 12 }}
-                        className="pointer-events-none absolute bottom-28 left-1/2 z-40 -translate-x-1/2 rounded-full border border-[#c9b6f5]/30 bg-[#1c1433]/80 px-5 py-2 font-heading font-bold text-[11px] uppercase tracking-[0.2em] text-[#c9b6f5] backdrop-blur-sm"
+                        className="pointer-events-none absolute bottom-28 left-1/2 z-40 -translate-x-1/2 rounded-full border border-u-lime/30 bg-u-surface/80 px-5 py-2 font-heading font-bold text-[11px] uppercase tracking-[0.2em] text-u-lime backdrop-blur-sm"
                     >
                         {t.universe?.hint}
                     </motion.div>

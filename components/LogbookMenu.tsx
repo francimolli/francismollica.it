@@ -67,7 +67,7 @@ export function LogbookMenu() {
                         e.stopPropagation();
                         setIsOpen(!isOpen);
                     }}
-                    className={`relative group flex items-center gap-3 p-4 md:px-6 md:py-4 rounded-full shadow-[0_0_30px_rgba(201,182,245,0.3)] border-2 backdrop-blur-xl transition-all duration-300 cursor-pointer overflow-hidden ${isOpen ? "bg-u-rose/20 text-u-rose border-u-rose/50" : "bg-u-surface/80 text-u-lilac border-u-lilac/30 hover:bg-u-lilac/10 hover:border-u-lilac/80"
+                    className={`relative group flex items-center gap-3 p-4 md:px-6 md:py-4 rounded-full shadow-[0_0_30px_rgba(189,210,65,0.25)] border-2 backdrop-blur-xl transition-all duration-300 cursor-pointer overflow-hidden ${isOpen ? "bg-u-rose/20 text-u-rose border-u-rose/50" : "bg-u-surface/80 text-u-lime border-u-lime/40 hover:bg-u-lime/10 hover:border-u-lime/80"
                         }`}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
