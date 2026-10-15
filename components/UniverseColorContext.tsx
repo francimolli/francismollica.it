@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { UNIVERSE_MODE } from './universe/config';
 
 export type ColorMode = 'normal' | 'inverted' | 'random';
 
@@ -34,11 +35,16 @@ export function UniverseColorProvider({ children }: { children: ReactNode }) {
     setModeState(newMode);
   };
 
-  // mode 'normal': body inverted (UI inverted), canvas counter-inverts to look normal
-  // mode 'inverted': body normal, canvas inverted
-  // mode 'random': body normal, canvas gets random filter
-  const bodyFilter = mode === 'normal' ? 'invert(1)' : '';
-  const canvasFilter = mode === 'random' ? RANDOM_FILTERS[filterIdx] : 'invert(1)';
+  // Universo legacy:
+  //   mode 'normal': body invertito (UI invertita), il canvas si contro-inverte
+  //   mode 'random': body normale, canvas con filtro casuale
+  // Universo cartoon: la palette è disegnata per essere vista così com'è,
+  // quindi niente inversioni; 'random' resta un filtro giocoso sul canvas.
+  const isCartoon = UNIVERSE_MODE === 'cartoon';
+  const bodyFilter = !isCartoon && mode === 'normal' ? 'invert(1)' : '';
+  const canvasFilter = mode === 'random'
+    ? RANDOM_FILTERS[filterIdx]
+    : isCartoon ? 'none' : 'invert(1)';
 
   useEffect(() => {
     document.body.style.filter = bodyFilter;

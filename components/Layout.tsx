@@ -1,8 +1,19 @@
 "use client";
 
 import { ReactNode } from "react";
-import { FuturisticOrbit } from "./FuturisticOrbit";
+import dynamic from "next/dynamic";
 import { useUniverseColor } from "./UniverseColorContext";
+import { UNIVERSE_MODE } from "./universe/config";
+
+// Scene 3D caricate lazy (niente SSR, three fuori dal bundle iniziale).
+const CartoonUniverse = dynamic(
+    () => import("./universe/CartoonUniverse").then((m) => m.CartoonUniverse),
+    { ssr: false, loading: () => null },
+);
+const FuturisticOrbit = dynamic(
+    () => import("./FuturisticOrbit").then((m) => m.FuturisticOrbit),
+    { ssr: false, loading: () => null },
+);
 
 export default function Layout({ children }: { children: ReactNode }) {
     const { canvasFilter } = useUniverseColor();
@@ -15,7 +26,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             {/* LIVELLO 0: CITTÀ 3D (Interattiva)                      */}
             {/* ------------------------------------------------------ */}
             <div className="absolute inset-0 z-0" style={{ filter: canvasFilter }}>
-                <FuturisticOrbit />
+                {UNIVERSE_MODE === "cartoon" ? <CartoonUniverse /> : <FuturisticOrbit />}
             </div>
 
             {/* ------------------------------------------------------ */}
@@ -24,10 +35,14 @@ export default function Layout({ children }: { children: ReactNode }) {
             {/* Serve per scurire la città e far leggere meglio il testo. 
                 'pointer-events-none' è CRUCIALE: i click passano attraverso questo livello 
                 e colpiscono la città sotto. */}
-            <div className="absolute inset-0 z-0 bg-black/40 pointer-events-none" />
-
-            {/* CRT SCANLINE EFFECT */}
-            <div className="scanlines" />
+            {/* L'universo cartoon è già calmo e scuro: niente velo né scanline. */}
+            {UNIVERSE_MODE !== "cartoon" && (
+                <>
+                    <div className="absolute inset-0 z-0 bg-black/40 pointer-events-none" />
+                    {/* CRT SCANLINE EFFECT */}
+                    <div className="scanlines" />
+                </>
+            )}
 
             {/* ------------------------------------------------------ */}
             {/* LIVELLO 2: CONTENUTO UI (Selettivo)                    */}

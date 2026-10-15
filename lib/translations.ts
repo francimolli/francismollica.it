@@ -1,5 +1,18 @@
 export const translations = {
     it: {
+        universe: {
+            planets: {
+                casa: "Casa · chi sono",
+            },
+            phrases: [
+                "Ciao! Che bello vederti da queste parti!",
+                "Francesco ha costruito tutto questo con le sue mani!",
+                "Si dice che programmi anche in sogno…",
+                "Qui il tempo scorre come decidi tu.",
+                "Francesco fa anche musica, lo sapevi?",
+                "Doppio click nel vuoto e torni a vedere tutto il cosmo!",
+            ],
+        },
         nav: {
             home: "Home",
             about: "Chi sono",
@@ -379,6 +392,19 @@ export const translations = {
         }
     },
     en: {
+        universe: {
+            planets: {
+                casa: "Home · who I am",
+            },
+            phrases: [
+                "Hi! So nice to see you around here!",
+                "Francesco built all of this with his own hands!",
+                "They say he even codes in his dreams…",
+                "Here, time flows the way you decide.",
+                "Francesco makes music too, did you know?",
+                "Double-click on empty space to see the whole cosmos again!",
+            ],
+        },
         nav: {
             home: "Home",
             about: "About",
