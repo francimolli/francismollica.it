@@ -7,6 +7,7 @@ import { Html, Outlines, useCursor } from "@react-three/drei";
 import { getToonGradient, onSurface } from "./toon";
 import { OUTLINE, PLANET_PALETTES } from "./palette";
 import { Abitante } from "./Abitante";
+import { SHY_SPOTS, Timido } from "./Fauna";
 import { bridge, useUniverseStore } from "./store";
 import type { PlanetConfig } from "./config";
 import { DECORATIONS } from "./decorations";
@@ -101,6 +102,16 @@ export function Planet({ config, label, phrases }: PlanetProps) {
 
                     {/* decorazioni tematiche */}
                     {Deco && <Deco r={R} />}
+
+                    {/* un timido, dove previsto */}
+                    {SHY_SPOTS[id] && (
+                        <Timido
+                            planetRadius={R}
+                            lat={SHY_SPOTS[id][0]}
+                            lon={SHY_SPOTS[id][1]}
+                            seed={R / 10}
+                        />
+                    )}
 
                     {/* abitanti */}
                     {Array.from({ length: creatureCount }, (_, i) => (

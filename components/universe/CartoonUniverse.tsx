@@ -9,6 +9,7 @@ import { NIGHT } from "./palette";
 import { OVERVIEW, PLANETS, SECTION_PLANET } from "./config";
 import { Ambient } from "./Ambient";
 import { Planet } from "./Planet";
+import { Fauna } from "./Fauna";
 import { Artifacts } from "./Artifacts";
 import { Mood } from "./Mood";
 import { Ship } from "./Ship";
@@ -245,6 +246,7 @@ export function CartoonUniverse() {
                         {visiblePlanets.map((p) => (
                             <Planet key={p.id} config={p} label={planetLabels[p.id]} phrases={phrases} />
                         ))}
+                        <Fauna />
                         <Artifacts />
                         <Ship />
                     </Suspense>
