@@ -59,7 +59,7 @@ export function LogbookMenu() {
     return (
         <>
             {/* Main Toggle Button */}
-            <div className="fixed top-[240px] right-8 md:top-auto md:right-auto md:bottom-8 md:left-1/2 md:-translate-x-1/2 z-[100] pointer-events-auto">
+            <div data-hud className="fixed top-[240px] right-8 md:top-auto md:right-auto md:bottom-8 md:left-1/2 md:-translate-x-1/2 z-[100] pointer-events-auto">
                 <motion.button
                     drag
                     dragMomentum={false}

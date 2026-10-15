@@ -34,6 +34,7 @@ export function VisualModeSwitch() {
 
     return (
         <div
+            data-hud
             className="fixed md:bottom-8 md:right-6 md:top-auto top-[180px] right-8 z-[90] pointer-events-auto"
             role="group"
             aria-label="Visual mode selector"

@@ -5,7 +5,7 @@ import { Canvas, useThree } from "@react-three/fiber";
 import { PerformanceMonitor } from "@react-three/drei";
 import { Bloom, EffectComposer, Vignette } from "@react-three/postprocessing";
 import { AnimatePresence, motion } from "framer-motion";
-import { bridge, bumpInteraction, flightInput, QUALITY_PRESETS, useUniverseStore } from "./store";
+import { bridge, bumpInteraction, flightInput, lastControlInput, QUALITY_PRESETS, useUniverseStore } from "./store";
 import { NIGHT } from "./palette";
 import { OVERVIEW, PLANETS, SECTION_PLANET } from "./config";
 import { Ambient } from "./Ambient";
@@ -20,6 +20,8 @@ import { useFloatingSection } from "../FloatingSectionContext";
 import { useCityControls } from "../CityControlsContext";
 import { useUniverseColor } from "../UniverseColorContext";
 import { CREATURE_EGG_GOAL } from "./store";
+import { TOUR } from "./config";
+import { TourOverlay } from "./TourOverlay";
 import { useLanguage } from "@/lib/language-context";
 import { translations } from "@/lib/translations";
 
@@ -36,7 +38,7 @@ function DebugProbe() {
 // i context dell'app (CityControls, lingua, sezioni) e lo store/bridge letti
 // dentro la scena, dove i context React non arrivano.
 export function CartoonUniverse() {
-    const { setExpandedSection } = useFloatingSection();
+    const { expandedSection, setExpandedSection } = useFloatingSection();
     const {
         setCoordinates,
         boostActive,
@@ -53,7 +55,7 @@ export function CartoonUniverse() {
         systemStatus,
     } = useCityControls();
     const { mode: visualMode } = useUniverseColor();
-    const { language } = useLanguage();
+    const { language, onboardingComplete } = useLanguage();
     const t = translations[language] as (typeof translations)["it"];
 
     const tier = useUniverseStore((s) => s.tier);
@@ -64,6 +66,7 @@ export function CartoonUniverse() {
     const proximitySection = useUniverseStore((s) => s.proximitySection);
     const unlockedCount = useUniverseStore((s) => s.unlockedSecretIds.length);
     const friendCount = useUniverseStore((s) => s.creatureFriends.length);
+    const tourActive = useUniverseStore((s) => !!s.tour);
     const creatureEgg = friendCount >= CREATURE_EGG_GOAL;
     const preset = QUALITY_PRESETS[tier];
 
@@ -121,21 +124,29 @@ export function CartoonUniverse() {
         } catch { /* niente storage, niente problema */ }
     }, []);
 
-    // VISUALE = regia: in "Tour" la camera visita i pianetini da sola
+    // VISUALE = regia: "Tour" avvia la visita guidata (il conduttore vive
+    // in TourOverlay); tornare su "Libera" la spegne.
     useEffect(() => {
-        if (visualMode !== "random") return;
-        const hop = () => {
+        const store = useUniverseStore.getState();
+        if (visualMode === "random") {
+            store.startTour("manual");
+        } else if (store.tour?.source === "manual") {
+            store.stopTour();
+        }
+    }, [visualMode]);
+
+    // Screensaver: dopo TOUR.idleMs senza input veri il tour parte da solo
+    // (e si spegne al primo input, gestito da TourOverlay).
+    useEffect(() => {
+        const timer = setInterval(() => {
             const store = useUniverseStore.getState();
-            const candidates = PLANETS.filter(
-                (p) => p.id !== store.arrivedAt && (!p.secret || unlockedCount >= 3 || creatureEgg),
-            );
-            const target = candidates[Math.floor(Math.random() * candidates.length)];
-            store.requestFlight(target.id, false);
-        };
-        hop();
-        const timer = setInterval(hop, 18000);
+            if (store.tour || !onboardingComplete || expandedSection) return;
+            if (Date.now() - lastControlInput.at > TOUR.idleMs) {
+                store.startTour("screensaver");
+            }
+        }, 10000);
         return () => clearInterval(timer);
-    }, [visualMode, unlockedCount, creatureEgg]);
+    }, [onboardingComplete, expandedSection]);
     useEffect(() => {
         const d = Math.round((trafficLevel / 100) * 10) / 10;
         if (d !== useUniverseStore.getState().density) useUniverseStore.getState().setDensity(d);
@@ -319,7 +330,7 @@ export function CartoonUniverse() {
                 {tier !== "low" && (
                     <EffectComposer multisampling={tier === "high" ? 4 : 0}>
                         <Bloom intensity={0.45} luminanceThreshold={0.55} luminanceSmoothing={0.3} mipmapBlur />
-                        <Vignette eskil={false} offset={0.28} darkness={0.62} />
+                        <Vignette eskil={false} offset={0.28} darkness={tourActive ? 0.74 : 0.62} />
                     </EffectComposer>
                 )}
             </Canvas>
@@ -341,7 +352,7 @@ export function CartoonUniverse() {
 
             {/* suggerimento comandi (desktop, prima visita) */}
             <AnimatePresence>
-                {showHint && (
+                {showHint && !tourActive && (
                     <motion.div
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -374,6 +385,13 @@ export function CartoonUniverse() {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            <TourOverlay
+                language={language}
+                planetLabels={planetLabels}
+                secretVisible={unlockedCount >= 3 || creatureEgg}
+                openSection={setExpandedSection}
+            />
 
             <MobileControls moveLabel={t.hud?.move} />
         </div>

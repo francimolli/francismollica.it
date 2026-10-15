@@ -4,7 +4,7 @@ import { useEffect, useRef, type ComponentRef } from "react";
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { FLIGHT, OVERVIEW, PLANETS, SECRET_ARTIFACTS } from "./config";
+import { FLIGHT, OVERVIEW, PLANETS, SECRET_ARTIFACTS, TOUR, type TourShot } from "./config";
 import { easeInOutCubic } from "./toon";
 import { artifactWorldPosition } from "./Artifacts";
 import { bridge, flightInput, lastInteraction, useUniverseStore } from "./store";
@@ -28,9 +28,10 @@ const offset = new THREE.Vector3();
 const localRight = new THREE.Vector3();
 const planetCenter = new THREE.Vector3();
 
-// Ancora d'atterraggio: ci si avvicina dal lato da cui si arriva, un po'
-// dall'alto, guardando il pianeta. "overview" è la vista d'insieme.
-function resolveAnchor(id: string, camera: THREE.Camera) {
+// Ancora d'atterraggio: ci si avvicina dal lato da cui si arriva. La regia
+// del tour sceglie l'inquadratura: tre quarti (default), orbita bassa a pelo
+// d'orizzonte, o panoramica alta. "overview" è la vista d'insieme.
+function resolveAnchor(id: string, camera: THREE.Camera, shot: TourShot | null) {
     if (id === "overview") {
         return {
             to: new THREE.Vector3(...OVERVIEW.position),
@@ -43,11 +44,35 @@ function resolveAnchor(id: string, camera: THREE.Camera) {
     const dir = camera.position.clone().sub(center);
     if (dir.lengthSq() < 1e-4) dir.set(0, 0.3, 1);
     dir.normalize();
+
+    // le inquadrature del tour sono tarate sul suo FOV stretto (38°):
+    // il pianeta deve respirare nel quadro, non riempirlo
+    let dist = p.radius * FLIGHT.landDistanceFactor;
+    let lift = p.radius * 0.7;
+    const toTarget = center.clone();
+    if (shot === "threeQuarter") {
+        dist = p.radius * 4.4;
+        lift = p.radius * 1.1;
+    } else if (shot === "lowOrbit") {
+        // quasi a pelo d'orizzonte: il pianeta in basso, le stelle sopra
+        dir.y = 0.05;
+        dir.normalize();
+        dist = p.radius * 3.2;
+        lift = p.radius * 0.15;
+        toTarget.y += p.radius * 0.8;
+    } else if (shot === "highPan") {
+        // panoramica dall'alto, respiro largo
+        dir.y = Math.max(dir.y, 0.75);
+        dir.normalize();
+        dist = p.radius * 5.2;
+        lift = 0;
+    }
+
     const to = center
         .clone()
-        .addScaledVector(dir, p.radius * FLIGHT.landDistanceFactor)
-        .add(new THREE.Vector3(0, p.radius * 0.7, 0));
-    return { to, toTarget: center };
+        .addScaledVector(dir, dist)
+        .add(new THREE.Vector3(0, lift, 0));
+    return { to, toTarget };
 }
 
 interface FlightRigProps {
@@ -72,7 +97,7 @@ export function FlightRig({ setCoordinates }: FlightRigProps) {
     useEffect(() => {
         if (!flyTo || !controls.current) return;
         const store = useUniverseStore.getState();
-        const anchor = resolveAnchor(flyTo, camera);
+        const anchor = resolveAnchor(flyTo, camera, store.flyShot);
         if (!anchor) return;
         const from = camera.position.clone();
         const dist = from.distanceTo(anchor.to);
@@ -96,10 +121,11 @@ export function FlightRig({ setCoordinates }: FlightRigProps) {
 
         flight.current = {
             t: 0,
-            // il warp (wormhole) è un lampo, il volo normale prende il suo tempo
+            // il warp (wormhole) è un lampo, il volo normale prende il suo
+            // tempo, il tour indugia da documentario
             duration: store.warping
                 ? THREE.MathUtils.clamp(dist / 160, 0.9, 2.2)
-                : THREE.MathUtils.clamp(dist / 40, 1.4, 6),
+                : THREE.MathUtils.clamp(dist / 40, 1.4, 6) * (store.tour ? TOUR.flightSlowdown : 1),
             curve: new THREE.CubicBezierCurve3(from, mid1, mid2, anchor.to),
             fromTarget: controls.current.target.clone(),
             toTarget: anchor.toTarget,
@@ -180,12 +206,21 @@ export function FlightRig({ setCoordinates }: FlightRigProps) {
             cam.updateProjectionMatrix();
         } else if (!flight.current) {
             ctl.autoRotate = !store.reducedMotion;
-            if (Math.abs(cam.fov - 42) > 0.05) {
-                cam.fov = THREE.MathUtils.lerp(cam.fov, 42, 0.05);
+            // FOV: più stretto durante il tour (cinema), normale altrimenti
+            const restFov = store.tour ? TOUR.fov : 42;
+            if (Math.abs(cam.fov - restFov) > 0.05) {
+                cam.fov = THREE.MathUtils.lerp(cam.fov, restFov, 0.04);
                 cam.updateProjectionMatrix();
             }
+            // dolly lentissimo durante la sosta del tour: la distanza respira
+            if (store.tour?.phase === "dwelling" && !store.reducedMotion) {
+                offset.subVectors(cam.position, ctl.target);
+                const breathe = 1 + Math.sin(state.clock.elapsedTime * 0.3) * 0.0006;
+                offset.multiplyScalar(breathe);
+                cam.position.copy(ctl.target).add(offset);
+            }
         }
-        ctl.autoRotateSpeed = 0.25 * bridge.timeScale;
+        ctl.autoRotateSpeed = 0.25 * bridge.timeScale * (store.tour?.phase === "dwelling" ? 1.8 : 1);
 
         // --- telemetria HUD (throttled, niente setState a ogni frame) ---
         coordThrottle.current += dt;

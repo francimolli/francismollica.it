@@ -1,6 +1,7 @@
 "use client";
 
 import { create } from "zustand";
+import type { TourShot } from "./config";
 
 // Stato dell'universo in zustand (non context React): deve attraversare il
 // confine del reconciler di react-three-fiber, dove i context non arrivano.
@@ -25,6 +26,11 @@ export const bridge = {
 export const lastInteraction = { at: 0 };
 export const bumpInteraction = () => { lastInteraction.at = Date.now(); };
 
+// Input "veri" (click, tasti, rotella, touch — NON il semplice mousemove):
+// guidano la pausa del tour e il conto alla rovescia dello screensaver.
+export const lastControlInput = { at: Date.now() };
+export const bumpControlInput = () => { lastControlInput.at = Date.now(); };
+
 // --- Stato reattivo --------------------------------------------------------
 
 export type QualityTier = "high" | "medium" | "low";
@@ -45,14 +51,25 @@ interface UniverseStore {
     setReducedMotion: (v: boolean) => void;
     // volo della camera
     flyTo: string | null; // id pianeta o "overview"
+    flyShot: TourShot | null; // inquadratura richiesta (regia del tour)
     openOnArrive: boolean; // la sezione si apre all'arrivo (click diretto sì, logbook no)
     flying: boolean;
     warping: boolean; // salto wormhole: velo violetto + volo rapido
     arrivedAt: string | null;
-    requestFlight: (id: string, openOnArrive?: boolean) => void;
+    requestFlight: (id: string, openOnArrive?: boolean, shot?: TourShot | null) => void;
     setFlying: (v: boolean) => void;
     setWarping: (v: boolean) => void;
     setArrived: (id: string | null) => void;
+    // la visita guidata
+    tour: {
+        source: "manual" | "screensaver";
+        stopIndex: number;
+        phase: "traveling" | "dwelling" | "finale";
+        pausedUntil: number; // timestamp ms: > adesso = in pausa
+    } | null;
+    startTour: (source: "manual" | "screensaver") => void;
+    updateTour: (patch: Partial<NonNullable<UniverseStore["tour"]>>) => void;
+    stopTour: () => void;
     // ponte scena → DOM
     proximitySection: string | null; // sezione da aprire per prossimità
     setProximitySection: (id: string | null) => void;
@@ -78,12 +95,19 @@ export const useUniverseStore = create<UniverseStore>((set) => ({
     reducedMotion: false,
     setReducedMotion: (v) => set({ reducedMotion: v }),
     flyTo: null,
+    flyShot: null,
     openOnArrive: true,
     flying: false,
     warping: false,
     arrivedAt: null,
-    requestFlight: (id, openOnArrive = true) =>
-        set({ flyTo: id, arrivedAt: null, openOnArrive }),
+    requestFlight: (id, openOnArrive = true, shot = null) =>
+        set({ flyTo: id, arrivedAt: null, openOnArrive, flyShot: shot }),
+    tour: null,
+    startTour: (source) =>
+        set({ tour: { source, stopIndex: 0, phase: "traveling", pausedUntil: 0 } }),
+    updateTour: (patch) =>
+        set((s) => (s.tour ? { tour: { ...s.tour, ...patch } } : s)),
+    stopTour: () => set({ tour: null }),
     setFlying: (v) => set({ flying: v }),
     setWarping: (v) => set({ warping: v }),
     setArrived: (id) => set({ arrivedAt: id, flying: false, flyTo: null }),

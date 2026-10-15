@@ -57,6 +57,33 @@ export const SECRET_ARTIFACTS: SecretArtifact[] = [
     { id: "void_ship", planet: "giardino", offset: [17, -7, 22] },
 ];
 
+// --- TOUR ------------------------------------------------------------------
+// La visita guidata del cosmo: rotta narrativa fissa (il Faro è il gran
+// finale con la CTA contatti; il Segreto si infila prima, se sbloccato).
+
+export type TourShot = "threeQuarter" | "lowOrbit" | "highPan";
+
+export const TOUR_ROUTE: { id: string; shot: TourShot }[] = [
+    { id: "casa", shot: "threeQuarter" },
+    { id: "officina", shot: "lowOrbit" },
+    { id: "galleria", shot: "highPan" },
+    { id: "giardino", shot: "lowOrbit" },
+    { id: "osservatorio", shot: "threeQuarter" },
+    { id: "cantiere", shot: "lowOrbit" },
+    { id: "faro", shot: "highPan" },
+];
+
+export const TOUR_SECRET_STOP: { id: string; shot: TourShot } = { id: "segreto", shot: "highPan" };
+
+export const TOUR = {
+    dwellMs: 10000, // sosta su ogni pianeta
+    pauseMs: 20000, // pausa dopo un input (tour manuale), poi riprende
+    idleMs: 120000, // inattività prima dello screensaver
+    finaleMs: 8000, // card di fine viaggio
+    fov: 38, // più stretto = più cinema
+    flightSlowdown: 1.3, // i voli del tour prendono il loro tempo
+};
+
 // --- VOLO ----------------------------------------------------------------
 export const FLIGHT = {
     speed: 55, // unità al secondo (sensazione simile al vecchio universo)
