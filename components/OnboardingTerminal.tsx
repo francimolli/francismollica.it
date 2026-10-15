@@ -31,7 +31,7 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
                 clearInterval(interval);
                 setStep(1);
             }
-        }, 30);
+        }, 20);
         return () => clearInterval(interval);
     }, [fullText]);
 
@@ -79,16 +79,11 @@ export function OnboardingTerminal({ onComplete }: OnboardingTerminalProps) {
                         </motion.span>
                     </div>
 
-                    {/* IDENTITY SUBTITLE */}
-                    {step >= 1 && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="relative z-10 mt-4 text-[10px] md:text-xs font-mono tracking-[0.3em] text-u-sun/60 text-center max-w-[80%]"
-                        >
-                            {(t as any).onboarding.creator}
-                        </motion.div>
-                    )}
+                    {/* IDENTITY SUBTITLE — statico e visibile già nell'HTML server-side:
+                        è l'elemento LCP della pagina, niente fade che lo ritardi */}
+                    <div className="relative z-10 mt-4 text-[10px] md:text-xs font-mono tracking-[0.3em] text-u-sun/60 text-center max-w-[80%]">
+                        {(t as any).onboarding.creator}
+                    </div>
                 </div>
 
                 {/* MODES GRID */}
