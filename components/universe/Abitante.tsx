@@ -113,6 +113,8 @@ export function Abitante({ planetId, planetRadius, seed, color, phrases }: Abita
 
     const onClick = (e: ThreeEvent<MouseEvent>) => {
         e.stopPropagation();
+        // easter egg: ogni creaturina distinta cliccata è un'amicizia
+        useUniverseStore.getState().addCreatureFriend(`${planetId}:${seed.toFixed(3)}`);
         if (phrases.length > 0) {
             setBubble(phrases[Math.floor(Math.random() * phrases.length)]);
             if (bubbleTimer.current) clearTimeout(bubbleTimer.current);

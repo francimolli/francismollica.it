@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { PerformanceMonitor } from "@react-three/drei";
+import { Bloom, EffectComposer, Vignette } from "@react-three/postprocessing";
 import { AnimatePresence, motion } from "framer-motion";
 import { bridge, bumpInteraction, flightInput, QUALITY_PRESETS, useUniverseStore } from "./store";
 import { NIGHT } from "./palette";
@@ -17,6 +18,8 @@ import { FlightRig } from "./FlightRig";
 import { MobileControls } from "./MobileControls";
 import { useFloatingSection } from "../FloatingSectionContext";
 import { useCityControls } from "../CityControlsContext";
+import { useUniverseColor } from "../UniverseColorContext";
+import { CREATURE_EGG_GOAL } from "./store";
 import { useLanguage } from "@/lib/language-context";
 import { translations } from "@/lib/translations";
 
@@ -47,7 +50,9 @@ export function CartoonUniverse() {
         setFlyArcTarget,
         unlockedSecrets,
         unlockSecret,
+        systemStatus,
     } = useCityControls();
+    const { mode: visualMode } = useUniverseColor();
     const { language } = useLanguage();
     const t = translations[language] as (typeof translations)["it"];
 
@@ -58,6 +63,8 @@ export function CartoonUniverse() {
     const arrivedAt = useUniverseStore((s) => s.arrivedAt);
     const proximitySection = useUniverseStore((s) => s.proximitySection);
     const unlockedCount = useUniverseStore((s) => s.unlockedSecretIds.length);
+    const friendCount = useUniverseStore((s) => s.creatureFriends.length);
+    const creatureEgg = friendCount >= CREATURE_EGG_GOAL;
     const preset = QUALITY_PRESETS[tier];
 
     const [toast, setToast] = useState<string | null>(null);
@@ -92,6 +99,43 @@ export function CartoonUniverse() {
     useEffect(() => { bridge.timeScale = timeSpeed / 3; }, [timeSpeed]); // 3x = ritmo "naturale"
     useEffect(() => { bridge.invertX = invertXAxis; }, [invertXAxis]);
     useEffect(() => { bridge.time = time; }, [time]);
+    useEffect(() => { bridge.magia = systemStatus; }, [systemStatus]); // "Magia" = mood
+
+    // giroscopio → parallasse (mobile; su iOS resta muto senza permesso esplicito)
+    useEffect(() => {
+        if (!window.matchMedia("(pointer: coarse)").matches) return;
+        const onOrientation = (e: DeviceOrientationEvent) => {
+            if (e.gamma == null || e.beta == null) return;
+            bridge.gyro.x = Math.max(-1, Math.min(1, e.gamma / 45));
+            bridge.gyro.y = Math.max(-1, Math.min(1, (e.beta - 45) / 45));
+        };
+        window.addEventListener("deviceorientation", onOrientation);
+        return () => window.removeEventListener("deviceorientation", onOrientation);
+    }, []);
+
+    // amicizie creaturine persistite (easter egg)
+    useEffect(() => {
+        try {
+            const stored = localStorage.getItem("orbit_creature_friends");
+            if (stored) useUniverseStore.getState().setCreatureFriends(JSON.parse(stored));
+        } catch { /* niente storage, niente problema */ }
+    }, []);
+
+    // VISUALE = regia: in "Tour" la camera visita i pianetini da sola
+    useEffect(() => {
+        if (visualMode !== "random") return;
+        const hop = () => {
+            const store = useUniverseStore.getState();
+            const candidates = PLANETS.filter(
+                (p) => p.id !== store.arrivedAt && (!p.secret || unlockedCount >= 3 || creatureEgg),
+            );
+            const target = candidates[Math.floor(Math.random() * candidates.length)];
+            store.requestFlight(target.id, false);
+        };
+        hop();
+        const timer = setInterval(hop, 18000);
+        return () => clearInterval(timer);
+    }, [visualMode, unlockedCount, creatureEgg]);
     useEffect(() => {
         const d = Math.round((trafficLevel / 100) * 10) / 10;
         if (d !== useUniverseStore.getState().density) useUniverseStore.getState().setDensity(d);
@@ -187,19 +231,31 @@ export function CartoonUniverse() {
         useUniverseStore.getState().setProximitySection(null);
     }, [proximitySection, setExpandedSection]);
 
-    // artefatto trovato: sblocco + toast (riusa il sistema del LOGBOOK)
+    // artefatto trovato o easter egg delle amicizie: toast + sblocchi
     useEffect(() => {
         let timer: ReturnType<typeof setTimeout> | null = null;
-        const unsub = useUniverseStore.subscribe((s, prev) => {
-            if (!s.pendingUnlock || s.pendingUnlock === prev.pendingUnlock) return;
-            unlockSecret(s.pendingUnlock);
-            const secretT = (t as never as Record<string, Record<string, { message?: string }>>).secrets;
-            setToast(secretT?.[s.pendingUnlock]?.message ?? s.pendingUnlock);
+        const show = (message: string, alsoClearPending: boolean) => {
+            setToast(message);
             if (timer) clearTimeout(timer);
             timer = setTimeout(() => {
                 setToast(null);
-                useUniverseStore.getState().setPendingUnlock(null);
+                if (alsoClearPending) useUniverseStore.getState().setPendingUnlock(null);
             }, 6000);
+        };
+        const unsub = useUniverseStore.subscribe((s, prev) => {
+            if (s.pendingUnlock && s.pendingUnlock !== prev.pendingUnlock) {
+                unlockSecret(s.pendingUnlock);
+                const secretT = (t as never as Record<string, Record<string, { message?: string }>>).secrets;
+                show(secretT?.[s.pendingUnlock]?.message ?? s.pendingUnlock, true);
+            }
+            // l'uovo scatta esattamente al traguardo (non ri-annuncia ai mount successivi)
+            if (
+                s.creatureFriends.length >= CREATURE_EGG_GOAL &&
+                prev.creatureFriends.length < CREATURE_EGG_GOAL &&
+                prev.creatureFriends.length > 0
+            ) {
+                show(t.universe?.eggMessage ?? "✦", false);
+            }
         });
         return () => {
             unsub();
@@ -221,7 +277,9 @@ export function CartoonUniverse() {
     }, [t]);
     const phrases = t.universe?.phrases ?? [];
 
-    const visiblePlanets = PLANETS.filter((p) => !p.secret || unlockedCount >= 3);
+    // il pianeta segreto si svela con tutte le reliquie O con abbastanza amicizie
+    const visiblePlanets = PLANETS.filter((p) => !p.secret || unlockedCount >= 3 || creatureEgg);
+
 
     return (
         <div className="absolute inset-0">
@@ -253,15 +311,28 @@ export function CartoonUniverse() {
                 </PerformanceMonitor>
 
                 <FlightRig setCoordinates={setCoordinates} />
+
+                {/* post leggero: bloom morbido + vignetta (spento sul tier basso) */}
+                {tier !== "low" && (
+                    <EffectComposer multisampling={tier === "high" ? 4 : 0}>
+                        <Bloom intensity={0.45} luminanceThreshold={0.55} luminanceSmoothing={0.3} mipmapBlur />
+                        <Vignette eskil={false} offset={0.28} darkness={0.62} />
+                    </EffectComposer>
+                )}
             </Canvas>
 
-            {/* velo: dissolvenza (reduced motion) o lampo violetto del wormhole */}
+            {/* velo: dissolvenza (reduced motion), lampo violetto del warp,
+                o buio della Magia in blackout */}
             <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0 transition-opacity duration-300"
                 style={{
-                    backgroundColor: warping ? "#2a1a4f" : "#0a0a23",
-                    opacity: reducedMotion && flying ? 1 : warping ? 0.5 : 0,
+                    backgroundColor: warping || systemStatus === "BLACKOUT" ? "#2a1a4f" : "#0a0a23",
+                    opacity:
+                        reducedMotion && flying ? 1
+                        : warping ? 0.5
+                        : systemStatus === "BLACKOUT" ? 0.65
+                        : 0,
                 }}
             />
 

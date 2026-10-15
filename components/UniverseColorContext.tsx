@@ -38,13 +38,13 @@ export function UniverseColorProvider({ children }: { children: ReactNode }) {
   // Universo legacy:
   //   mode 'normal': body invertito (UI invertita), il canvas si contro-inverte
   //   mode 'random': body normale, canvas con filtro casuale
-  // Universo cartoon: la palette è disegnata per essere vista così com'è,
-  // quindi niente inversioni; 'random' resta un filtro giocoso sul canvas.
+  // Universo cartoon: VISUALE è la regia della camera (Libera / Tour),
+  // non un filtro colore: la palette resta sempre quella disegnata.
   const isCartoon = UNIVERSE_MODE === 'cartoon';
   const bodyFilter = !isCartoon && mode === 'normal' ? 'invert(1)' : '';
-  const canvasFilter = mode === 'random'
-    ? RANDOM_FILTERS[filterIdx]
-    : isCartoon ? 'none' : 'invert(1)';
+  const canvasFilter = isCartoon
+    ? 'none'
+    : mode === 'random' ? RANDOM_FILTERS[filterIdx] : 'invert(1)';
 
   useEffect(() => {
     document.body.style.filter = bodyFilter;

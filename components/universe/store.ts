@@ -16,6 +16,8 @@ export const bridge = {
     timeScale: 1, // da "Flusso del Tempo" (timeSpeed/3, può essere negativo)
     invertX: true,
     time: 18.25, // "Ora Locale", guida il mood delle luci
+    magia: "NORMAL" as "NORMAL" | "BLACKOUT" | "REBOOTING", // mood dell'universo
+    gyro: { x: 0, y: 0 }, // giroscopio mobile, per la parallasse
 };
 
 // Ultima interazione dell'utente (i trigger di prossimità scattano solo
@@ -61,7 +63,13 @@ interface UniverseStore {
     setDensity: (v: number) => void;
     unlockedSecretIds: string[];
     setUnlockedSecretIds: (ids: string[]) => void;
+    // easter egg: fai amicizia (click) con abbastanza creaturine
+    creatureFriends: string[];
+    addCreatureFriend: (id: string) => void;
+    setCreatureFriends: (ids: string[]) => void;
 }
+
+export const CREATURE_EGG_GOAL = 10;
 
 export const useUniverseStore = create<UniverseStore>((set) => ({
     tier: "high",
@@ -87,4 +95,15 @@ export const useUniverseStore = create<UniverseStore>((set) => ({
     setDensity: (v) => set({ density: v }),
     unlockedSecretIds: [],
     setUnlockedSecretIds: (ids) => set({ unlockedSecretIds: ids }),
+    creatureFriends: [],
+    addCreatureFriend: (id) =>
+        set((s) => {
+            if (s.creatureFriends.includes(id)) return s;
+            const creatureFriends = [...s.creatureFriends, id];
+            try {
+                localStorage.setItem("orbit_creature_friends", JSON.stringify(creatureFriends));
+            } catch { /* storage non disponibile: l'uovo vive solo in sessione */ }
+            return { creatureFriends };
+        }),
+    setCreatureFriends: (ids) => set({ creatureFriends: ids }),
 }));

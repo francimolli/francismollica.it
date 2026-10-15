@@ -1,13 +1,15 @@
 "use client";
 
-import { Sun, Shuffle, type LucideIcon } from "lucide-react";
+import { Orbit, Clapperboard, type LucideIcon } from "lucide-react";
 import { useUniverseColor, type ColorMode } from "./UniverseColorContext";
 
+// Nell'universo cartoon VISUALE è la regia della camera:
+// Libera = orbiti e voli tu · Tour = la camera visita i pianetini da sola.
 const MODES: { id: ColorMode; label: string; Icon: LucideIcon; active: string; idle: string }[] = [
     {
         id: "normal",
-        label: "Natural",
-        Icon: Sun,
+        label: "Libera",
+        Icon: Orbit,
         active: "bg-u-mint/25 text-u-mint border-u-mint/50",
         idle: "text-u-mint/50 border-transparent hover:text-u-mint hover:bg-u-mint/10",
     },
@@ -20,8 +22,8 @@ const MODES: { id: ColorMode; label: string; Icon: LucideIcon; active: string; i
     // },
     {
         id: "random",
-        label: "Random",
-        Icon: Shuffle,
+        label: "Tour",
+        Icon: Clapperboard,
         active: "bg-u-sun/25 text-u-sun border-u-sun/50",
         idle: "text-u-sun/50 border-transparent hover:text-u-sun hover:bg-u-sun/10",
     },

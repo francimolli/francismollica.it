@@ -12,6 +12,7 @@ export const translations = {
                 segreto: "???",
             },
             hint: "WASD o frecce per volare · clicca un pianetino per visitarlo",
+            eggMessage: "Le creaturine ti vogliono bene: un pianeta segreto si è svelato!",
             phrases: [
                 "Ciao! Che bello vederti da queste parti!",
                 "Francesco ha costruito tutto questo con le sue mani!",
@@ -280,7 +281,6 @@ export const translations = {
             controls: {
                 systemConfiguration: "Consiglio degli Anziani",
                 restoreDefaults: "Azzera gli Incantesimi",
-                reloadUniverse: "Agita la Bacchetta",
                 cooldown: "Ricarica",
                 localization: "Localizzazione",
                 escapeTooltip: "Portale verso l'ignoto",
@@ -412,6 +412,7 @@ export const translations = {
                 segreto: "???",
             },
             hint: "WASD or arrows to fly · click a little planet to visit it",
+            eggMessage: "The little creatures love you: a secret planet has revealed itself!",
             phrases: [
                 "Hi! So nice to see you around here!",
                 "Francesco built all of this with his own hands!",
@@ -680,7 +681,6 @@ export const translations = {
             controls: {
                 systemConfiguration: "Council of Elders",
                 restoreDefaults: "Reset All Spells",
-                reloadUniverse: "Wave the Wand",
                 cooldown: "Cooldown",
                 localization: "Localization",
                 escapeTooltip: "Portal to the unknown",

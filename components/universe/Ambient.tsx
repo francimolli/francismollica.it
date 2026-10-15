@@ -4,7 +4,7 @@ import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
-import { QUALITY_PRESETS, useUniverseStore } from "./store";
+import { bridge, QUALITY_PRESETS, useUniverseStore } from "./store";
 import { PASTEL } from "./palette";
 
 // Texture radiale morbida generata una volta sola (niente asset esterni).
@@ -45,8 +45,10 @@ function Nebulae({ count }: { count: number }) {
     useFrame((state, dt) => {
         if (!group.current || reducedMotion) return;
         group.current.rotation.y += dt * 0.004;
-        // respiro lentissimo di tutto il fondale
-        const breath = 1 + Math.sin(state.clock.elapsedTime * 0.15) * 0.02;
+        // respiro lentissimo di tutto il fondale; durante la tempesta di
+        // magia (Rigenera) la nebulosa pulsa molto più forte
+        const storm = bridge.magia === "REBOOTING" ? 4 : 1;
+        const breath = 1 + Math.sin(state.clock.elapsedTime * (0.15 * storm)) * 0.02 * storm;
         group.current.scale.setScalar(breath);
     });
 
@@ -127,9 +129,20 @@ export function Ambient() {
     const reducedMotion = useUniverseStore((s) => s.reducedMotion);
     const density = useUniverseStore((s) => s.density);
     const preset = QUALITY_PRESETS[tier];
+    const parallax = useRef<THREE.Group>(null);
+
+    // Parallasse del fondale: segue dolcemente il cursore (desktop)
+    // e il giroscopio (mobile). Dà profondità senza toccare la camera.
+    useFrame((state) => {
+        if (!parallax.current || reducedMotion) return;
+        const px = THREE.MathUtils.clamp(state.pointer.x + bridge.gyro.x, -1.4, 1.4);
+        const py = THREE.MathUtils.clamp(state.pointer.y + bridge.gyro.y, -1.4, 1.4);
+        parallax.current.rotation.y = THREE.MathUtils.lerp(parallax.current.rotation.y, px * 0.035, 0.03);
+        parallax.current.rotation.x = THREE.MathUtils.lerp(parallax.current.rotation.x, -py * 0.02, 0.03);
+    });
 
     return (
-        <>
+        <group ref={parallax}>
             <Stars
                 radius={900}
                 depth={200}
@@ -141,6 +154,6 @@ export function Ambient() {
             />
             <Nebulae count={preset.nebula} />
             <Dust count={Math.max(60, Math.round(preset.dust * density))} />
-        </>
+        </group>
     );
 }

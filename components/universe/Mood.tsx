@@ -35,13 +35,18 @@ export function Mood() {
     const sky = useRef(new THREE.Color("#0a0a23"));
     const fogColor = useRef(new THREE.Color("#15142f"));
 
-    useFrame(() => {
+    useFrame(({ clock }) => {
         const h = ((bridge.time % 24) + 24) % 24;
         let i = 0;
         while (i < keys.length - 2 && h >= keys[i + 1].h) i++;
         const a = keys[i];
         const b = keys[i + 1];
         const t = (h - a.h) / (b.h - a.h);
+
+        // Magia in tempesta (Rigenera): le luci pulsano forte e virano lilla
+        const storm = bridge.magia === "REBOOTING"
+            ? 1.5 + Math.sin(clock.elapsedTime * 8) * 0.5
+            : 1;
 
         sky.current.copy(a.skyC).lerp(b.skyC, t);
         fogColor.current.copy(a.fogC).lerp(b.fogC, t);
@@ -51,8 +56,8 @@ export function Mood() {
             dir.current.color.lerp(a.dirC.clone().lerp(b.dirC, t), 0.05);
             dir.current.intensity = THREE.MathUtils.lerp(
                 dir.current.intensity,
-                THREE.MathUtils.lerp(a.dirInt, b.dirInt, t),
-                0.05,
+                THREE.MathUtils.lerp(a.dirInt, b.dirInt, t) * storm,
+                storm > 1 ? 0.3 : 0.05,
             );
         }
         if (amb.current) {
