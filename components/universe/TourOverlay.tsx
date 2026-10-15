@@ -169,7 +169,13 @@ export function TourOverlay({ language, planetLabels, secretVisible, openSection
                 className={`pointer-events-none absolute inset-x-0 bottom-0 z-40 h-[9vh] bg-[#05040f] transition-transform duration-700 ease-out ${active ? "translate-y-0" : "translate-y-full"}`}
             />
 
-            {/* DIDASCALIA + PROGRESSO */}
+            {/* DIDASCALIA + PROGRESSO — centrata nello schermo su mobile,
+                sopra la banda inferiore su desktop. Il wrapper statico tiene
+                i transform di posizionamento, framer anima solo l'interno. */}
+            <div
+                data-tour-ui
+                className="pointer-events-none absolute left-1/2 top-1/2 z-50 w-[min(92vw,540px)] -translate-x-1/2 -translate-y-1/2 md:top-auto md:bottom-[11vh] md:translate-y-0"
+            >
             <AnimatePresence>
                 {active && phase !== "traveling" && (
                     <motion.div
@@ -179,7 +185,7 @@ export function TourOverlay({ language, planetLabels, secretVisible, openSection
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 24 }}
                         transition={{ type: "spring", bounce: 0.3, duration: 0.6 }}
-                        className="pointer-events-auto absolute bottom-[11vh] left-1/2 z-50 w-[min(92vw,540px)] -translate-x-1/2"
+                        className="pointer-events-auto"
                     >
                         <div className="clay px-6 py-4 text-center">
                             <div className="font-heading text-sm font-extrabold uppercase tracking-[0.2em] text-u-lime">
@@ -227,6 +233,7 @@ export function TourOverlay({ language, planetLabels, secretVisible, openSection
                     </motion.div>
                 )}
             </AnimatePresence>
+            </div>
 
             {/* CHIP DI PAUSA */}
             <AnimatePresence>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ComponentRef } from "react";
+import { useEffect, useMemo, useRef, type ComponentRef } from "react";
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
@@ -303,6 +303,13 @@ export function FlightRig({ setCoordinates }: FlightRigProps) {
         }
     });
 
+    // Su touch niente swipe/pinch sull'universo: si naviga SOLO con
+    // joystick e frecce-sguardo (il tap sui pianetini resta attivo).
+    const isTouch = useMemo(
+        () => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches,
+        [],
+    );
+
     return (
         <OrbitControls
             ref={controls}
@@ -310,6 +317,8 @@ export function FlightRig({ setCoordinates }: FlightRigProps) {
             enableDamping
             dampingFactor={0.08}
             enablePan={false}
+            enableRotate={!isTouch}
+            enableZoom={!isTouch}
             minDistance={4}
             maxDistance={600}
             autoRotate={!reducedMotion}

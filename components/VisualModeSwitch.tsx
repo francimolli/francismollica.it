@@ -1,7 +1,10 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { Orbit, Clapperboard, type LucideIcon } from "lucide-react";
 import { useUniverseColor, type ColorMode } from "./UniverseColorContext";
+import { useLanguage } from "@/lib/language-context";
+import { translations } from "@/lib/translations";
 
 // Nell'universo cartoon VISUALE è la regia della camera:
 // Libera = orbiti e voli tu · Tour = la camera visita i pianetini da sola.
@@ -31,6 +34,21 @@ const MODES: { id: ColorMode; label: string; Icon: LucideIcon; active: string; i
 
 export function VisualModeSwitch() {
     const { mode, setMode } = useUniverseColor();
+    const { language } = useLanguage();
+    const t = translations[language] as (typeof translations)["it"];
+    // Su mobile lo switch è solo icone: al passaggio in Tour un toast
+    // dice a voce alta cosa è appena successo.
+    const [toast, setToast] = useState<string | null>(null);
+    const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const handleMode = (id: ColorMode) => {
+        setMode(id);
+        if (id === "random" && window.matchMedia("(pointer: coarse)").matches) {
+            setToast(t.universe?.tourToast ?? "Tour ✦");
+            if (toastTimer.current) clearTimeout(toastTimer.current);
+            toastTimer.current = setTimeout(() => setToast(null), 2600);
+        }
+    };
 
     return (
         <div
@@ -46,7 +64,7 @@ export function VisualModeSwitch() {
                 {MODES.map(({ id, label, Icon, active, idle }) => (
                     <button
                         key={id}
-                        onClick={() => setMode(id)}
+                        onClick={() => handleMode(id)}
                         aria-pressed={mode === id}
                         aria-label={`${label} visual mode`}
                         className={`clay-press flex items-center gap-2 px-2.5 py-2.5 md:px-3 md:py-2 rounded-xl text-[11px] font-heading font-bold tracking-wide border-2 transition-all duration-200 ${mode === id ? active : idle}`}
@@ -56,6 +74,16 @@ export function VisualModeSwitch() {
                     </button>
                 ))}
             </div>
+
+            {/* toast di conferma (mobile): sei in modalità Tour */}
+            {toast && (
+                <div
+                    role="status"
+                    className="fixed left-1/2 top-1/2 z-[120] -translate-x-1/2 -translate-y-1/2 animate-in fade-in zoom-in-95 duration-300 rounded-2xl border-2 border-u-sun/50 bg-u-surface/95 px-6 py-3 font-heading text-sm font-extrabold uppercase tracking-[0.15em] text-u-sun shadow-[0_0_30px_rgba(255,217,138,0.3)] backdrop-blur-md whitespace-nowrap"
+                >
+                    {toast}
+                </div>
+            )}
         </div>
     );
 }
