@@ -4,12 +4,45 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
-import { RotateCcw, Settings2, Zap, Menu as MenuIcon } from "lucide-react";
+import { Book, Briefcase, Headphones, Home, Mail, Map, Menu as MenuIcon, RotateCcw, Settings2, TrendingUp, User, Zap } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useCityControls } from "@/components/CityControlsContext";
+import { useFloatingSection } from "@/components/FloatingSectionContext";
 import { translations } from "@/lib/translations";
 import React from "react";
+
+// Navigazione rapida del menu mobile: stesse mete del Logbook.
+const NAV_SECTIONS = [
+    { id: "home", icon: Home },
+    { id: "about", icon: User },
+    { id: "timeline", icon: Briefcase },
+    { id: "portfolio", icon: Book },
+    { id: "contact", icon: Mail },
+    { id: "music", icon: Headphones },
+    { id: "market", icon: TrendingUp },
+    { id: "roadmap", icon: Map },
+];
+
+// Altoparlante on/off (lo stesso disegno su desktop e mobile).
+function SoundIcon({ on, size = 16 }: { on: boolean; size?: number }) {
+    return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            {on ? (
+                <>
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                </>
+            ) : (
+                <>
+                    <line x1="23" y1="9" x2="17" y2="15"></line>
+                    <line x1="17" y1="9" x2="23" y2="15"></line>
+                </>
+            )}
+        </svg>
+    );
+}
 
 export function Header() {
     const [isOpen, setIsOpen] = useState(false);
@@ -24,8 +57,21 @@ export function Header() {
         invertYAxis, setInvertYAxis,
         invertXAxis, setInvertXAxis,
         soundEnabled, setSoundEnabled,
-        activateBoost, boostActive, boostCooldown
+        activateBoost, boostActive, boostCooldown,
+        flyArcToSection,
     } = useCityControls();
+    const { setExpandedSection } = useFloatingSection();
+
+    // navigazione rapida dal menu mobile: come il Logbook, ma a portata di pollice
+    const goTo = (id: string) => {
+        setIsOpen(false);
+        if (id === "home") {
+            resetView();
+            return;
+        }
+        setTimeout(() => setExpandedSection(id), 300);
+        flyArcToSection(id);
+    };
 
     // Online Status
     const [isOnline, setIsOnline] = useState(false);
@@ -138,24 +184,26 @@ export function Header() {
                             `}
                             title={soundEnabled ? "Sound ON" : "Sound OFF"}
                         >
-                            {soundEnabled ? (
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                                </svg>
-                            ) : (
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                                    <line x1="23" y1="9" x2="17" y2="15"></line>
-                                    <line x1="17" y1="9" x2="23" y2="15"></line>
-                                </svg>
-                            )}
+                            <SoundIcon on={soundEnabled} />
                         </button>
                     </div>
 
                     {/* --- MOBILE ICONS (ALWAYS VISIBLE ON MOBILE) --- */}
                     <div className="flex md:hidden items-center gap-3">
+
+                        {/* MOBILE SOUND TOGGLE */}
+                        <button
+                            onClick={() => setSoundEnabled(!soundEnabled)}
+                            className={`
+                                p-3 rounded-full transition-all duration-300 border-2
+                                ${soundEnabled
+                                    ? 'bg-u-sky/20 text-u-sky border-u-sky/40 shadow-[0_0_10px_rgba(154,209,245,0.3)]'
+                                    : 'bg-u-surface/60 text-u-lilac/50 border-white/10'}
+                            `}
+                            title={soundEnabled ? "Sound ON" : "Sound OFF"}
+                        >
+                            <SoundIcon on={soundEnabled} size={20} />
+                        </button>
 
                         {/* MOBILE BOOST (Left of Rocket) */}
                         <button
@@ -195,6 +243,27 @@ export function Header() {
                                     </SheetHeader>
 
                                     <div className="p-8 space-y-10 flex-1 overflow-y-auto">
+                                        {/* Navigazione rapida: dritti alla sezione, il menu si chiude da solo */}
+                                        <div>
+                                            <div className="text-[10px] font-heading uppercase tracking-widest text-u-sun/80 font-extrabold mb-4">
+                                                {t.logbook.tab1}
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-3">
+                                                {NAV_SECTIONS.map(({ id, icon: Icon }) => (
+                                                    <button
+                                                        key={id}
+                                                        onClick={() => goTo(id)}
+                                                        className="clay-press flex items-center gap-3 p-3 rounded-xl bg-u-surface/50 border border-u-lilac/20 text-u-cream/90 hover:border-u-sun/50 hover:text-u-sun transition-all"
+                                                    >
+                                                        <Icon size={16} className="text-u-lilac shrink-0" />
+                                                        <span className="text-[11px] font-heading font-bold uppercase tracking-wider truncate">
+                                                            {(t.nav as Record<string, string>)[id] ?? id}
+                                                        </span>
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+
                                         <div className="space-y-8">
                                             {/* Invert Y Toggle */}
                                             <div className="flex items-center justify-between pt-2">
