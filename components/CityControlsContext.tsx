@@ -124,51 +124,90 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
         }
     }, []);
 
-    // Ambient Music (Procedural Synth Pad)
+    // Musica ambiente: carillon spaziale (in tema con l'universo cartoon).
+    // Pad caldo e morbido + note pentatoniche "pizzicate" a caso, come un
+    // carillon che suona piano tra le stelle. Sempre opt-in.
     useEffect(() => {
         if (!soundEnabled) return;
 
-        let audioContext: AudioContext;
-        let oscillators: OscillatorNode[] = [];
+        let audioContext: AudioContext | undefined;
+        const running: OscillatorNode[] = [];
+        let pluckTimer: ReturnType<typeof setTimeout> | null = null;
+        let stopped = false;
 
         try {
             audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-            const frequencies = [65.41, 82.41, 98.00, 130.81];
-            const masterGain = audioContext.createGain();
-            masterGain.gain.value = 0.08;
-            masterGain.connect(audioContext.destination);
+            const master = audioContext.createGain();
+            master.gain.value = 0.12;
+            master.connect(audioContext.destination);
 
-            frequencies.forEach((freq, i) => {
-                const osc = audioContext.createOscillator();
-                const gain = audioContext.createGain();
-
-                osc.type = 'sine';
+            // Pad caldo (Do3 + Sol3), respira lentamente
+            [130.81, 196.0].forEach((freq, i) => {
+                const osc = audioContext!.createOscillator();
+                const gain = audioContext!.createGain();
+                osc.type = 'triangle';
                 osc.frequency.value = freq;
+                gain.gain.value = 0.09;
 
-                gain.gain.value = 0.25;
-                const lfo = audioContext.createOscillator();
-                const lfoGain = audioContext.createGain();
-                lfo.frequency.value = 0.1 + (i * 0.05);
-                lfoGain.gain.value = 0.05;
+                const lfo = audioContext!.createOscillator();
+                const lfoGain = audioContext!.createGain();
+                lfo.frequency.value = 0.06 + i * 0.04;
+                lfoGain.gain.value = 0.035;
                 lfo.connect(lfoGain);
                 lfoGain.connect(gain.gain);
 
                 osc.connect(gain);
-                gain.connect(masterGain);
-
+                gain.connect(master);
                 osc.start();
                 lfo.start();
-
-                oscillators.push(osc);
+                running.push(osc, lfo);
             });
 
+            // Carillon: pentatonica di Do su due ottave, con una seconda voce
+            // leggermente scordata per il luccichio da scatola musicale
+            const SCALE = [523.25, 587.33, 659.25, 783.99, 880.0, 1046.5, 1174.66, 1318.51];
+            const pluck = () => {
+                if (stopped || !audioContext) return;
+                const now = audioContext.currentTime;
+                const freq = SCALE[Math.floor(Math.random() * SCALE.length)];
+
+                const note = audioContext.createOscillator();
+                const shimmer = audioContext.createOscillator();
+                const env = audioContext.createGain();
+                const shimmerGain = audioContext.createGain();
+
+                note.type = 'sine';
+                note.frequency.value = freq;
+                shimmer.type = 'sine';
+                shimmer.frequency.value = freq * 2.012;
+                shimmerGain.gain.value = 0.25;
+
+                env.gain.setValueAtTime(0, now);
+                env.gain.linearRampToValueAtTime(0.2, now + 0.012);
+                env.gain.exponentialRampToValueAtTime(0.0004, now + 1.9);
+
+                note.connect(env);
+                shimmer.connect(shimmerGain);
+                shimmerGain.connect(env);
+                env.connect(master);
+
+                note.start(now);
+                shimmer.start(now);
+                note.stop(now + 2);
+                shimmer.stop(now + 2);
+
+                pluckTimer = setTimeout(pluck, 900 + Math.random() * 2400);
+            };
+            pluckTimer = setTimeout(pluck, 700);
         } catch (e) {
             console.warn('Web Audio API not supported:', e);
         }
 
         return () => {
-            oscillators.forEach(osc => {
-                try { osc.stop(); } catch (e) { }
+            stopped = true;
+            if (pluckTimer) clearTimeout(pluckTimer);
+            running.forEach(osc => {
+                try { osc.stop(); } catch { }
             });
             if (audioContext) audioContext.close();
         };
@@ -300,62 +339,60 @@ export function CityControlsProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    // "Esplosione" in chiave cartoon: un soffio morbido + scia di campanellini,
+    // al posto del vecchio boato cupo (usato da wormhole e rigenera).
     const playExplosionSound = () => {
         if (!soundEnabled || typeof window === 'undefined') return;
         try {
             const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
             const now = audioContext.currentTime;
 
-            // --- 1. THE LOW RUMBLE (Brownian-ish noise/low osc) ---
-            const lowOsc = audioContext.createOscillator();
-            const lowGain = audioContext.createGain();
-            lowOsc.type = 'triangle';
-            lowOsc.frequency.setValueAtTime(40, now);
-            lowOsc.frequency.exponentialRampToValueAtTime(10, now + 3);
-
-            lowGain.gain.setValueAtTime(0, now);
-            lowGain.gain.linearRampToValueAtTime(0.4, now + 0.1);
-            lowGain.gain.exponentialRampToValueAtTime(0.01, now + 3);
-
-            // --- 2. THE EXPLOSION NOISE (White noise filtered) ---
-            const bufferSize = audioContext.sampleRate * 2;
+            // --- 1. SOFFIO (rumore filtrato, sweep veloce verso il basso) ---
+            const bufferSize = Math.floor(audioContext.sampleRate * 0.9);
             const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
             const data = buffer.getChannelData(0);
             for (let i = 0; i < bufferSize; i++) {
                 data[i] = Math.random() * 2 - 1;
             }
-
-            const noiseSource = audioContext.createBufferSource();
-            noiseSource.buffer = buffer;
+            const noise = audioContext.createBufferSource();
+            noise.buffer = buffer;
 
             const filter = audioContext.createBiquadFilter();
-            filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(1000, now);
-            filter.frequency.exponentialRampToValueAtTime(100, now + 2);
+            filter.type = 'bandpass';
+            filter.Q.value = 1.2;
+            filter.frequency.setValueAtTime(1800, now);
+            filter.frequency.exponentialRampToValueAtTime(220, now + 0.8);
 
             const noiseGain = audioContext.createGain();
             noiseGain.gain.setValueAtTime(0, now);
-            noiseGain.gain.linearRampToValueAtTime(0.3, now + 0.05);
-            noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 2.5);
+            noiseGain.gain.linearRampToValueAtTime(0.18, now + 0.04);
+            noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
 
-            // Connect Low Rumble
-            lowOsc.connect(lowGain);
-            lowGain.connect(audioContext.destination);
-
-            // Connect Noise
-            noiseSource.connect(filter);
+            noise.connect(filter);
             filter.connect(noiseGain);
             noiseGain.connect(audioContext.destination);
+            noise.start(now);
+            noise.stop(now + 1);
 
-            lowOsc.start(now);
-            noiseSource.start(now);
+            // --- 2. SCIA DI CAMPANELLINI (arpeggio veloce verso l'alto) ---
+            [783.99, 987.77, 1318.51].forEach((freq, i) => {
+                const t = now + 0.12 + i * 0.09;
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0, t);
+                gain.gain.linearRampToValueAtTime(0.12, t + 0.015);
+                gain.gain.exponentialRampToValueAtTime(0.001, t + 0.8);
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                osc.start(t);
+                osc.stop(t + 0.9);
+            });
 
-            lowOsc.stop(now + 3.1);
-            noiseSource.stop(now + 3.1);
-
-            setTimeout(() => audioContext.close(), 4000);
+            setTimeout(() => audioContext.close(), 2200);
         } catch (e) {
-            console.warn('Explosion sound failed:', e);
+            console.warn('Whoosh sound failed:', e);
         }
     };
 
