@@ -67,7 +67,7 @@ function Joystick({ onMove, label }: { onMove: (x: number, y: number) => void; l
             />
             <div className="pointer-events-none absolute inset-2 rounded-full border border-dashed border-[#c9b6f5]/20" />
             {label && (
-                <div className="absolute -bottom-7 left-1/2 -translate-x-1/2 font-mono text-[10px] uppercase tracking-widest text-[#c9b6f5]/70">
+                <div className="absolute -bottom-7 left-1/2 -translate-x-1/2 font-heading font-bold text-[10px] uppercase tracking-widest text-[#c9b6f5]/70">
                     {label}
                 </div>
             )}

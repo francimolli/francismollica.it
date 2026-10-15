@@ -47,29 +47,29 @@ export function Projects() {
     }));
 
     return (
-        <section id="timeline" className="relative w-full min-h-screen py-10 md:py-20 bg-black overflow-hidden font-mono text-cyan-500">
+        <section id="timeline" className="relative w-full min-h-screen py-10 md:py-20 bg-black overflow-hidden font-mono text-u-sky">
 
             {/* --- BACKGROUND EFFECTS --- */}
             <div className="absolute inset-0 z-0 pointer-events-none opacity-15">
-                <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(6,182,212,0.1)_2px,rgba(6,182,212,0.1)_4px)]" />
+                <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(154,209,245,0.1)_2px,rgba(154,209,245,0.1)_4px)]" />
             </div>
-            <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_50%,rgba(6,182,212,0.05)_0%,rgba(0,0,0,1)_100%)]" />
+            <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_50%,rgba(154,209,245,0.05)_0%,rgba(0,0,0,1)_100%)]" />
 
             <div className="container relative z-10 px-4 md:px-8 max-w-7xl mx-auto">
 
                 {/* --- HEADER TERMINALE --- */}
-                <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 border-b border-cyan-900/50 pb-4 gap-4">
+                <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 border-b border-u-sky/50 pb-4 gap-4">
                     <div className="space-y-2">
-                        {/* <div className="flex items-center gap-2 text-xs text-cyan-600">
+                        {/* <div className="flex items-center gap-2 text-xs text-u-sky">
                             <span>root@portfolio:~/projects</span>
-                            <span className="text-cyan-400">$</span>
-                            <span className="text-cyan-100 animate-pulse">ls -la --color=auto</span>
+                            <span className="text-u-sky">$</span>
+                            <span className="text-u-sky animate-pulse">ls -la --color=auto</span>
                         </div> */}
-                        <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tighter drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">
+                        <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tighter drop-shadow-[0_0_10px_rgba(154,209,245,0.5)]">
                             <TypewriterText text={t.projects.sectionTitle} speed={50} delay={200} />
                         </h2>
                     </div>
-                    <div className="text-xs text-right text-cyan-700 uppercase tracking-widest hidden md:block">
+                    <div className="text-xs text-right text-u-sky uppercase tracking-widest hidden md:block">
                         <p>{t.projects.totalObjects}: {projects.length}</p>
                     </div>
                 </div>
@@ -77,7 +77,7 @@ export function Projects() {
                 {/* --- TIMELINE CONTAINER --- */}
                 <div className="relative flex flex-col gap-12 md:gap-24">
                     {/* Central Neon Line */}
-                    <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-cyan-500/0 via-cyan-500/50 to-cyan-500/0 md:-translate-x-1/2" />
+                    <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-u-sky/0 via-u-sky/50 to-u-sky/0 md:-translate-x-1/2" />
 
                     {projects.map((project, index) => {
                         const isEven = index % 2 === 0;
@@ -90,8 +90,8 @@ export function Projects() {
                                 }}
                             >
                                 {/* Timeline Node */}
-                                <div className="absolute left-4 md:left-1/2 w-3 h-3 bg-black border border-cyan-400 rounded-full z-20 md:-translate-x-1/2 shadow-[0_0_10px_rgba(34,211,238,0.8)]">
-                                    <div className="absolute inset-0 bg-cyan-400 animate-ping opacity-75 rounded-full" />
+                                <div className="absolute left-4 md:left-1/2 w-3 h-3 bg-black border border-u-sky rounded-full z-20 md:-translate-x-1/2 shadow-[0_0_10px_rgba(154,209,245,0.8)]">
+                                    <div className="absolute inset-0 bg-u-sky animate-ping opacity-75 rounded-full" />
                                 </div>
 
                                 {/* Spacer for Desktop Alignment */}
@@ -99,24 +99,24 @@ export function Projects() {
 
                                 {/* Project Card */}
                                 <div className="w-full md:w-[calc(50%-2rem)] pl-7 md:pl-0">
-                                    <div className="group relative bg-black/60 border border-cyan-900/60 hover:border-cyan-400/80 transition-all duration-500 rounded-sm overflow-hidden hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] hover:-translate-y-1">
+                                    <div className="group relative bg-black/60 border border-u-sky/60 hover:border-u-sky/80 transition-all duration-500 rounded-sm overflow-hidden hover:shadow-[0_0_30px_rgba(154,209,245,0.15)] hover:-translate-y-1">
 
                                         {/* Holographic Scan Effect */}
-                                        <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 translate-y-[-100%] group-hover:translate-y-[100%] transition-transform duration-1000 ease-in-out pointer-events-none z-0" />
+                                        <div className="absolute inset-0 bg-gradient-to-b from-u-sky/0 via-u-sky/5 to-u-sky/0 translate-y-[-100%] group-hover:translate-y-[100%] transition-transform duration-1000 ease-in-out pointer-events-none z-0" />
 
                                         {/* Background Grid */}
-                                        <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.03)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
+                                        <div className="absolute inset-0 bg-[linear-gradient(rgba(154,209,245,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(154,209,245,0.03)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
 
                                         {/* Card Header */}
-                                        <div className="relative z-10 flex items-center justify-between px-6 py-3 bg-cyan-950/20 border-b border-cyan-900/50 group-hover:bg-cyan-900/30 transition-colors">
+                                        <div className="relative z-10 flex items-center justify-between px-6 py-3 bg-u-sky/20 border-b border-u-sky/50 group-hover:bg-u-sky/30 transition-colors">
                                             <div className="flex items-center gap-3">
-                                                <div className={`p-1.5 rounded bg-cyan-900/30 border border-cyan-800 text-cyan-400 group-hover:text-white group-hover:border-cyan-400 transition-colors`}>
+                                                <div className={`p-1.5 rounded bg-u-sky/30 border border-u-sky text-u-sky group-hover:text-white group-hover:border-u-sky transition-colors`}>
                                                     <project.icon className="w-4 h-4" />
                                                 </div>
                                             </div>
                                             <div className="flex gap-1">
                                                 {[...Array(3)].map((_, i) => (
-                                                    <div key={i} className={`w-1 h-1 rounded-full ${i === 0 ? 'bg-cyan-500 animate-pulse' : 'bg-cyan-900'}`} />
+                                                    <div key={i} className={`w-1 h-1 rounded-full ${i === 0 ? 'bg-u-sky animate-pulse' : 'bg-u-sky'}`} />
                                                 ))}
                                             </div>
                                         </div>
@@ -124,16 +124,16 @@ export function Projects() {
                                         {/* Card Body */}
                                         <div className="relative z-10 p-6 md:p-8">
                                             <div className="flex flex-col gap-1 mb-4">
-                                                <div className="flex flex-col md:flex-row md:items-center justify-between text-xs font-bold uppercase tracking-widest text-cyan-600 gap-2 md:gap-0">
+                                                <div className="flex flex-col md:flex-row md:items-center justify-between text-xs font-bold uppercase tracking-widest text-u-sky gap-2 md:gap-0">
                                                     <span>{project.company}</span>
-                                                    <span className="w-fit px-2 py-0.5 bg-cyan-950/30 rounded border border-cyan-900/50 text-cyan-500">{project.period}</span>
+                                                    <span className="w-fit px-2 py-0.5 bg-u-sky/30 rounded border border-u-sky/50 text-u-sky">{project.period}</span>
                                                 </div>
-                                                <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-cyan-300 transition-colors group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]">
+                                                <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-u-sky transition-colors group-hover:drop-shadow-[0_0_8px_rgba(154,209,245,0.6)]">
                                                     {project.title}
                                                 </h3>
                                             </div>
 
-                                            <p className="text-gray-400 text-sm leading-relaxed mb-6 border-l-2 border-cyan-900/50 pl-4 group-hover:border-cyan-500/50 transition-colors">
+                                            <p className="text-gray-400 text-sm leading-relaxed mb-6 border-l-2 border-u-sky/50 pl-4 group-hover:border-u-sky/50 transition-colors">
                                                 {project.description}
                                             </p>
 
@@ -142,7 +142,7 @@ export function Projects() {
                                                 {project.tags.map((tag) => (
                                                     <span
                                                         key={tag}
-                                                        className="px-2 py-1 text-[10px] uppercase tracking-wider text-cyan-400 border border-cyan-900/50 bg-cyan-950/10 rounded hover:bg-cyan-900/30 hover:border-cyan-500/50 transition-colors"
+                                                        className="px-2 py-1 text-[10px] uppercase tracking-wider text-u-sky border border-u-sky/50 bg-u-sky/10 rounded hover:bg-u-sky/30 hover:border-u-sky/50 transition-colors"
                                                     >
                                                         {tag}
                                                     </span>
@@ -154,7 +154,7 @@ export function Projects() {
                                                 <Link
                                                     href={project.demoUrl}
                                                     target="_blank"
-                                                    className={`group/btn relative inline-flex items-center gap-2 px-6 py-2 text-xs font-bold uppercase tracking-widest text-cyan-400 border border-cyan-800 hover:text-black hover:bg-cyan-400 hover:border-cyan-400 transition-all overflow-hidden ${project.demoUrl === "#" ? "opacity-50 cursor-not-allowed pointer-events-none" : ""}`}
+                                                    className={`group/btn relative inline-flex items-center gap-2 px-6 py-2 text-xs font-bold uppercase tracking-widest text-u-sky border border-u-sky hover:text-black hover:bg-u-sky hover:border-u-sky transition-all overflow-hidden ${project.demoUrl === "#" ? "opacity-50 cursor-not-allowed pointer-events-none" : ""}`}
                                                 >
                                                     <span className="relative z-10 flex items-center gap-2">
                                                         {t.projects.code} <ExternalLink className="w-3 h-3" />
@@ -164,8 +164,8 @@ export function Projects() {
                                         </div>
 
                                         {/* Decorative Corners */}
-                                        <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-cyan-500/30 group-hover:border-cyan-400 transition-colors" />
-                                        <div className="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-cyan-500/30 group-hover:border-cyan-400 transition-colors" />
+                                        <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-u-sky/30 group-hover:border-u-sky transition-colors" />
+                                        <div className="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-u-sky/30 group-hover:border-u-sky transition-colors" />
                                     </div>
                                 </div>
                             </div>
@@ -177,24 +177,24 @@ export function Projects() {
                 <div className="mt-16 flex justify-center animate-[fadeInUp_0.5s_ease-out_2s_both]">
                     <button
                         onClick={() => setExpandedSection('contact')}
-                        className="group relative px-12 py-4 bg-black/60 border border-cyan-500/30 overflow-hidden transition-all duration-300 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)]"
+                        className="group relative px-12 py-4 bg-black/60 border border-u-sky/30 overflow-hidden transition-all duration-300 hover:border-u-sky hover:shadow-[0_0_20px_rgba(154,209,245,0.3)]"
                     >
                         {/* Hover Fill Effect */}
-                        <div className="absolute inset-0 bg-cyan-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+                        <div className="absolute inset-0 bg-u-sky/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
 
                         {/* Glitch Lines */}
-                        <div className="absolute top-0 left-0 w-full h-[1px] bg-cyan-400/50 -translate-x-full group-hover:animate-[glitch-slide_1s_infinite_linear]" />
-                        <div className="absolute bottom-0 right-0 w-full h-[1px] bg-cyan-400/50 translate-x-full group-hover:animate-[glitch-slide_1s_infinite_linear_reverse]" />
+                        <div className="absolute top-0 left-0 w-full h-[1px] bg-u-sky/50 -translate-x-full group-hover:animate-[glitch-slide_1s_infinite_linear]" />
+                        <div className="absolute bottom-0 right-0 w-full h-[1px] bg-u-sky/50 translate-x-full group-hover:animate-[glitch-slide_1s_infinite_linear_reverse]" />
 
                         <div className="relative z-10 flex items-center gap-3">
-                            <span className="font-mono font-bold text-cyan-400 tracking-widest group-hover:text-cyan-200 transition-colors">
+                            <span className="font-mono font-bold text-u-sky tracking-widest group-hover:text-u-sky transition-colors">
                                 {t.contact.labelCTA}
                             </span>
                         </div>
 
                         {/* Corner Accents */}
-                        <div className="absolute top-0 left-0 w-2 h-2 border-l-2 border-t-2 border-cyan-500 opacity-50 group-hover:opacity-100 transition-opacity" />
-                        <div className="absolute bottom-0 right-0 w-2 h-2 border-r-2 border-b-2 border-cyan-500 opacity-50 group-hover:opacity-100 transition-opacity" />
+                        <div className="absolute top-0 left-0 w-2 h-2 border-l-2 border-t-2 border-u-sky opacity-50 group-hover:opacity-100 transition-opacity" />
+                        <div className="absolute bottom-0 right-0 w-2 h-2 border-r-2 border-b-2 border-u-sky opacity-50 group-hover:opacity-100 transition-opacity" />
                     </button>
                 </div>
             </div>

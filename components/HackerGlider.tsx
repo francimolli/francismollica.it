@@ -38,10 +38,10 @@ export function HackerGliderAnimated({ className = "w-12 h-12" }: { className?: 
             title="Hacker Emblem (Glider)"
             className={`${className} cursor-help transition-colors group relative`}
         >
-            <HackerGlider className="w-full h-full text-cyan-500/40 group-hover:text-cyan-400" />
+            <HackerGlider className="w-full h-full text-u-sky/40 group-hover:text-u-sky" />
 
             {/* Subtle glow effect */}
-            <div className="absolute inset-0 bg-cyan-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute inset-0 bg-u-sky/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
         </motion.div>
     );
 }

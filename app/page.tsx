@@ -11,7 +11,7 @@ import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
 import { Music } from "@/components/Music";
 import { MarketArt } from "@/components/MarketArt";
-import { TrendingUp } from "lucide-react";
+import { Construction } from "lucide-react";
 import { CityControlsProvider } from "@/components/CityControlsContext";
 import { FloatingSectionProvider } from "@/components/FloatingSectionContext";
 import { UniverseColorProvider } from "@/components/UniverseColorContext";
@@ -112,12 +112,12 @@ export default function Home() {
                 </SectionCard>
                 <SectionCard id="roadmap" title="Roadmap">
                   <div className="flex flex-col items-center justify-center min-h-[40vh] text-center space-y-6 p-8">
-                    <div className="w-20 h-20 rounded-full bg-yellow-500/10 border-2 border-yellow-500/50 flex items-center justify-center shadow-[0_0_30px_rgba(250,204,21,0.2)]">
-                      <span className="text-3xl">🚧</span>
+                    <div className="w-20 h-20 rounded-3xl bg-u-sun/10 border-2 border-u-sun/50 flex items-center justify-center shadow-[0_0_30px_rgba(255,217,138,0.2)]">
+                      <Construction className="w-9 h-9 text-u-sun" />
                     </div>
                     <div>
-                      <h2 className="text-2xl md:text-3xl font-bold text-yellow-500 font-mono mb-2 tracking-widest">{(t as any).roadmap?.title || "COMING SOON"}</h2>
-                      <p className="text-gray-400 max-w-md mx-auto font-mono text-sm md:text-base">
+                      <h2 className="text-2xl md:text-3xl font-heading font-extrabold text-u-sun mb-2 tracking-widest">{(t as any).roadmap?.title || "COMING SOON"}</h2>
+                      <p className="text-u-lilac/70 max-w-md mx-auto text-sm md:text-base">
                         {(t as any).roadmap?.description || "Trajectory calculation in progress..."}
                       </p>
                     </div>

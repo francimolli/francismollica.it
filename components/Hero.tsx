@@ -45,7 +45,7 @@ function TypewriterText({
         <span className={className}>
             {displayedText}
             {started && currentIndex < text.length && (
-                <span className="animate-pulse text-cyan-400">▮</span>
+                <span className="animate-pulse text-u-sky">▮</span>
             )}
         </span>
     );
@@ -59,23 +59,23 @@ export function Hero() {
         <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pointer-events-none">
             {/* Scanlines effect - retro CRT */}
             <div className="absolute inset-0 z-10 pointer-events-none opacity-10">
-                <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(6,182,212,0.1)_2px,rgba(6,182,212,0.1)_4px)]" />
+                <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(154,209,245,0.1)_2px,rgba(154,209,245,0.1)_4px)]" />
             </div>
 
             {/* Content - Terminal Style */}
             <div className="container relative z-20 px-6 md:px-8 max-w-4xl pointer-events-auto">
                 <div className="font-mono space-y-6">
                     {/* Terminal Prompt Header */}
-                    <div className="flex items-center gap-2 text-cyan-500 text-sm md:text-base opacity-70">
+                    <div className="flex items-center gap-2 text-u-sky text-sm md:text-base opacity-70">
                         <span>francesco@mollica.dev</span>
-                        <span className="text-cyan-400">~</span>
-                        <span className="text-cyan-300">$</span>
+                        <span className="text-u-sky">~</span>
+                        <span className="text-u-sky">$</span>
                     </div>
 
                     {/* Main Content */}
                     <div className="space-y-4">
                         {/* Name */}
-                        <div className="text-cyan-400/80 text-xs md:text-sm tracking-widest uppercase">
+                        <div className="text-u-sky/80 text-xs md:text-sm tracking-widest uppercase">
                             <TypewriterText
                                 text="> Francesco Mollica"
                                 speed={40}
@@ -84,7 +84,7 @@ export function Hero() {
                         </div>
 
                         {/* Headline - Large */}
-                        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-cyan-400 leading-tight tracking-tight">
+                        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-u-sky leading-tight tracking-tight">
                             <TypewriterText
                                 text={t.hero.headline}
                                 speed={50}
@@ -93,7 +93,7 @@ export function Hero() {
                         </h1>
 
                         {/* Role */}
-                        <div className="text-xl md:text-3xl text-cyan-300/90">
+                        <div className="text-xl md:text-3xl text-u-sky/90">
                             <TypewriterText
                                 text={`${t.hero.role} ${t.hero.roleSuffix}`}
                                 speed={40}
@@ -102,7 +102,7 @@ export function Hero() {
                         </div>
 
                         {/* Description */}
-                        <div className="text-base md:text-lg text-cyan-200/70 max-w-2xl leading-relaxed pt-4">
+                        <div className="text-base md:text-lg text-u-sky/70 max-w-2xl leading-relaxed pt-4">
                             <TypewriterText
                                 text={t.hero.description}
                                 speed={20}
@@ -116,26 +116,26 @@ export function Hero() {
                                 onClick={() => {
                                     setExpandedSection('contact');
                                 }}
-                                className="group relative px-8 py-4 bg-black/60 border border-cyan-500/30 overflow-hidden transition-all duration-300 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)]"
+                                className="group relative px-8 py-4 bg-black/60 border border-u-sky/30 overflow-hidden transition-all duration-300 hover:border-u-sky hover:shadow-[0_0_20px_rgba(154,209,245,0.3)]"
                             >
                                 {/* Hover Fill Effect */}
-                                <div className="absolute inset-0 bg-cyan-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+                                <div className="absolute inset-0 bg-u-sky/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
 
                                 {/* Glitch Lines */}
-                                <div className="absolute top-0 left-0 w-full h-[1px] bg-cyan-400/50 -translate-x-full group-hover:animate-[glitch-slide_1s_infinite_linear]" />
-                                <div className="absolute bottom-0 right-0 w-full h-[1px] bg-cyan-400/50 translate-x-full group-hover:animate-[glitch-slide_1s_infinite_linear_reverse]" />
+                                <div className="absolute top-0 left-0 w-full h-[1px] bg-u-sky/50 -translate-x-full group-hover:animate-[glitch-slide_1s_infinite_linear]" />
+                                <div className="absolute bottom-0 right-0 w-full h-[1px] bg-u-sky/50 translate-x-full group-hover:animate-[glitch-slide_1s_infinite_linear_reverse]" />
 
                                 <div className="relative z-10 flex items-center gap-3">
-                                    <Terminal className="w-5 h-5 text-cyan-500 group-hover:text-cyan-300 transition-colors" />
-                                    <span className="font-mono font-bold text-cyan-400 tracking-widest group-hover:text-cyan-200 transition-colors">
+                                    <Terminal className="w-5 h-5 text-u-sky group-hover:text-u-sky transition-colors" />
+                                    <span className="font-mono font-bold text-u-sky tracking-widest group-hover:text-u-sky transition-colors">
                                         {t.contact.labelCTA}
                                     </span>
-                                    <ChevronRight className="w-4 h-4 text-cyan-600 group-hover:translate-x-1 transition-transform duration-300" />
+                                    <ChevronRight className="w-4 h-4 text-u-sky group-hover:translate-x-1 transition-transform duration-300" />
                                 </div>
 
                                 {/* Corner Accents */}
-                                <div className="absolute top-0 left-0 w-2 h-2 border-l-2 border-t-2 border-cyan-500 opacity-50 group-hover:opacity-100 transition-opacity" />
-                                <div className="absolute bottom-0 right-0 w-2 h-2 border-r-2 border-b-2 border-cyan-500 opacity-50 group-hover:opacity-100 transition-opacity" />
+                                <div className="absolute top-0 left-0 w-2 h-2 border-l-2 border-t-2 border-u-sky opacity-50 group-hover:opacity-100 transition-opacity" />
+                                <div className="absolute bottom-0 right-0 w-2 h-2 border-r-2 border-b-2 border-u-sky opacity-50 group-hover:opacity-100 transition-opacity" />
                             </button>
                         </div>
                     </div>
@@ -144,7 +144,7 @@ export function Hero() {
 
             {/* Ambient glow */}
             <div className="absolute inset-0 z-0">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[100px] animate-pulse" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-u-sky/5 rounded-full blur-[100px] animate-pulse" />
             </div>
 
             <style jsx>{`

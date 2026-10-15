@@ -59,7 +59,7 @@ export function LogbookMenu() {
     return (
         <>
             {/* Main Toggle Button */}
-            <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] pointer-events-auto">
+            <div className="fixed top-[240px] right-8 md:top-auto md:right-auto md:bottom-8 md:left-1/2 md:-translate-x-1/2 z-[100] pointer-events-auto">
                 <motion.button
                     drag
                     dragMomentum={false}
@@ -67,7 +67,7 @@ export function LogbookMenu() {
                         e.stopPropagation();
                         setIsOpen(!isOpen);
                     }}
-                    className={`relative group flex items-center gap-3 px-6 py-4 rounded-full shadow-[0_0_30px_rgba(139,92,246,0.3)] border border-violet-400/30 backdrop-blur-xl transition-all duration-300 cursor-pointer overflow-hidden ${isOpen ? "bg-red-500/20 text-red-400 border-red-500/50" : "bg-black/60 text-violet-400 hover:bg-violet-500/10 hover:border-violet-400/80"
+                    className={`relative group flex items-center gap-3 p-4 md:px-6 md:py-4 rounded-full shadow-[0_0_30px_rgba(201,182,245,0.3)] border-2 backdrop-blur-xl transition-all duration-300 cursor-pointer overflow-hidden ${isOpen ? "bg-u-rose/20 text-u-rose border-u-rose/50" : "bg-u-surface/80 text-u-lilac border-u-lilac/30 hover:bg-u-lilac/10 hover:border-u-lilac/80"
                         }`}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -75,14 +75,14 @@ export function LogbookMenu() {
                     {/* Radar Ping Effect */}
                     {!isOpen && (
                         <>
-                            <span className="absolute inset-0 rounded-full border border-violet-300/30 animate-[ping_4s_ease-out_infinite] opacity-10" />
+                            <span className="absolute inset-0 rounded-full border border-u-lilac/40 animate-[ping_4s_ease-out_infinite] opacity-10" />
                         </>
                     )}
 
                     {isOpen ? <X size={24} /> : (
                         <>
                             <Book size={24} className={!isOpen ? "animate-pulse" : ""} />
-                            <span className="text-sm font-bold tracking-[0.2em] font-mono">LOGBOOK</span>
+                            <span className="hidden md:inline text-sm font-extrabold tracking-[0.2em] font-heading">LOGBOOK</span>
                         </>
                     )}
                 </motion.button>
@@ -113,28 +113,19 @@ export function LogbookMenu() {
                                 style={{ perspective: "1000px" }}
                             >
                                 {/* Panel Container */}
-                                <div className="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 border-2 border-violet-500/50 rounded-2xl shadow-[0_0_60px_rgba(139,92,246,0.3)] flex flex-col h-[80vh] md:h-auto md:max-h-[85vh] pointer-events-auto overflow-hidden">
-                                    {/* Scanline Effect */}
-                                    <div className="absolute inset-0 bg-[linear-gradient(0deg,transparent_50%,rgba(139,92,246,0.03)_50%)] bg-[length:100%_4px] pointer-events-none animate-pulse" />
-
-                                    {/* Corner Accents */}
-                                    <div className="absolute top-0 left-0 w-16 h-16 border-t-4 border-l-4 border-violet-400/70 rounded-tl-2xl" />
-                                    <div className="absolute top-0 right-0 w-16 h-16 border-t-4 border-r-4 border-violet-400/70 rounded-tr-2xl" />
-                                    <div className="absolute bottom-0 left-0 w-16 h-16 border-b-4 border-l-4 border-violet-400/70 rounded-bl-2xl" />
-                                    <div className="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4 border-violet-400/70 rounded-br-2xl" />
-
+                                <div className="relative bg-u-deep/95 border-2 border-u-lilac/30 rounded-3xl shadow-[0_0_60px_rgba(201,182,245,0.25),inset_0_1px_0_rgba(201,182,245,0.15)] flex flex-col h-[80vh] md:h-auto md:max-h-[85vh] pointer-events-auto overflow-hidden backdrop-blur-xl">
                                     {/* Header */}
-                                    <div className="relative border-b border-violet-500/30 bg-black/50 px-6 py-4 shrink-0">
+                                    <div className="relative border-b border-u-lilac/20 bg-u-surface/70 px-6 py-4 shrink-0">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-3 h-3 rounded-full bg-violet-400 animate-pulse shadow-[0_0_10px_rgba(139,92,246,1)]" />
-                                                <h2 className="text-xl md:text-2xl font-bold text-violet-400 font-mono tracking-wider">
+                                                <div className="w-3 h-3 rounded-full bg-u-lilac animate-pulse shadow-[0_0_10px_rgba(201,182,245,1)]" />
+                                                <h2 className="text-xl md:text-2xl font-heading font-extrabold text-u-lilac tracking-wider">
                                                     {t.logbook.title}
                                                 </h2>
                                             </div>
                                             <button
                                                 onClick={() => setIsOpen(false)}
-                                                className="p-2 rounded-lg bg-red-500/20 border border-red-500/50 text-red-400 hover:bg-red-500/30 transition-colors"
+                                                className="clay-press p-2 rounded-xl bg-u-rose/15 border-2 border-u-rose/40 text-u-rose hover:bg-u-rose/25 transition-colors"
                                             >
                                                 <X size={20} />
                                             </button>
@@ -157,19 +148,19 @@ export function LogbookMenu() {
                                             <div className="flex gap-2">
                                                 <button
                                                     onClick={() => setActiveTab('navigation')}
-                                                    className={`px-4 py-1 rounded text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'navigation' ? 'bg-violet-500 text-white shadow-[0_0_10px_rgba(139,92,246,0.5)]' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
+                                                    className={`px-4 py-1.5 rounded-full text-[10px] md:text-xs font-heading font-extrabold uppercase tracking-widest transition-all clay-press ${activeTab === "navigation" ? "bg-u-lilac text-u-night shadow-[0_0_10px_rgba(201,182,245,0.5)]" : "bg-u-surface2/60 text-u-lilac/60 hover:text-u-cream"}`}
                                                 >
                                                     {t.logbook.tab1}
                                                 </button>
                                                 <button
                                                     onClick={() => setActiveTab('achievements')}
-                                                    className={`px-4 py-1 rounded text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'achievements' ? 'bg-violet-500 text-white shadow-[0_0_10px_rgba(139,92,246,0.5)]' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
+                                                    className={`px-4 py-1.5 rounded-full text-[10px] md:text-xs font-heading font-extrabold uppercase tracking-widest transition-all clay-press ${activeTab === "achievements" ? "bg-u-lilac text-u-night shadow-[0_0_10px_rgba(201,182,245,0.5)]" : "bg-u-surface2/60 text-u-lilac/60 hover:text-u-cream"}`}
                                                 >
                                                     {t.logbook.tab2} [{unlockedSecrets.length}/{secretsList.length}]
                                                 </button>
                                                 <button
                                                     onClick={() => setActiveTab('help')}
-                                                    className={`px-4 py-1 rounded text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all ${activeTab === 'help' ? 'bg-amber-500 text-black shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
+                                                    className={`px-4 py-1.5 rounded-full text-[10px] md:text-xs font-heading font-extrabold uppercase tracking-widest transition-all clay-press ${activeTab === "help" ? "bg-u-sun text-u-night shadow-[0_0_10px_rgba(255,217,138,0.5)]" : "bg-u-surface2/60 text-u-lilac/60 hover:text-u-cream"}`}
                                                 >
                                                     {t.logbook.tab3}
                                                 </button>
@@ -260,7 +251,7 @@ export function LogbookMenu() {
                                                                 <div
                                                                     key={secret.id}
                                                                     className={`relative p-6 rounded-xl border-2 transition-all duration-300 ${isUnlocked
-                                                                        ? 'border-violet-500/50 bg-violet-500/10'
+                                                                        ? 'border-u-lilac/50 bg-u-lilac/10'
                                                                         : 'border-gray-800 bg-gray-900/50 opacity-50 grayscale'
                                                                         }`}
                                                                 >
@@ -269,7 +260,7 @@ export function LogbookMenu() {
                                                                             {isUnlocked ? secret.icon : '🔒'}
                                                                         </div>
                                                                         <div className="flex-1">
-                                                                            <h3 className={`text-lg font-bold font-mono uppercase tracking-wider ${isUnlocked ? 'text-violet-400' : 'text-gray-500'}`}>
+                                                                            <h3 className={`text-lg font-bold font-mono uppercase tracking-wider ${isUnlocked ? 'text-u-lilac' : 'text-gray-500'}`}>
                                                                                 {title}
                                                                             </h3>
                                                                             <p className="text-sm text-gray-400 font-mono mt-1">
@@ -284,7 +275,7 @@ export function LogbookMenu() {
                                                                                     const contactSection = sections.find(s => s.id === 'contact');
                                                                                     handleSectionClick('contact', contactSection?.target || null);
                                                                                 }}
-                                                                                className="ml-auto px-4 py-2 bg-violet-500 hover:bg-violet-400 text-white rounded font-bold text-xs uppercase tracking-widest flex items-center gap-2 transition-colors shadow-[0_0_15px_rgba(139,92,246,0.4)]"
+                                                                                className="ml-auto px-4 py-2 bg-u-lilac hover:bg-u-sun text-u-night rounded-xl font-heading font-extrabold text-xs uppercase tracking-widest flex items-center gap-2 transition-colors shadow-[0_0_15px_rgba(139,92,246,0.4)]"
                                                                             >
                                                                                 <Send size={16} /> {t.logbook.copy}
                                                                             </button>
@@ -401,10 +392,10 @@ export function LogbookMenu() {
                                     </div>
 
                                     {/* Footer Status */}
-                                    <div className="border-t border-violet-500/30 bg-black/50 px-6 py-3 shrink-0">
+                                    <div className="border-t border-u-lilac/20 bg-u-surface/70 px-6 py-3 shrink-0">
                                         <div className="flex items-center justify-between text-xs font-mono text-gray-500">
                                             <span>GIT v3.1</span>
-                                            <span className="text-violet-400">francismollica.it</span>
+                                            <span className="text-u-lilac">francismollica.it</span>
                                         </div>
                                     </div>
                                 </div>

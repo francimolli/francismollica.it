@@ -17,16 +17,18 @@ const idIconMap: Record<string, LucideIcon> = {
     "roadmap": Map,
 };
 
+// Pastelli del design system (design-system/universo-cartoon/MASTER.md),
+// allineati alle palette dei pianetini.
 const idColorMap: Record<string, string> = {
-    "home": "#00ffff",      // Cyan
-    "about": "#ff00ff",     // Magenta (North)
-    "timeline": "#ffaa00",  // Orange (East)
-    "projects": "#ffaa00",  // Orange (East)
-    "portfolio": "#a855f7", // Violet (North-West)
-    "contact": "#00aaff",   // Light Blue (West)
-    "music": "#00ffff",     // Cyan (South)
-    "market": "#10b981",    // Emerald (South-East)
-    "roadmap": "#f59e0b",   // Amber (South-West)
+    "home": "#ffd98a",      // giallo caldo
+    "about": "#ffb59a",     // pesca (Casa)
+    "timeline": "#ffd98a",  // giallo caldo (Officina)
+    "projects": "#ffd98a",
+    "portfolio": "#c9b6f5", // lilla (Galleria)
+    "contact": "#9ad1f5",   // cielo (Faro)
+    "music": "#9fe8c7",     // menta (Giardino Sonoro)
+    "market": "#9ad1f5",    // cielo (Osservatorio)
+    "roadmap": "#ffaa66",   // arancio (Cantiere)
 };
 
 const sectionCoords: Record<string, { x: number, z: number }> = {
@@ -77,20 +79,21 @@ export default function SectionCard({
                 onClick={handleClick}
             >
                 <div
-                    className={`flex flex-col w-full max-w-5xl max-h-[90vh] rounded-xl border border-cyan-500/50 bg-black/90 backdrop-blur-md shadow-[0_0_50px_rgba(6,182,212,0.4)] animate-in zoom-in-95 duration-300 pointer-events-auto overflow-hidden ${className || ""}`}
+                    className={`flex flex-col w-full max-w-5xl max-h-[90vh] rounded-3xl border-2 bg-u-deep/95 backdrop-blur-md animate-in zoom-in-95 duration-300 pointer-events-auto overflow-hidden ${className || ""}`}
+                    style={{ borderColor: `${themeColor}55`, boxShadow: `0 0 50px ${themeColor}2e, inset 0 1px 0 ${themeColor}22` }}
                     onClick={(e) => e.stopPropagation()}
                 >
                     {/* Header - Fixed at top of flex container */}
-                    <div className="flex-none z-10 flex items-center justify-between border-b border-white/10 p-6 bg-black/95 backdrop-blur-xl">
+                    <div className="flex-none z-10 flex items-center justify-between border-b border-white/10 p-6 bg-u-surface/80 backdrop-blur-xl">
                         {title && (
-                            <h2 className="text-3xl font-bold drop-shadow-[0_0_10px_rgba(0,255,255,0.6)] flex items-center gap-3" style={{ color: themeColor }}>
+                            <h2 className="text-3xl font-heading font-extrabold flex items-center gap-3" style={{ color: themeColor, textShadow: `0 0 14px ${themeColor}55` }}>
                                 <Icon className="w-8 h-8" />
                                 {title}
                             </h2>
                         )}
                         <button
                             onClick={handleClick}
-                            className="ml-auto hover:text-white transition-colors p-4 -mr-2 rounded-lg hover:bg-white/10"
+                            className="clay-press ml-auto hover:text-white transition-colors p-4 -mr-2 rounded-2xl hover:bg-white/10"
                             style={{ color: themeColor }}
                         >
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

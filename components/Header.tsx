@@ -37,17 +37,17 @@ const ControlSlider = ({
 }) => (
     <div className={`group flex flex-col gap-2 relative ${width}`}>
         {/* Label Row */}
-        <div className="flex justify-between items-end text-[11px] font-mono tracking-widest uppercase font-semibold">
-            <span className="text-cyan-600/90 group-hover:text-cyan-400 transition-colors">{label}</span>
-            <span className="text-cyan-50 font-bold drop-shadow-[0_0_5px_rgba(6,182,212,0.5)]">{displayValue || value}{unit}</span>
+        <div className="flex justify-between items-end text-[11px] font-heading tracking-widest uppercase font-extrabold">
+            <span className="text-u-lilac/80 group-hover:text-u-sun transition-colors">{label}</span>
+            <span className="text-u-cream font-mono font-bold drop-shadow-[0_0_6px_rgba(255,217,138,0.4)]">{displayValue || value}{unit}</span>
         </div>
 
         {/* Slider Input */}
         <div className="relative h-4 flex items-center">
             {/* Track */}
-            <div className="absolute w-full h-[4px] bg-white/10 rounded-full overflow-hidden backdrop-blur-sm border border-white/5">
+            <div className="absolute w-full h-[5px] bg-white/10 rounded-full overflow-hidden backdrop-blur-sm border border-white/5">
                 <div
-                    className="h-full bg-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.8)]"
+                    className="h-full bg-u-lilac shadow-[0_0_12px_rgba(201,182,245,0.7)]"
                     style={{ width: `${((value - min) / (max - min)) * 100}%` }}
                 />
             </div>
@@ -64,7 +64,7 @@ const ControlSlider = ({
 
             {/* Thumb Visual */}
             <div
-                className="pointer-events-none absolute h-4 w-4 bg-cyan-950 border-2 border-cyan-400 rounded-full shadow-[0_0_10px_rgba(34,211,238,0.8)] group-hover:scale-125 transition-transform duration-200"
+                className="pointer-events-none absolute h-4 w-4 bg-u-surface border-2 border-u-sun rounded-full shadow-[0_0_10px_rgba(255,217,138,0.7)] group-hover:scale-125 transition-transform duration-200"
                 style={{
                     left: `calc(${((value - min) / (max - min)) * 100}% - 8px)`
                 }}
@@ -169,8 +169,8 @@ export function Header() {
         <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none select-none">
 
             {/* --- VISUAL FOUNDATION (Increased Height) --- */}
-            <div className="absolute inset-0 h-24 bg-black/85 backdrop-blur-xl border-b border-white/10 shadow-2xl z-0">
-                <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-500/60 to-transparent opacity-60" />
+            <div className="absolute inset-0 h-24 bg-u-deep/85 backdrop-blur-xl border-b border-u-lilac/15 shadow-2xl z-0">
+                <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-u-lilac/60 to-transparent opacity-60" />
             </div>
 
             {/* --- CONTENT CONTAINER --- */}
@@ -191,12 +191,12 @@ export function Header() {
                         <Image src="/unnamed.png" alt="Francis Mollica" fill className="object-contain" priority />
                     </div>
                     <div className="flex flex-col justify-center">
-                        <span className="font-bold text-base text-white tracking-tight group-hover:text-cyan-400 transition-colors">
+                        <span className="font-heading font-extrabold text-base text-u-milk tracking-tight group-hover:text-u-sun transition-colors">
                             Francesco Mollica
                         </span>
                         <div className="flex items-center gap-2">
-                            <span className={`w-2 h-2 rounded-full ${isOnline ? 'bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,1)] animate-pulse' : 'bg-gray-600'}`} />
-                            <span className="text-[10px] font-mono uppercase tracking-widest text-gray-400">
+                            <span className={`w-2 h-2 rounded-full ${isOnline ? 'bg-u-mint shadow-[0_0_8px_rgba(159,232,199,0.9)] animate-pulse' : 'bg-gray-600'}`} />
+                            <span className="text-[10px] font-heading font-bold uppercase tracking-widest text-u-lilac/70">
                                 {isOnline ? t.header.status.awake : t.header.status.asleep}
                             </span>
                         </div>
@@ -205,7 +205,7 @@ export function Header() {
 
                 {/* 2. CENTER: COMMAND CONSOLE (Desktop Only - Bigger) */}
                 <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <div className="flex items-center px-8 py-3 bg-black/60 border border-white/10 rounded-full backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
+                    <div className="flex items-center px-8 py-3 bg-u-surface/70 border-2 border-u-lilac/20 rounded-full backdrop-blur-md shadow-[0_8px_30px_rgba(10,10,35,0.5)]">
 
                         {/* Sliders */}
                         <div className="flex items-center gap-6">
@@ -220,7 +220,7 @@ export function Header() {
                         <div className="pl-6 ml-4 border-l border-white/10">
                             <button
                                 onClick={resetDefaults}
-                                className="flex items-center justify-center w-9 h-9 rounded-full bg-white/5 border border-white/5 text-white/40 hover:text-cyan-400 hover:border-cyan-400/50 hover:bg-cyan-950/30 transition-all duration-300"
+                                className="clay-press flex items-center justify-center w-9 h-9 rounded-full bg-white/5 border border-white/5 text-white/40 hover:text-u-sun hover:border-u-sun/50 hover:bg-u-surface2/60 transition-all duration-300"
                                 title="System Reset"
                             >
                                 <RotateCcw size={16} />
@@ -233,16 +233,16 @@ export function Header() {
                 <div className="flex items-center justify-end gap-3 lg:gap-4 lg:w-[400px] shrink-0">
 
                     {/* Telemetry (Desktop Only) */}
-                    <div className="hidden xl:flex flex-col items-end text-[10px] font-mono text-cyan-600/70 leading-tight tracking-widest mr-4">
+                    <div className="hidden xl:flex flex-col items-end text-[10px] font-mono text-u-sky/60 leading-tight tracking-widest mr-4">
                         <span>LAT {coordinates.lat.toFixed(4)}</span>
                         <span>LON {coordinates.long.toFixed(4)}</span>
                     </div>
 
                     {/* Desktop Toolbar */}
-                    <div className="hidden md:flex items-center gap-3 bg-white/5 p-1.5 rounded-full border border-white/10 backdrop-blur-sm">
+                    <div className="hidden md:flex items-center gap-3 bg-u-surface/60 p-1.5 rounded-full border border-u-lilac/20 backdrop-blur-sm">
                         <button
                             onClick={() => setLanguage(language === "en" ? "it" : "en")}
-                            className="h-9 px-4 rounded-full text-xs font-bold font-mono text-cyan-100 hover:bg-white/10 hover:text-cyan-400 transition-all border border-transparent hover:border-white/5"
+                            className="clay-press h-9 px-4 rounded-full text-xs font-extrabold font-heading text-u-cream hover:bg-white/10 hover:text-u-sun transition-all border border-transparent hover:border-white/5"
                         >
                             {language.toUpperCase()}
                         </button>
@@ -252,7 +252,7 @@ export function Header() {
                         <button
                             onClick={handleRegenerate}
                             disabled={cooldown > 0}
-                            className={`w-9 h-9 flex items-center justify-center rounded-full transition-all border border-transparent ${cooldown > 0 ? 'text-red-400 cursor-not-allowed opacity-50' : 'text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-500/30'}`}
+                            className={`clay-press w-9 h-9 flex items-center justify-center rounded-full transition-all border border-transparent ${cooldown > 0 ? 'text-u-coral cursor-not-allowed opacity-50' : 'text-u-sky hover:bg-u-sky/10 hover:border-u-sky/30'}`}
                             title="Regenerate"
                         >
                             <RefreshCw size={16} className={cooldown > 0 ? "" : "hover:rotate-180 transition-transform duration-500"} />
@@ -261,7 +261,7 @@ export function Header() {
                         <button
                             onClick={handleEscape}
                             disabled={escapeCooldown > 0}
-                            className={`w-9 h-9 flex items-center justify-center rounded-full transition-all border border-transparent ${escapeCooldown > 0 ? 'text-yellow-400 cursor-not-allowed opacity-50' : 'text-purple-400 hover:bg-purple-500/10 hover:border-purple-500/30 shadow-[0_0_0_rgba(0,0,0,0)] hover:shadow-[0_0_15px_rgba(168,85,247,0.4)]'}`}
+                            className={`clay-press w-9 h-9 flex items-center justify-center rounded-full transition-all border border-transparent ${escapeCooldown > 0 ? 'text-u-sun cursor-not-allowed opacity-50' : 'text-u-lilac hover:bg-u-lilac/10 hover:border-u-lilac/30 shadow-[0_0_0_rgba(0,0,0,0)] hover:shadow-[0_0_15px_rgba(201,182,245,0.4)]'}`}
                             title="Wormhole Jump"
                         >
                             {escapeCooldown > 0 ? <span className="text-[9px] font-mono">{escapeCooldown}</span> : <Aperture size={16} className="animate-[spin_4s_linear_infinite]" />}
@@ -273,9 +273,9 @@ export function Header() {
                             disabled={boostCooldown > 0 || boostActive}
                             className={`
                                 relative group p-2 rounded-full transition-all duration-300
-                                ${boostActive ? 'bg-green-400 text-black shadow-[0_0_15px_rgba(74,222,128,0.8)] animate-pulse scale-110' :
-                                    boostCooldown > 0 ? 'bg-gray-800 text-gray-600 cursor-not-allowed' :
-                                        'bg-green-900/20 text-green-400 hover:bg-green-800/40 hover:scale-110 hover:shadow-[0_0_10px_rgba(74,222,128,0.4)]'}
+                                ${boostActive ? 'bg-u-mint text-u-night shadow-[0_0_15px_rgba(159,232,199,0.8)] animate-pulse scale-110' :
+                                    boostCooldown > 0 ? 'bg-u-surface text-u-lilac/40 cursor-not-allowed' :
+                                        'bg-u-mint/15 text-u-mint hover:bg-u-mint/30 hover:scale-110 hover:shadow-[0_0_10px_rgba(159,232,199,0.4)]'}
                             `}
                             title={boostActive ? "HYPER BOOST ACTIVE" : boostCooldown > 0 ? `RECHARGING ${Math.ceil(boostCooldown)}s` : "ACTIVATE HYPER BOOST"}
                         >
@@ -295,8 +295,8 @@ export function Header() {
                             className={`
                                 w-9 h-9 flex items-center justify-center rounded-full transition-all border
                                 ${soundEnabled
-                                    ? 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.3)]'
-                                    : 'bg-white/5 text-gray-500 border-white/10 hover:bg-white/10 hover:text-cyan-400 hover:border-cyan-500/20'}
+                                    ? 'bg-u-sky/20 text-u-sky border-u-sky/30 shadow-[0_0_10px_rgba(154,209,245,0.3)]'
+                                    : 'bg-white/5 text-u-lilac/50 border-white/10 hover:bg-white/10 hover:text-u-sky hover:border-u-sky/20'}
                             `}
                             title={soundEnabled ? "Sound ON" : "Sound OFF"}
                         >
@@ -325,9 +325,9 @@ export function Header() {
                             disabled={boostCooldown > 0 || boostActive}
                             className={`
                                 relative p-3 rounded-full transition-all duration-300
-                                ${boostActive ? 'bg-green-400 text-black shadow-[0_0_15px_rgba(74,222,128,0.8)] animate-pulse' :
-                                    boostCooldown > 0 ? 'bg-gray-800 text-gray-600' :
-                                        'bg-green-900/20 text-green-400 border border-green-500/30'}
+                                ${boostActive ? 'bg-u-mint text-u-night shadow-[0_0_15px_rgba(159,232,199,0.8)] animate-pulse' :
+                                    boostCooldown > 0 ? 'bg-u-surface text-u-lilac/40' :
+                                        'bg-u-mint/15 text-u-mint border-2 border-u-mint/30'}
                             `}
                         >
                             <Zap size={20} className={boostActive ? "fill-current" : ""} />
@@ -342,10 +342,10 @@ export function Header() {
                         <button
                             onClick={handleEscape}
                             disabled={escapeCooldown > 0}
-                            className={`w-10 h-10 flex items-center justify-center rounded-full border bg-black/40 backdrop-blur-md transition-all
+                            className={`w-10 h-10 flex items-center justify-center rounded-full border-2 bg-u-surface/60 backdrop-blur-md transition-all
                             ${escapeCooldown > 0
-                                    ? 'border-yellow-900/50 text-yellow-500 opacity-50'
-                                    : 'border-purple-500/30 text-purple-400 hover:bg-purple-900/20 shadow-[0_0_10px_rgba(168,85,247,0.2)]'
+                                    ? 'border-u-sun/30 text-u-sun opacity-50'
+                                    : 'border-u-lilac/30 text-u-lilac hover:bg-u-lilac/15 shadow-[0_0_10px_rgba(201,182,245,0.25)]'
                                 }`}
                         >
                             {escapeCooldown > 0 ? (
@@ -358,16 +358,16 @@ export function Header() {
                         {/* 2. Menu Mobile Trigger - Visibile */}
                         <Sheet open={isOpen} onOpenChange={setIsOpen}>
                             <SheetTrigger asChild>
-                                <Button variant="outline" size="icon" className="w-10 h-10 rounded-full bg-black/40 border-cyan-500/30 text-cyan-400 hover:bg-cyan-950/30 hover:text-cyan-200 hover:border-cyan-400 backdrop-blur-md">
+                                <Button variant="outline" size="icon" className="w-10 h-10 rounded-full bg-u-surface/60 border-2 border-u-sun/30 text-u-sun hover:bg-u-surface2/60 hover:text-u-sun hover:border-u-sun backdrop-blur-md">
                                     <MenuIcon className="h-5 w-5" />
                                 </Button>
                             </SheetTrigger>
 
                             {/* Mobile Sheet Content */}
-                            <SheetContent side="right" className="w-[85%] border-l border-cyan-900/50 bg-black/95 backdrop-blur-xl p-0 z-[60]">
-                                <div className="flex flex-col h-full bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.08),transparent_50%)]">
+                            <SheetContent side="right" className="w-[85%] border-l border-u-lilac/25 bg-u-deep/95 backdrop-blur-xl p-0 z-[60]">
+                                <div className="flex flex-col h-full bg-[radial-gradient(circle_at_top_right,rgba(201,182,245,0.1),transparent_50%)]">
                                     <SheetHeader className="p-6 border-b border-white/10 bg-white/5">
-                                        <SheetTitle className="flex items-center gap-3 text-cyan-400 font-mono uppercase tracking-widest text-sm">
+                                        <SheetTitle className="flex items-center gap-3 text-u-lilac font-heading font-extrabold uppercase tracking-widest text-sm">
                                             <Settings2 className="w-4 h-4" />
                                             {t.header.controls.systemControls || "System Controls"}
                                         </SheetTitle>
@@ -381,10 +381,10 @@ export function Header() {
 
                                             {/* Invert Y Toggle */}
                                             <div className="flex items-center justify-between pt-2">
-                                                <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-600 font-bold">{t.header.controls.invertY || "Invert Look Y"}</span>
+                                                <span className="text-[10px] font-heading uppercase tracking-widest text-u-lilac/80 font-extrabold">{t.header.controls.invertY || "Invert Look Y"}</span>
                                                 <button
                                                     onClick={() => setInvertYAxis(!invertYAxis)}
-                                                    className={`relative w-10 h-5 rounded-full transition-colors duration-300 ${invertYAxis ? 'bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.5)]' : 'bg-white/10 border border-white/10'}`}
+                                                    className={`relative w-10 h-5 rounded-full transition-colors duration-300 ${invertYAxis ? "bg-u-lilac shadow-[0_0_10px_rgba(201,182,245,0.5)]" : "bg-white/10 border border-white/10"}`}
                                                 >
                                                     <div className={`absolute top-1 left-1 w-3 h-3 bg-white rounded-full shadow-sm transition-transform duration-300 ${invertYAxis ? 'translate-x-5' : 'translate-x-0'}`} />
                                                 </button>
@@ -392,10 +392,10 @@ export function Header() {
 
                                             {/* Sound Toggle */}
                                             <div className="flex items-center justify-between pt-2">
-                                                <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-600 font-bold">{t.header.controls.sound || "Sound"}</span>
+                                                <span className="text-[10px] font-heading uppercase tracking-widest text-u-lilac/80 font-extrabold">{t.header.controls.sound || "Sound"}</span>
                                                 <button
                                                     onClick={() => setSoundEnabled(!soundEnabled)}
-                                                    className={`relative w-10 h-5 rounded-full transition-colors duration-300 ${soundEnabled ? 'bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.5)]' : 'bg-white/10 border border-white/10'}`}
+                                                    className={`relative w-10 h-5 rounded-full transition-colors duration-300 ${soundEnabled ? "bg-u-lilac shadow-[0_0_10px_rgba(201,182,245,0.5)]" : "bg-white/10 border border-white/10"}`}
                                                 >
                                                     <div className={`absolute top-1 left-1 w-3 h-3 bg-white rounded-full shadow-sm transition-transform duration-300 ${soundEnabled ? 'translate-x-5' : 'translate-x-0'}`} />
                                                 </button>
@@ -403,10 +403,10 @@ export function Header() {
 
                                             {/* Invert X Axis Toggle (Mobile Arrows) */}
                                             <div className="flex items-center justify-between pt-2">
-                                                <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-600 font-bold">{t.header.controls.invertX || "Invert Look X"}</span>
+                                                <span className="text-[10px] font-heading uppercase tracking-widest text-u-lilac/80 font-extrabold">{t.header.controls.invertX || "Invert Look X"}</span>
                                                 <button
                                                     onClick={() => setInvertXAxis(!invertXAxis)}
-                                                    className={`relative w-10 h-5 rounded-full transition-colors duration-300 ${invertXAxis ? 'bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.5)]' : 'bg-white/10 border border-white/10'}`}
+                                                    className={`relative w-10 h-5 rounded-full transition-colors duration-300 ${invertXAxis ? "bg-u-lilac shadow-[0_0_10px_rgba(201,182,245,0.5)]" : "bg-white/10 border border-white/10"}`}
                                                 >
                                                     <div className={`absolute top-1 left-1 w-3 h-3 bg-white rounded-full shadow-sm transition-transform duration-300 ${invertXAxis ? 'translate-x-5' : 'translate-x-0'}`} />
                                                 </button>
@@ -414,10 +414,10 @@ export function Header() {
                                         </div>
 
                                         <div className="flex flex-col gap-4 pt-4">
-                                            <Button variant="outline" onClick={resetDefaults} className="h-12 border-white/20 text-cyan-400/70 hover:text-cyan-400 hover:border-cyan-400 hover:bg-white/5 uppercase text-xs tracking-widest font-mono">
+                                            <Button variant="outline" onClick={resetDefaults} className="h-12 rounded-xl border-u-lilac/30 text-u-lilac/80 hover:text-u-lilac hover:border-u-lilac hover:bg-white/5 uppercase text-xs tracking-widest font-heading font-bold">
                                                 <RotateCcw className="mr-2 h-4 w-4" /> Reset
                                             </Button>
-                                            <Button variant="outline" onClick={() => { handleRegenerate(); setIsOpen(false); }} disabled={cooldown > 0} className="h-12 border-cyan-500/30 text-cyan-400 bg-cyan-950/20 hover:bg-cyan-900/40 hover:border-cyan-400 uppercase text-xs tracking-widest font-mono">
+                                            <Button variant="outline" onClick={() => { handleRegenerate(); setIsOpen(false); }} disabled={cooldown > 0} className="h-12 rounded-xl border-u-sun/30 text-u-sun bg-u-surface2/40 hover:bg-u-surface2/70 hover:border-u-sun uppercase text-xs tracking-widest font-heading font-bold">
                                                 <Zap className="mr-2 h-4 w-4" /> {cooldown > 0 ? `${cooldown}s` : t.header.controls.reloadUniverse}
                                             </Button>
                                         </div>
@@ -425,10 +425,10 @@ export function Header() {
 
                                     <div className="p-6 border-t border-white/10 bg-white/5">
                                         <div className="grid grid-cols-2 gap-3">
-                                            <button onClick={() => { setLanguage("en"); setIsOpen(false); }} className={`py-3 rounded border text-xs font-mono font-bold transition-all ${language === "en" ? "bg-cyan-950/50 border-cyan-500 text-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.3)]" : "bg-black/50 border-white/10 text-white/40"}`}>
+                                            <button onClick={() => { setLanguage("en"); setIsOpen(false); }} className={`py-3 rounded-xl border-2 text-xs font-heading font-extrabold transition-all ${language === "en" ? "bg-u-surface2/70 border-u-sun text-u-sun shadow-[0_0_10px_rgba(255,217,138,0.3)]" : "bg-u-surface/50 border-white/10 text-white/40"}`}>
                                                 ENGLISH
                                             </button>
-                                            <button onClick={() => { setLanguage("it"); setIsOpen(false); }} className={`py-3 rounded border text-xs font-mono font-bold transition-all ${language === "it" ? "bg-cyan-950/50 border-cyan-500 text-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.3)]" : "bg-black/50 border-white/10 text-white/40"}`}>
+                                            <button onClick={() => { setLanguage("it"); setIsOpen(false); }} className={`py-3 rounded-xl border-2 text-xs font-heading font-extrabold transition-all ${language === "it" ? "bg-u-surface2/70 border-u-sun text-u-sun shadow-[0_0_10px_rgba(255,217,138,0.3)]" : "bg-u-surface/50 border-white/10 text-white/40"}`}>
                                                 ITALIANO
                                             </button>
                                         </div>

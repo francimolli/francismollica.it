@@ -6,8 +6,26 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-lato);
-  --font-serif: var(--font-playfair);
+  /* Claymorphism notturno (design-system/universo-cartoon/MASTER.md) */
+  --font-sans: var(--font-dm-sans);
+  --font-serif: var(--font-nunito);
+  --font-heading: var(--font-nunito);
+  --font-mono: var(--font-roboto-mono);
+
+  /* Token universo: notte + pastelli (specchiano components/universe/palette.ts) */
+  --color-u-night: #0a0a23;
+  --color-u-deep: #0d0b24;
+  --color-u-surface: #1c1433;
+  --color-u-surface2: #2a2150;
+  --color-u-cream: #f7e6c8;
+  --color-u-milk: #fff6e0;
+  --color-u-mint: #9fe8c7;
+  --color-u-peach: #ffb59a;
+  --color-u-lilac: #c9b6f5;
+  --color-u-sun: #ffd98a;
+  --color-u-sky: #9ad1f5;
+  --color-u-rose: #f5a8c0;
+  --color-u-coral: #e06a5a;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -157,8 +175,30 @@
   h4,
   h5,
   h6 {
-    @apply font-serif;
+    @apply font-serif font-extrabold;
   }
+}
+
+/* --- CLAYMORPHISM HELPERS --- */
+
+/* Superficie "paffuta": tonda, bordo morbido, doppia ombra soffice. */
+.clay {
+  border-radius: 1.25rem;
+  border: 2px solid rgb(201 182 245 / 0.25);
+  background: rgb(28 20 51 / 0.8);
+  box-shadow:
+    inset -2px -2px 10px rgb(10 10 35 / 0.6),
+    inset 2px 2px 10px rgb(201 182 245 / 0.08),
+    0 6px 24px rgb(10 10 35 / 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.clay-press {
+  transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.clay-press:active {
+  transform: scale(0.95);
 }
 
 /* --- CYBERPUNK FX --- */

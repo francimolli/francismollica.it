@@ -99,7 +99,7 @@ function Toast({ toast, onDismiss }: { toast: NonNullable<ToastState>; onDismiss
       className="fixed bottom-24 right-6 z-[300] w-72 rounded-xl border border-white/12 bg-black/93 backdrop-blur-md p-4 shadow-[0_8px_32px_rgba(0,0,0,0.6)]"
     >
       <div className="flex items-start justify-between gap-2 mb-2">
-        <span className="text-[11px] font-mono font-bold text-cyan-300 leading-snug">{toast.title}</span>
+        <span className="text-[11px] font-mono font-bold text-u-sky leading-snug">{toast.title}</span>
         <button onClick={onDismiss} className="shrink-0 text-white/25 hover:text-white/60 transition-colors text-xs mt-px">✕</button>
       </div>
       <p className="text-[10px] font-mono text-white/45 leading-relaxed">{toast.body}</p>
@@ -111,7 +111,7 @@ function InfoBtn({ infoKey, onShow }: { infoKey: string; onShow: (k: string) => 
   return (
     <button
       onClick={() => onShow(infoKey)}
-      className="ml-1 text-[9px] text-white/20 hover:text-cyan-400/70 transition-colors leading-none"
+      className="ml-1 text-[9px] text-white/20 hover:text-u-sky/70 transition-colors leading-none"
       title="Spiega questo indicatore"
     >
       ⓘ
@@ -230,7 +230,7 @@ function Meter({ label, v, hot }: { label: string; v: number; hot?: boolean }) {
   return (
     <div className="flex items-center justify-end gap-2">
       <span className="w-10 text-left text-white/40">{label}</span>
-      <span className={`tracking-[0.18em] ${hot ? "text-rose-300/80" : "text-cyan-300/80"}`}>
+      <span className={`tracking-[0.18em] ${hot ? "text-rose-300/80" : "text-u-sky/80"}`}>
         {"█".repeat(blocks)}<span className="text-white/15">{"·".repeat(10 - blocks)}</span>
       </span>
     </div>
@@ -312,7 +312,7 @@ function SignalsPanel({ symbol, onInfo }: { symbol: string; onInfo: (k: string) 
     <div className="grid w-full max-w-3xl grid-cols-1 gap-3 font-mono text-xs md:grid-cols-2">
       <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
         <div className="mb-2 flex items-center justify-between">
-          <span className="tracking-widest text-cyan-300/80 flex items-center">
+          <span className="tracking-widest text-u-sky/80 flex items-center">
             SIGNALS <InfoBtn infoKey="rsi" onShow={onInfo} />
           </span>
           <span className="text-[10px] uppercase tracking-wider text-white/30">descriptive · not predictive</span>
@@ -376,7 +376,7 @@ function AustrianPanel({ symbol, onInfo }: { symbol: string; onInfo: (k: string)
     <div className="w-full max-w-3xl space-y-3 font-mono text-xs">
       {/* Verdict banner */}
       <div className={`rounded-xl border ${vs.border} ${vs.bg} p-4 flex items-start gap-3`}>
-        <button onClick={() => onInfo("verdict")} className="shrink-0 mt-0.5 text-[10px] text-white/25 hover:text-cyan-400/70 transition-colors">ⓘ</button>
+        <button onClick={() => onInfo("verdict")} className="shrink-0 mt-0.5 text-[10px] text-white/25 hover:text-u-sky/70 transition-colors">ⓘ</button>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             <span className={`text-sm font-bold tracking-widest ${vs.color}`}>{signal.verdict}</span>
@@ -411,7 +411,7 @@ function AustrianPanel({ symbol, onInfo }: { symbol: string; onInfo: (k: string)
         {/* Statistical mix */}
         <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
           <div className="mb-2 flex items-center justify-between">
-            <span className="tracking-widest text-cyan-300/80 flex items-center">
+            <span className="tracking-widest text-u-sky/80 flex items-center">
               SEGNALI MIX <InfoBtn infoKey="rsi" onShow={onInfo} />
             </span>
           </div>
@@ -528,7 +528,7 @@ const SECTOR_THESIS: Record<string, { narrative: string; catalysts: string }> = 
 
 const QUALITY_STYLE: Record<SignalQuality, { color: string; bg: string; border: string }> = {
   OTTIMO:  { color: "text-emerald-300", bg: "bg-emerald-500/10", border: "border-emerald-500/30" },
-  BUONO:   { color: "text-cyan-300",    bg: "bg-cyan-500/10",    border: "border-cyan-500/30" },
+  BUONO:   { color: "text-u-sky",    bg: "bg-u-sky/10",    border: "border-u-sky/30" },
   INCERTO: { color: "text-amber-300",   bg: "bg-amber-500/10",   border: "border-amber-500/30" },
   BASSO:   { color: "text-white/40",    bg: "bg-white/5",        border: "border-white/15" },
 };
@@ -861,7 +861,7 @@ function MarketThesis() {
               onClick={() => setProfilo(p)}
               className={`px-2.5 py-1 rounded text-[9px] font-bold uppercase tracking-wider border transition-all ${
                 profilo === p
-                  ? p === "prudente" ? "border-cyan-400/50 bg-cyan-500/10 text-cyan-300"
+                  ? p === "prudente" ? "border-u-sky/50 bg-u-sky/10 text-u-sky"
                     : p === "dinamico" ? "border-rose-400/50 bg-rose-500/10 text-rose-300"
                     : "border-amber-400/50 bg-amber-500/10 text-amber-300"
                   : "border-white/8 text-white/25 hover:border-white/20 hover:text-white/40"
@@ -919,7 +919,7 @@ function MarketThesis() {
               <p className="text-[10px] text-white/50 leading-relaxed">{thesis.perche}</p>
             </Section>
 
-            <Section title="COME" accent="text-cyan-300/80">
+            <Section title="COME" accent="text-u-sky/80">
               <p className="text-[10px] text-white/50 leading-relaxed">{thesis.perCome}</p>
               <div className="mt-1.5 pt-1.5 border-t border-white/8">
                 <TRow label="Allocazione" value={thesis.allocazione} />
@@ -1011,7 +1011,7 @@ export function MarketArt() {
       {/* Header + tabs */}
       <div className="w-full max-w-3xl space-y-3">
         <div className="text-center">
-          <h2 className="font-mono text-xl font-bold tracking-widest text-cyan-400 md:text-2xl">INTENT</h2>
+          <h2 className="font-mono text-xl font-bold tracking-widest text-u-sky md:text-2xl">INTENT</h2>
           <p className="mx-auto mt-1 max-w-md font-mono text-xs text-gray-400">
             Intelligence crypto · Austrian Allocation · strategia di posizionamento annualizzata
           </p>
@@ -1025,7 +1025,7 @@ export function MarketArt() {
               onClick={() => setTab(t)}
               className={`px-5 py-2 rounded-full font-mono text-[11px] font-bold tracking-[0.2em] uppercase border transition-all duration-200 ${
                 tab === t
-                  ? "bg-cyan-500/15 border-cyan-400/50 text-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.2)]"
+                  ? "bg-u-sky/15 border-u-sky/50 text-u-sky shadow-[0_0_12px_rgba(154,209,245,0.2)]"
                   : "border-white/10 text-white/35 hover:border-white/25 hover:text-white/60"
               }`}
             >
@@ -1046,7 +1046,7 @@ export function MarketArt() {
                 onClick={() => setSymbol(s.id)}
                 className={`rounded border px-2.5 py-1 font-mono text-[11px] tracking-wider transition ${
                   symbol === s.id
-                    ? "border-cyan-400 bg-cyan-400/10 text-cyan-300"
+                    ? "border-u-sky bg-u-sky/10 text-u-sky"
                     : "border-white/15 text-white/45 hover:border-white/40 hover:text-white/80"
                 }`}
               >
@@ -1073,7 +1073,7 @@ export function MarketArt() {
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/70 backdrop-blur-sm">
                 <button
                   onClick={() => setRunning(true)}
-                  className="group flex h-16 w-16 items-center justify-center rounded-full border border-cyan-400/40 bg-cyan-500/10 text-cyan-400 shadow-[0_0_24px_rgba(6,182,212,0.2)] transition-all hover:bg-cyan-500/20 hover:border-cyan-400/70 hover:shadow-[0_0_32px_rgba(6,182,212,0.4)] active:scale-95"
+                  className="group flex h-16 w-16 items-center justify-center rounded-full border border-u-sky/40 bg-u-sky/10 text-u-sky shadow-[0_0_24px_rgba(154,209,245,0.2)] transition-all hover:bg-u-sky/20 hover:border-u-sky/70 hover:shadow-[0_0_32px_rgba(154,209,245,0.4)] active:scale-95"
                   aria-label="Avvia animazione"
                 >
                   <svg viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7 translate-x-0.5">

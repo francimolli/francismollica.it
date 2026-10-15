@@ -33,7 +33,7 @@ export function Footer() {
                                     rel="license"
                                     href="http://creativecommons.org/licenses/by-nc/4.0/"
                                     target="_blank"
-                                    className="text-cyan-500/70 hover:text-cyan-400 transition-colors underline underline-offset-4 decoration-cyan-500/20"
+                                    className="text-u-sky/70 hover:text-u-sky transition-colors underline underline-offset-4 decoration-u-sky/20"
                                 >
                                     Creative Commons Attribuzione - Non commerciale 4.0 Internazionale
                                 </a>.
@@ -45,7 +45,7 @@ export function Footer() {
                                     rel="license"
                                     href="http://creativecommons.org/licenses/by-nc/4.0/"
                                     target="_blank"
-                                    className="text-cyan-500/70 hover:text-cyan-400 transition-colors underline underline-offset-4 decoration-cyan-500/20"
+                                    className="text-u-sky/70 hover:text-u-sky transition-colors underline underline-offset-4 decoration-u-sky/20"
                                 >
                                     Creative Commons Attribution-NonCommercial 4.0 International License
                                 </a>.
@@ -61,8 +61,8 @@ export function Footer() {
                 </div>
 
                 <div className="flex items-center gap-2 opacity-20 hover:opacity-40 transition-opacity duration-500">
-                    <HackerGlider className="w-5 h-5 text-cyan-400" />
-                    <span className="text-[8px] font-mono text-cyan-600 tracking-[0.3em] uppercase">Hacker Emblem</span>
+                    <HackerGlider className="w-5 h-5 text-u-sky" />
+                    <span className="text-[8px] font-mono text-u-sky tracking-[0.3em] uppercase">Hacker Emblem</span>
                 </div>
             </div>
         </footer>

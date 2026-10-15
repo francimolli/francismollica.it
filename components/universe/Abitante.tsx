@@ -187,7 +187,7 @@ export function Abitante({ planetId, planetRadius, seed, color, phrases }: Abita
             {/* fumetto */}
             {bubble && (
                 <Html position={[0, 1.15, 0]} center distanceFactor={16} zIndexRange={[30, 10]}>
-                    <div className="pointer-events-none max-w-[180px] rounded-2xl rounded-bl-sm border border-black/10 bg-[#fffaf0] px-3 py-2 text-center font-mono text-[11px] leading-snug text-[#3a2d52] shadow-lg">
+                    <div className="pointer-events-none max-w-[180px] rounded-2xl rounded-bl-sm border border-black/10 bg-[#fffaf0] px-3 py-2 text-center font-sans text-[12px] font-medium leading-snug text-[#3a2d52] shadow-lg">
                         {bubble}
                     </div>
                 </Html>

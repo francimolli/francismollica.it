@@ -272,7 +272,7 @@ export function CartoonUniverse() {
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 12 }}
-                        className="pointer-events-none absolute bottom-28 left-1/2 z-40 -translate-x-1/2 rounded-full border border-[#c9b6f5]/30 bg-[#1c1433]/80 px-5 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-[#c9b6f5] backdrop-blur-sm"
+                        className="pointer-events-none absolute bottom-28 left-1/2 z-40 -translate-x-1/2 rounded-full border border-[#c9b6f5]/30 bg-[#1c1433]/80 px-5 py-2 font-heading font-bold text-[11px] uppercase tracking-[0.2em] text-[#c9b6f5] backdrop-blur-sm"
                     >
                         {t.universe?.hint}
                     </motion.div>
@@ -292,10 +292,10 @@ export function CartoonUniverse() {
                             <div className="h-2 w-2 rounded-full bg-[#2a2150]" />
                         </div>
                         <div>
-                            <div className="font-mono text-xs font-bold uppercase tracking-widest text-[#ffd98a]">
+                            <div className="font-heading text-xs font-extrabold uppercase tracking-widest text-[#ffd98a]">
                                 {(t as never as Record<string, Record<string, Record<string, string>>>).secrets?.alert?.wow}
                             </div>
-                            <div className="font-mono text-sm font-bold text-white">{toast}</div>
+                            <div className="font-sans text-sm font-medium text-white">{toast}</div>
                         </div>
                     </motion.div>
                 )}

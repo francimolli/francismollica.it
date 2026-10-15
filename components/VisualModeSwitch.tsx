@@ -8,8 +8,8 @@ const MODES: { id: ColorMode; label: string; Icon: LucideIcon; active: string; i
         id: "normal",
         label: "Natural",
         Icon: Sun,
-        active: "bg-emerald-700/70 text-emerald-100 border-emerald-400/50",
-        idle: "text-emerald-400/50 border-transparent hover:text-emerald-300 hover:bg-emerald-500/10",
+        active: "bg-u-mint/25 text-u-mint border-u-mint/50",
+        idle: "text-u-mint/50 border-transparent hover:text-u-mint hover:bg-u-mint/10",
     },
     // {
     //     id: "inverted",
@@ -22,8 +22,8 @@ const MODES: { id: ColorMode; label: string; Icon: LucideIcon; active: string; i
         id: "random",
         label: "Random",
         Icon: Shuffle,
-        active: "bg-amber-700/70 text-amber-100 border-amber-400/50",
-        idle: "text-amber-400/50 border-transparent hover:text-amber-300 hover:bg-amber-500/10",
+        active: "bg-u-sun/25 text-u-sun border-u-sun/50",
+        idle: "text-u-sun/50 border-transparent hover:text-u-sun hover:bg-u-sun/10",
     },
 ];
 
@@ -36,8 +36,8 @@ export function VisualModeSwitch() {
             role="group"
             aria-label="Visual mode selector"
         >
-            <div className="flex flex-row md:flex-col gap-1 bg-black/60 backdrop-blur-md border border-white/10 rounded-2xl p-2 shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
-                <span className="text-[8px] font-mono text-white/25 uppercase tracking-[0.2em] text-center px-1 pb-0.5 md:block hidden">
+            <div className="flex flex-row md:flex-col gap-1 bg-u-surface/80 backdrop-blur-md border-2 border-u-lilac/20 rounded-2xl p-2 shadow-[0_4px_24px_rgba(10,10,35,0.4)]">
+                <span className="text-[8px] font-heading font-bold text-u-lilac/40 uppercase tracking-[0.2em] text-center px-1 pb-0.5 md:block hidden">
                     VISUALE
                 </span>
                 {MODES.map(({ id, label, Icon, active, idle }) => (
@@ -46,7 +46,7 @@ export function VisualModeSwitch() {
                         onClick={() => setMode(id)}
                         aria-pressed={mode === id}
                         aria-label={`${label} visual mode`}
-                        className={`flex items-center gap-2 px-2.5 py-2.5 md:px-3 md:py-2 rounded-xl text-[11px] font-mono font-semibold tracking-wide border transition-all duration-200 ${mode === id ? active : idle}`}
+                        className={`clay-press flex items-center gap-2 px-2.5 py-2.5 md:px-3 md:py-2 rounded-xl text-[11px] font-heading font-bold tracking-wide border-2 transition-all duration-200 ${mode === id ? active : idle}`}
                     >
                         <Icon size={12} aria-hidden="true" />
                         <span className="md:inline hidden">{label}</span>

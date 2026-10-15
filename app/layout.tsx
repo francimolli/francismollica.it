@@ -1,16 +1,25 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Lato } from "next/font/google";
+import { Nunito, DM_Sans, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+// Tipografia claymorphism (design-system/universo-cartoon/MASTER.md):
+// Nunito per titoli/etichette, DM Sans per il corpo, Roboto Mono per la telemetria.
+const nunito = Nunito({
+  variable: "--font-nunito",
   subsets: ["latin"],
+  weight: ["700", "800", "900"],
 });
 
-const lato = Lato({
-  variable: "--font-lato",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400", "500", "700"],
+});
+
+const robotoMono = Roboto_Mono({
+  variable: "--font-roboto-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 const siteConfig = {
@@ -101,7 +110,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${playfair.variable} ${lato.variable} antialiased font-sans`}
+        className={`${nunito.variable} ${dmSans.variable} ${robotoMono.variable} antialiased font-sans`}
       >
         <JsonLd />
         <LanguageProvider>
