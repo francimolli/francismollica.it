@@ -5,35 +5,65 @@ export const UNIVERSE_MODE =
     | "cartoon"
     | "legacy";
 
-// Ancoraggi di volo della camera. Il mondo del prototipo è piccolo:
-// il pianeta Casa sta all'origine, l'overview guarda tutto da fuori.
-// `surface` rende l'ancora dinamica: si atterra sopra quel punto della
-// superficie (che ruota col pianeta), così la casetta è sempre in scena.
-export interface FlightAnchor {
+// --- MONDO ---------------------------------------------------------------
+// I pianetini riprendono le direzioni dei vecchi beacon (stessa mappa mentale).
+
+export interface PlanetConfig {
+    id: string;
+    section: string | null; // SectionCard aperta all'atterraggio
     position: [number, number, number];
-    lookAt: [number, number, number];
-    surface?: {
-        planet: string;
-        lat: number; lon: number; distance: number; // posizione camera
-        lookAt: { lat: number; lon: number; radius: number }; // punto osservato
-    };
+    radius: number;
+    secret?: boolean; // visibile solo dopo aver trovato tutti i segreti
 }
 
-export const FLIGHT_ANCHORS: Record<string, FlightAnchor> = {
-    overview: { position: [4, 20, 62], lookAt: [0, 0, 0] },
-    casa: {
-        position: [14, 10, 28],
-        lookAt: [0, 0, 0],
-        // ripresa in diagonale: casetta in primo piano, orizzonte e stelle dietro
-        surface: {
-            planet: "casa",
-            lat: 0, lon: -18, distance: 26,
-            lookAt: { lat: 22, lon: 15, radius: 11 },
-        },
-    },
+export const PLANETS: PlanetConfig[] = [
+    { id: "casa", section: "about", position: [0, 0, -125], radius: 10 },
+    { id: "officina", section: "timeline", position: [130, 10, 8], radius: 9 },
+    { id: "galleria", section: "portfolio", position: [-150, 18, -95], radius: 9 },
+    { id: "faro", section: "contact", position: [-125, -6, 35], radius: 8 },
+    { id: "giardino", section: "music", position: [12, -12, 130], radius: 9 },
+    { id: "osservatorio", section: "market", position: [155, 20, 100], radius: 9 },
+    { id: "cantiere", section: "roadmap", position: [-145, -14, 105], radius: 8 },
+    { id: "segreto", section: null, position: [30, 75, -200], radius: 6, secret: true },
+];
+
+export const OVERVIEW = {
+    position: [0, 85, 255] as [number, number, number],
+    lookAt: [0, 0, -10] as [number, number, number],
 };
 
-// Pianetino → sezione del portfolio aperta all'atterraggio.
-export const PLANET_SECTION: Record<string, string> = {
-    casa: "about",
+// Sezione del portfolio → pianeta (per LOGBOOK e trigger di prossimità).
+export const SECTION_PLANET: Record<string, string> = {
+    about: "casa",
+    timeline: "officina",
+    projects: "officina",
+    portfolio: "galleria",
+    contact: "faro",
+    music: "giardino",
+    market: "osservatorio",
+    roadmap: "cantiere",
+};
+
+// Artefatti segreti: riusano il sistema unlockSecret/LOGBOOK esistente.
+export interface SecretArtifact {
+    id: "satellite" | "monolith" | "void_ship";
+    planet: string;
+    offset: [number, number, number]; // rispetto al pianeta
+}
+
+export const SECRET_ARTIFACTS: SecretArtifact[] = [
+    { id: "satellite", planet: "officina", offset: [24, 10, -9] },
+    { id: "monolith", planet: "cantiere", offset: [-18, 8, 17] },
+    { id: "void_ship", planet: "giardino", offset: [17, -7, 22] },
+];
+
+// --- VOLO ----------------------------------------------------------------
+export const FLIGHT = {
+    speed: 55, // unità al secondo (sensazione simile al vecchio universo)
+    boostMultiplier: 5,
+    lookSpeed: 0.9, // rad/s per le frecce-sguardo
+    landDistanceFactor: 2.8, // distanza d'atterraggio = raggio × fattore
+    proximityOpen: 7, // apre la sezione entro raggio + questo margine
+    proximityCooldownMs: 45000,
+    secretRange: 25, // distanza di sblocco artefatti
 };

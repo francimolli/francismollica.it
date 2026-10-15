@@ -2,15 +2,23 @@ export const translations = {
     it: {
         universe: {
             planets: {
-                casa: "Casa · chi sono",
+                casa: "Casa",
+                officina: "Officina",
+                galleria: "Galleria",
+                faro: "Faro",
+                giardino: "Giardino Sonoro",
+                osservatorio: "Osservatorio",
+                cantiere: "Cantiere",
+                segreto: "???",
             },
+            hint: "WASD o frecce per volare · clicca un pianetino per visitarlo",
             phrases: [
                 "Ciao! Che bello vederti da queste parti!",
                 "Francesco ha costruito tutto questo con le sue mani!",
                 "Si dice che programmi anche in sogno…",
                 "Qui il tempo scorre come decidi tu.",
                 "Francesco fa anche musica, lo sapevi?",
-                "Doppio click nel vuoto e torni a vedere tutto il cosmo!",
+                "Pare che tre strani oggetti vaghino tra i pianeti…",
             ],
         },
         nav: {
@@ -394,15 +402,23 @@ export const translations = {
     en: {
         universe: {
             planets: {
-                casa: "Home · who I am",
+                casa: "Home",
+                officina: "Workshop",
+                galleria: "Gallery",
+                faro: "Lighthouse",
+                giardino: "Sound Garden",
+                osservatorio: "Observatory",
+                cantiere: "Worksite",
+                segreto: "???",
             },
+            hint: "WASD or arrows to fly · click a little planet to visit it",
             phrases: [
                 "Hi! So nice to see you around here!",
                 "Francesco built all of this with his own hands!",
                 "They say he even codes in his dreams…",
                 "Here, time flows the way you decide.",
                 "Francesco makes music too, did you know?",
-                "Double-click on empty space to see the whole cosmos again!",
+                "They say three strange objects drift between the planets…",
             ],
         },
         nav: {

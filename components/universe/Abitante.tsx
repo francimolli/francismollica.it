@@ -6,9 +6,10 @@ import { useFrame, type ThreeEvent } from "@react-three/fiber";
 import { Html, Outlines, useCursor } from "@react-three/drei";
 import { getToonGradient, onSurface } from "./toon";
 import { OUTLINE } from "./palette";
-import { useUniverseStore } from "./store";
+import { bridge, useUniverseStore } from "./store";
 
 interface AbitanteProps {
+    planetId: string;
     planetRadius: number;
     seed: number; // 0..1, differenzia ogni individuo
     color: string;
@@ -21,7 +22,7 @@ const Y_AXIS = new THREE.Vector3(0, 1, 0);
 
 // Piccolo abitante tondo che cammina sulla curvatura del pianeta.
 // Animazione 100% procedurale: hop, squash & stretch, palpebre, sguardo.
-export function Abitante({ planetRadius, seed, color, phrases }: AbitanteProps) {
+export function Abitante({ planetId, planetRadius, seed, color, phrases }: AbitanteProps) {
     const group = useRef<THREE.Group>(null);
     const body = useRef<THREE.Group>(null);
     const eyeL = useRef<THREE.Group>(null);
@@ -59,8 +60,8 @@ export function Abitante({ planetRadius, seed, color, phrases }: AbitanteProps) 
 
     // All'atterraggio della camera le creaturine salutano saltando.
     useEffect(() => {
-        if (arrivedAt === "casa") greetUntil.current = performance.now() + 2800;
-    }, [arrivedAt]);
+        if (arrivedAt === planetId) greetUntil.current = performance.now() + 2800;
+    }, [arrivedAt, planetId]);
 
     useEffect(() => () => {
         if (bubbleTimer.current) clearTimeout(bubbleTimer.current);
@@ -72,8 +73,8 @@ export function Abitante({ planetRadius, seed, color, phrases }: AbitanteProps) 
         const greeting = performance.now() < greetUntil.current;
         const walking = !reducedMotion && !hovered && !bubble && !greeting;
 
-        // --- camminata lungo la superficie ---
-        if (walking) nav.current.lon += traits.speed * dt;
+        // --- camminata lungo la superficie (al passo col Flusso del Tempo) ---
+        if (walking) nav.current.lon += traits.speed * bridge.timeScale * dt;
         const lat = traits.baseLat + Math.sin(t * 0.12 + traits.phase) * 8;
         const { position, quaternion } = onSurface(lat, nav.current.lon, planetRadius);
         group.current.position.copy(position);

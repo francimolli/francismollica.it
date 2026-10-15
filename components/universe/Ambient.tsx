@@ -28,13 +28,13 @@ function getGlowTexture(): THREE.CanvasTexture {
 // Nuvole di nebulosa: posizioni fisse (scelte a mano, non casuali) per
 // comporre lo sfondo come un fondale dipinto.
 const NEBULAE: { pos: [number, number, number]; scale: number; color: string; opacity: number }[] = [
-    { pos: [-120, 40, -160], scale: 190, color: PASTEL.deepLilac, opacity: 0.2 },
-    { pos: [140, -20, -180], scale: 230, color: PASTEL.deepBlue, opacity: 0.18 },
-    { pos: [60, 80, -220], scale: 170, color: PASTEL.mint, opacity: 0.07 },
-    { pos: [-180, -60, -120], scale: 210, color: PASTEL.rose, opacity: 0.08 },
-    { pos: [10, -90, -200], scale: 250, color: "#4a3f8f", opacity: 0.14 },
-    { pos: [200, 60, -80], scale: 160, color: PASTEL.lilac, opacity: 0.1 },
-    { pos: [-60, 130, -100], scale: 150, color: PASTEL.warmYellow, opacity: 0.05 },
+    { pos: [-320, 100, -420], scale: 480, color: PASTEL.deepLilac, opacity: 0.2 },
+    { pos: [380, -60, -460], scale: 560, color: PASTEL.deepBlue, opacity: 0.18 },
+    { pos: [160, 220, -560], scale: 420, color: PASTEL.mint, opacity: 0.07 },
+    { pos: [-460, -160, -300], scale: 520, color: PASTEL.rose, opacity: 0.08 },
+    { pos: [30, -240, 520], scale: 620, color: "#4a3f8f", opacity: 0.14 },
+    { pos: [520, 160, 240], scale: 420, color: PASTEL.lilac, opacity: 0.1 },
+    { pos: [-180, 340, 300], scale: 380, color: PASTEL.warmYellow, opacity: 0.05 },
 ];
 
 function Nebulae({ count }: { count: number }) {
@@ -86,8 +86,8 @@ function Dust({ count }: { count: number }) {
         };
         const arr = new Float32Array(count * 3);
         for (let i = 0; i < count; i++) {
-            // guscio sferico attorno al pianeta, mai troppo vicino
-            const r = 18 + rand() * 45;
+            // guscio sferico che abbraccia tutto il mondo dei pianetini
+            const r = 40 + rand() * 260;
             const theta = rand() * Math.PI * 2;
             const phi = Math.acos(2 * rand() - 1);
             arr[i * 3] = r * Math.sin(phi) * Math.cos(theta);
@@ -125,21 +125,22 @@ function Dust({ count }: { count: number }) {
 export function Ambient() {
     const tier = useUniverseStore((s) => s.tier);
     const reducedMotion = useUniverseStore((s) => s.reducedMotion);
+    const density = useUniverseStore((s) => s.density);
     const preset = QUALITY_PRESETS[tier];
 
     return (
         <>
             <Stars
-                radius={280}
-                depth={60}
+                radius={900}
+                depth={200}
                 count={preset.stars}
-                factor={4}
+                factor={12}
                 saturation={0.35}
                 fade
                 speed={reducedMotion ? 0 : 0.6}
             />
             <Nebulae count={preset.nebula} />
-            <Dust count={preset.dust} />
+            <Dust count={Math.max(60, Math.round(preset.dust * density))} />
         </>
     );
 }
