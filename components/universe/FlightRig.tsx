@@ -280,6 +280,9 @@ export function FlightRig({ setCoordinates }: FlightRigProps) {
             }
 
             // --- confini: la Lucciola Guardiana ---
+            // Isteresi larga: si sveglia a `warn`, ma si riaddormenta solo
+            // ben DENTRO il confine (warn - softWall). Senza, sul bordo lo
+            // stato sfarfallava e il toast si ri-mostrava all'infinito.
             const fromCenter = cam.position.length();
             if (fromCenter >= BOUNDS.limit) {
                 if (store.guide !== "escorting" && !flight.current && now >= escortGraceUntil.current) {
@@ -288,7 +291,10 @@ export function FlightRig({ setCoordinates }: FlightRigProps) {
                 }
             } else if (fromCenter >= BOUNDS.warn) {
                 if (store.guide === "idle") store.setGuide("approaching");
-            } else if (store.guide !== "idle" && !flight.current && !store.flying) {
+            } else if (store.guide === "escorting") {
+                // la scorta finisce quando il volo verso casa è concluso
+                if (!flight.current && !store.flying) store.setGuide("idle");
+            } else if (store.guide === "approaching" && fromCenter < BOUNDS.warn - BOUNDS.softWall) {
                 store.setGuide("idle");
             }
 
