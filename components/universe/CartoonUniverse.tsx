@@ -258,10 +258,30 @@ export function CartoonUniverse() {
     }, [proximitySection, setExpandedSection]);
 
     // artefatto trovato o easter egg delle amicizie: toast + sblocchi
+    // Riferimenti sempre freschi per l'effect dei toast: le sue dipendenze
+    // dirette (t, unlockSecret) cambiano identità ~10 volte al secondo con
+    // l'orologio di CityControls, e ogni rimontaggio dell'effect cancellava
+    // il timer dei 6s: i toast non sparivano MAI. L'effect ora monta una
+    // volta sola e legge il presente da qui.
+    const tRef = useRef(t);
+    const unlockRef = useRef(unlockSecret);
+    useEffect(() => {
+        tRef.current = t;
+        unlockRef.current = unlockSecret;
+    }, [t, unlockSecret]);
+
     useEffect(() => {
         let timer: ReturnType<typeof setTimeout> | null = null;
-        const wow = (t as never as Record<string, Record<string, Record<string, string>>>).secrets?.alert?.wow ?? "✦";
+        const lastShown: Record<string, number> = {};
         const show = (title: string, message: string, alsoClearPending: boolean) => {
+            // lo stesso messaggio non si ripete a raffica: il timer dei 6s
+            // non va MAI azzerato da un doppione (il toast deve spegnersi)
+            const now = Date.now();
+            if (now - (lastShown[message] ?? 0) < 20000) {
+                if (alsoClearPending) useUniverseStore.getState().setPendingUnlock(null);
+                return;
+            }
+            lastShown[message] = now;
             setToast({ title, message });
             if (timer) clearTimeout(timer);
             timer = setTimeout(() => {
@@ -270,9 +290,11 @@ export function CartoonUniverse() {
             }, 6000);
         };
         const unsub = useUniverseStore.subscribe((s, prev) => {
+            const tNow = tRef.current;
+            const wow = (tNow as never as Record<string, Record<string, Record<string, string>>>).secrets?.alert?.wow ?? "✦";
             if (s.pendingUnlock && s.pendingUnlock !== prev.pendingUnlock) {
-                unlockSecret(s.pendingUnlock);
-                const secretT = (t as never as Record<string, Record<string, { message?: string }>>).secrets;
+                unlockRef.current(s.pendingUnlock);
+                const secretT = (tNow as never as Record<string, Record<string, { message?: string }>>).secrets;
                 show(wow, secretT?.[s.pendingUnlock]?.message ?? s.pendingUnlock, true);
             }
             // l'uovo scatta esattamente al traguardo (non ri-annuncia ai mount successivi)
@@ -281,10 +303,10 @@ export function CartoonUniverse() {
                 prev.creatureFriends.length < CREATURE_EGG_GOAL &&
                 prev.creatureFriends.length > 0
             ) {
-                show(wow, t.universe?.eggMessage ?? "✦", false);
+                show(wow, tNow.universe?.eggMessage ?? "✦", false);
             }
             // la Lucciola Guardiana ti ha trovato / ti scorta a casa
-            const guideT = t.universe?.guide;
+            const guideT = tNow.universe?.guide;
             if (s.guide === "approaching" && prev.guide === "idle") {
                 show(guideT?.title ?? "✦", guideT?.found ?? "✦", false);
             }
@@ -296,7 +318,7 @@ export function CartoonUniverse() {
             unsub();
             if (timer) clearTimeout(timer);
         };
-    }, [unlockSecret, t]);
+    }, []);
 
     // --- etichette ---
     const planetLabels = useMemo(() => {

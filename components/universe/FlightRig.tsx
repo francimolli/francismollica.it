@@ -284,6 +284,10 @@ export function FlightRig({ setCoordinates }: FlightRigProps) {
             // ben DENTRO il confine (warn - softWall). Senza, sul bordo lo
             // stato sfarfallava e il toast si ri-mostrava all'infinito.
             const fromCenter = cam.position.length();
+            // finché il pilota spinge (joystick tenuto premuto, tipico su
+            // mobile) il respiro si rinnova: la scorta riaggancia solo
+            // DOPO che ha mollato i comandi, niente loop scorta↔cancella
+            if (moving) escortGraceUntil.current = now + BOUNDS.reattachDelayMs;
             if (fromCenter >= BOUNDS.limit) {
                 if (store.guide !== "escorting" && !flight.current && now >= escortGraceUntil.current) {
                     store.setGuide("escorting");
