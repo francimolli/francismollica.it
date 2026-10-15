@@ -13,7 +13,8 @@ import React from "react";
 
 export function Header() {
     const [isOpen, setIsOpen] = useState(false);
-    const { language, setLanguage, setOnboardingComplete } = useLanguage();
+    // menu iniziale disattivato: niente più setOnboardingComplete dal logo
+    const { language, setLanguage } = useLanguage();
     const t = translations[language];
 
     const {
@@ -54,7 +55,8 @@ export function Header() {
                     className="flex items-center gap-4 group lg:w-[400px] shrink-0 cursor-pointer pointer-events-auto"
                     onClick={() => {
                         resetView();
-                        setTimeout(() => setOnboardingComplete(false), 500);
+                        // menu iniziale disattivato: il logo resetta solo la vista
+                        // setTimeout(() => setOnboardingComplete(false), 500);
                     }}
                 >
                     {/* logo coi suoi colori veri (niente filtri) e ben visibile */}

@@ -17,33 +17,39 @@ import { FloatingSectionProvider } from "@/components/FloatingSectionContext";
 import { UniverseColorProvider } from "@/components/UniverseColorContext";
 import { LogbookMenu } from "@/components/LogbookMenu";
 import { VisualModeSwitch } from "@/components/VisualModeSwitch";
-import { OnboardingTerminal } from "@/components/OnboardingTerminal";
+// menu iniziale disattivato: si entra dritti nell'universo animato
+// import { OnboardingTerminal } from "@/components/OnboardingTerminal";
 import { useLanguage } from "@/lib/language-context";
 import { translations } from "@/lib/translations";
 
 export default function Home() {
-  const { onboardingComplete, setOnboardingComplete, language } = useLanguage();
-  const [mode, setMode] = useState<"immersive" | "classic" | "technical" | "uplink" | "projects">("immersive");
+  const { language } = useLanguage();
+  const [mode] = useState<"immersive" | "classic" | "technical" | "uplink" | "projects">("immersive");
   const t = translations[language];
 
-  const handleOnboardingComplete = (selectedMode: "immersive" | "classic" | "technical" | "uplink" | "projects") => {
-    setMode(selectedMode);
-    setOnboardingComplete(true);
-  };
+  // menu iniziale disattivato: per riattivarlo, ripristina onboardingComplete
+  // da useLanguage(), questo handler e il blocco OnboardingTerminal qui sotto
+  // const handleOnboardingComplete = (selectedMode: "immersive" | "classic" | "technical" | "uplink" | "projects") => {
+  //   setMode(selectedMode);
+  //   setOnboardingComplete(true);
+  // };
 
   const finalMode = (mode === "technical" || mode === "uplink" || mode === "projects") ? "immersive" : mode;
 
   return (
     <UniverseColorProvider>
     <>
+      {/* menu iniziale disattivato
       {!onboardingComplete && (
         <div className="fixed inset-0 z-[100]">
           <OnboardingTerminal onComplete={handleOnboardingComplete} />
         </div>
       )}
+      */}
 
       {/* Main Content: Always in DOM for SEO */}
-      <div className={!onboardingComplete ? "h-screen overflow-hidden opacity-0 pointer-events-none" : ""}>
+      {/* (il velo h-screen/opacity-0 legato a !onboardingComplete non serve più) */}
+      <div>
         {finalMode === "classic" ? (
           <main className="min-h-screen bg-black text-white p-4 md:p-8 overflow-y-auto">
             <div className="max-w-4xl mx-auto space-y-12">

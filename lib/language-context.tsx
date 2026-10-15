@@ -24,7 +24,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         }
     }, []);
 
-    const [onboardingComplete, setOnboardingComplete] = useState(false);
+    // menu iniziale disattivato: si parte già "a bordo" (per riattivarlo: false)
+    const [onboardingComplete, setOnboardingComplete] = useState(true);
 
     const handleSetLanguage = (lang: Language) => {
         setLanguage(lang);
