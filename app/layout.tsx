@@ -1,25 +1,30 @@
 import type { Metadata } from "next";
-import { Nunito, DM_Sans, Roboto_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 // Tipografia claymorphism (design-system/universo-cartoon/MASTER.md):
-// Nunito per titoli/etichette, DM Sans per il corpo, Roboto Mono per la telemetria.
-const nunito = Nunito({
+// Nunito per titoli/etichette, DM Sans per il corpo, Roboto Mono per la
+// telemetria. Font variabili SELF-HOSTED (subset latin): la build non
+// dipende più da Google Fonts, che sotto Turbopack ogni tanto esplodeva.
+const nunito = localFont({
+  src: "./fonts/nunito-latin.woff2",
   variable: "--font-nunito",
-  subsets: ["latin"],
-  weight: ["700", "800", "900"],
+  weight: "200 1000",
+  display: "swap",
 });
 
-const dmSans = DM_Sans({
+const dmSans = localFont({
+  src: "./fonts/dm-sans-latin.woff2",
   variable: "--font-dm-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: "100 1000",
+  display: "swap",
 });
 
-const robotoMono = Roboto_Mono({
+const robotoMono = localFont({
+  src: "./fonts/roboto-mono-latin.woff2",
   variable: "--font-roboto-mono",
-  subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: "100 700",
+  display: "swap",
 });
 
 const siteConfig = {
