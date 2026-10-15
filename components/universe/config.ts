@@ -84,6 +84,16 @@ export const TOUR = {
     flightSlowdown: 1.3, // i voli del tour prendono il loro tempo
 };
 
+// --- CONFINI ---------------------------------------------------------------
+// L'universo non è infinito. Oltre `warn` si sveglia la Lucciola Guardiana,
+// oltre `limit` scatta la scorta verso casa e un muro morbido spegne la fuga.
+export const BOUNDS = {
+    warn: 320, // raggio dal centro: la lucciola ti raggiunge
+    limit: 450, // confine: parte la scorta verso l'overview
+    softWall: 80, // spessore in cui la spinta in uscita si azzera del tutto
+    reattachDelayMs: 3000, // respiro concesso se il pilota interrompe la scorta
+};
+
 // --- VOLO ----------------------------------------------------------------
 export const FLIGHT = {
     speed: 55, // unità al secondo (sensazione simile al vecchio universo)

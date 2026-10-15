@@ -25,12 +25,25 @@ import { TourOverlay } from "./TourOverlay";
 import { useLanguage } from "@/lib/language-context";
 import { translations } from "@/lib/translations";
 
-// Sonda diagnostica: espone i contatori del renderer (draw call, programmi).
+// Sonda diagnostica: contatori del renderer + stato camera/tour per il debug.
 function DebugProbe() {
     const gl = useThree((s) => s.gl);
+    const camera = useThree((s) => s.camera);
     useEffect(() => {
         (window as unknown as Record<string, unknown>).__glinfo = gl.info;
-    }, [gl]);
+        (window as unknown as Record<string, unknown>).__univ = () => {
+            const s = useUniverseStore.getState();
+            return {
+                cam: camera.position.toArray().map((v) => Math.round(v * 10) / 10),
+                flyTo: s.flyTo,
+                flying: s.flying,
+                arrivedAt: s.arrivedAt,
+                phase: s.tour?.phase ?? null,
+                stop: s.tour?.stopIndex ?? null,
+                paused: (s.tour?.pausedUntil ?? 0) > Date.now(),
+            };
+        };
+    }, [gl, camera]);
     return null;
 }
 

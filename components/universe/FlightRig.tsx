@@ -91,12 +91,15 @@ export function FlightRig({ setCoordinates }: FlightRigProps) {
     const proximityThrottle = useRef(0);
     const lastOpenAt = useRef<Record<string, number>>({});
 
-    const flyTo = useUniverseStore((s) => s.flyTo);
+    // edge-triggered sul contatore: ogni richiesta avvia un volo nuovo,
+    // anche se la destinazione è la stessa di prima (es. ripresa del tour)
+    const flightSeq = useUniverseStore((s) => s.flightSeq);
     const reducedMotion = useUniverseStore((s) => s.reducedMotion);
 
     useEffect(() => {
-        if (!flyTo || !controls.current) return;
         const store = useUniverseStore.getState();
+        const flyTo = store.flyTo;
+        if (!flyTo || !controls.current) return;
         const anchor = resolveAnchor(flyTo, camera, store.flyShot);
         if (!anchor) return;
         const from = camera.position.clone();
@@ -133,7 +136,7 @@ export function FlightRig({ setCoordinates }: FlightRigProps) {
         };
         store.setFlying(true);
         controls.current.enabled = false;
-    }, [flyTo, camera]);
+    }, [flightSeq, camera]);
 
     useEffect(() => () => {
         if (teleportTimer.current) clearTimeout(teleportTimer.current);
@@ -155,8 +158,8 @@ export function FlightRig({ setCoordinates }: FlightRigProps) {
                 // il pilota riprende i comandi
                 flight.current = null;
                 ctl.enabled = true;
-                store.setFlying(false);
-                if (store.warping) store.setWarping(false);
+                // pulisce anche flyTo/flyShot: senza, il tour non può riprendere
+                store.cancelFlight();
             } else {
                 f.t = Math.min(f.t + dt / f.duration, 1);
                 const e = easeInOutCubic(f.t);

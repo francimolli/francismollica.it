@@ -35,6 +35,9 @@ export const bumpControlInput = () => { lastControlInput.at = Date.now(); };
 
 export type QualityTier = "high" | "medium" | "low";
 
+// La Lucciola Guardiana dei confini: dorme, ti raggiunge, o ti scorta a casa.
+export type GuideState = "idle" | "approaching" | "escorting";
+
 export const QUALITY_PRESETS: Record<
     QualityTier,
     { dpr: [number, number]; stars: number; dust: number; nebula: number }
@@ -52,11 +55,13 @@ interface UniverseStore {
     // volo della camera
     flyTo: string | null; // id pianeta o "overview"
     flyShot: TourShot | null; // inquadratura richiesta (regia del tour)
+    flightSeq: number; // contatore richieste: ogni volo è un fronte nuovo, anche verso lo stesso id
     openOnArrive: boolean; // la sezione si apre all'arrivo (click diretto sì, logbook no)
     flying: boolean;
     warping: boolean; // salto wormhole: velo violetto + volo rapido
     arrivedAt: string | null;
     requestFlight: (id: string, openOnArrive?: boolean, shot?: TourShot | null) => void;
+    cancelFlight: () => void; // il pilota riprende i comandi: pulisce TUTTO lo stato di volo
     setFlying: (v: boolean) => void;
     setWarping: (v: boolean) => void;
     setArrived: (id: string | null) => void;
@@ -96,12 +101,21 @@ export const useUniverseStore = create<UniverseStore>((set) => ({
     setReducedMotion: (v) => set({ reducedMotion: v }),
     flyTo: null,
     flyShot: null,
+    flightSeq: 0,
     openOnArrive: true,
     flying: false,
     warping: false,
     arrivedAt: null,
     requestFlight: (id, openOnArrive = true, shot = null) =>
-        set({ flyTo: id, arrivedAt: null, openOnArrive, flyShot: shot }),
+        set((s) => ({
+            flyTo: id,
+            arrivedAt: null,
+            openOnArrive,
+            flyShot: shot,
+            flightSeq: s.flightSeq + 1,
+        })),
+    cancelFlight: () =>
+        set({ flyTo: null, flyShot: null, flying: false, warping: false }),
     tour: null,
     startTour: (source) =>
         set({ tour: { source, stopIndex: 0, phase: "traveling", pausedUntil: 0 } }),
