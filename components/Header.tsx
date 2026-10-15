@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
-import { RotateCcw, Settings2, SlidersHorizontal, RefreshCw, Aperture, Zap, Menu as MenuIcon } from "lucide-react";
+import { RotateCcw, Settings2, SlidersHorizontal, Zap, Menu as MenuIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useCityControls } from "@/components/CityControlsContext";
@@ -91,26 +91,16 @@ export function Header() {
         resetDefaults,
         manualSetTime,
         timeSpeed, setTimeSpeed,
-        flyTo, resetView, triggerSystemReboot,
-        regenerateSimulation,
+        flyTo, resetView,
         coordinates,
         invertYAxis, setInvertYAxis,
         invertXAxis, setInvertXAxis,
         soundEnabled, setSoundEnabled,
-        triggerEscape,
-        activateBoost, boostActive, boostCooldown,
-        playExplosionSound
+        activateBoost, boostActive, boostCooldown
     } = useCityControls();
 
     const { setExpandedSection } = useFloatingSection();
     const { mode: colorMode } = useUniverseColor();
-
-    // Escape Coordinates
-    const escapeCoordinates = [
-        { x: 850, y: 480, z: 850, name: "Nebula Cluster" },
-        { x: -900, y: 600, z: 550, name: "Stellar Gateway" },
-        { x: 580, y: 750, z: -880, name: "Cosmic Cathedral" },
-    ];
 
     // Online Status
     const [isOnline, setIsOnline] = useState(false);
@@ -123,41 +113,6 @@ export function Header() {
         };
         checkOnlineStatus();
     }, []);
-
-    // Cooldowns
-    const [cooldown, setCooldown] = useState(0);
-    const [escapeCooldown, setEscapeCooldown] = useState(0);
-
-    useEffect(() => {
-        if (cooldown > 0) { const timer = setInterval(() => setCooldown(c => c - 1), 1000); return () => clearInterval(timer); }
-    }, [cooldown]);
-
-    useEffect(() => {
-        if (escapeCooldown > 0) { const timer = setInterval(() => setEscapeCooldown(c => c - 1), 1000); return () => clearInterval(timer); }
-    }, [escapeCooldown]);
-
-    const handleRegenerate = () => {
-        if (cooldown > 0) return;
-        const randomTime = Math.random() * 24;
-        const randomSpeed = (Math.random() * 10) - 5;
-        const randomTraffic = Math.floor(Math.random() * 100);
-        manualSetTime(randomTime);
-        setTimeSpeed(randomSpeed);
-        setTrafficLevel(randomTraffic);
-        regenerateSimulation();
-        triggerSystemReboot(); // Trigger blackout effect
-        playExplosionSound();
-        setCooldown(145);
-        setIsOpen(false);
-    };
-
-    const handleEscape = () => {
-        if (escapeCooldown > 0) return;
-        const randomCoord = escapeCoordinates[Math.floor(Math.random() * escapeCoordinates.length)];
-        triggerEscape({ x: randomCoord.x, y: randomCoord.y, z: randomCoord.z });
-        playExplosionSound();
-        setEscapeCooldown(55);
-    };
 
     const formatTime = (val: number) => {
         const hours = Math.floor(val);
@@ -249,24 +204,6 @@ export function Header() {
 
                         <div className="w-px h-5 bg-white/10" />
 
-                        <button
-                            onClick={handleRegenerate}
-                            disabled={cooldown > 0}
-                            className={`clay-press w-9 h-9 flex items-center justify-center rounded-full transition-all border border-transparent ${cooldown > 0 ? 'text-u-coral cursor-not-allowed opacity-50' : 'text-u-sky hover:bg-u-sky/10 hover:border-u-sky/30'}`}
-                            title="Regenerate"
-                        >
-                            <RefreshCw size={16} className={cooldown > 0 ? "" : "hover:rotate-180 transition-transform duration-500"} />
-                        </button>
-
-                        <button
-                            onClick={handleEscape}
-                            disabled={escapeCooldown > 0}
-                            className={`clay-press w-9 h-9 flex items-center justify-center rounded-full transition-all border border-transparent ${escapeCooldown > 0 ? 'text-u-sun cursor-not-allowed opacity-50' : 'text-u-lilac hover:bg-u-lilac/10 hover:border-u-lilac/30 shadow-[0_0_0_rgba(0,0,0,0)] hover:shadow-[0_0_15px_rgba(201,182,245,0.4)]'}`}
-                            title="Wormhole Jump"
-                        >
-                            {escapeCooldown > 0 ? <span className="text-[9px] font-mono">{escapeCooldown}</span> : <Aperture size={16} className="animate-[spin_4s_linear_infinite]" />}
-                        </button>
-
                         {/* BOOST BUTTON (Green Lightning) */}
                         <button
                             onClick={() => { activateBoost(); }}
@@ -338,24 +275,7 @@ export function Header() {
                             )}
                         </button>
 
-                        {/* 1. Razzo Mobile - Visibile */}
-                        <button
-                            onClick={handleEscape}
-                            disabled={escapeCooldown > 0}
-                            className={`w-10 h-10 flex items-center justify-center rounded-full border-2 bg-u-surface/60 backdrop-blur-md transition-all
-                            ${escapeCooldown > 0
-                                    ? 'border-u-sun/30 text-u-sun opacity-50'
-                                    : 'border-u-lilac/30 text-u-lilac hover:bg-u-lilac/15 shadow-[0_0_10px_rgba(201,182,245,0.25)]'
-                                }`}
-                        >
-                            {escapeCooldown > 0 ? (
-                                <span className="text-[10px] font-bold font-mono">{escapeCooldown}</span>
-                            ) : (
-                                <Aperture size={18} className="animate-[spin_4s_linear_infinite]" />
-                            )}
-                        </button>
-
-                        {/* 2. Menu Mobile Trigger - Visibile */}
+                        {/* Menu Mobile Trigger - Visibile */}
                         <Sheet open={isOpen} onOpenChange={setIsOpen}>
                             <SheetTrigger asChild>
                                 <Button variant="outline" size="icon" className="w-10 h-10 rounded-full bg-u-surface/60 border-2 border-u-sun/30 text-u-sun hover:bg-u-surface2/60 hover:text-u-sun hover:border-u-sun backdrop-blur-md">
@@ -416,9 +336,6 @@ export function Header() {
                                         <div className="flex flex-col gap-4 pt-4">
                                             <Button variant="outline" onClick={resetDefaults} className="h-12 rounded-xl border-u-lilac/30 text-u-lilac/80 hover:text-u-lilac hover:border-u-lilac hover:bg-white/5 uppercase text-xs tracking-widest font-heading font-bold">
                                                 <RotateCcw className="mr-2 h-4 w-4" /> Reset
-                                            </Button>
-                                            <Button variant="outline" onClick={() => { handleRegenerate(); setIsOpen(false); }} disabled={cooldown > 0} className="h-12 rounded-xl border-u-sun/30 text-u-sun bg-u-surface2/40 hover:bg-u-surface2/70 hover:border-u-sun uppercase text-xs tracking-widest font-heading font-bold">
-                                                <Zap className="mr-2 h-4 w-4" /> {cooldown > 0 ? `${cooldown}s` : t.header.controls.reloadUniverse}
                                             </Button>
                                         </div>
                                     </div>
