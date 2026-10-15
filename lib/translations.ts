@@ -13,6 +13,11 @@ export const translations = {
             },
             hint: "WASD o frecce per volare · clicca un pianetino per visitarlo",
             eggMessage: "Le creaturine ti vogliono bene: un pianeta segreto si è svelato!",
+            guide: {
+                title: "La Lucciola Guardiana",
+                found: "Una lucciola ti ha trovato: oltre questo buio non c'è più niente…",
+                escort: "La lucciola ti fa strada: si torna verso i pianetini ✦",
+            },
             tour: {
                 stop: "tappa",
                 land: "Atterra ✦",
@@ -431,6 +436,11 @@ export const translations = {
             },
             hint: "WASD or arrows to fly · click a little planet to visit it",
             eggMessage: "The little creatures love you: a secret planet has revealed itself!",
+            guide: {
+                title: "The Guardian Firefly",
+                found: "A firefly has found you: beyond this dark there's nothing left…",
+                escort: "The firefly lights the way: back toward the little planets ✦",
+            },
             tour: {
                 stop: "stop",
                 land: "Land ✦",

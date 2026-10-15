@@ -4,7 +4,7 @@ import { useEffect, useRef, type ComponentRef } from "react";
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { FLIGHT, OVERVIEW, PLANETS, SECRET_ARTIFACTS, TOUR, type TourShot } from "./config";
+import { BOUNDS, FLIGHT, OVERVIEW, PLANETS, SECRET_ARTIFACTS, TOUR, type TourShot } from "./config";
 import { easeInOutCubic } from "./toon";
 import { artifactWorldPosition } from "./Artifacts";
 import { bridge, flightInput, lastInteraction, useUniverseStore } from "./store";
@@ -27,6 +27,7 @@ const move = new THREE.Vector3();
 const offset = new THREE.Vector3();
 const localRight = new THREE.Vector3();
 const planetCenter = new THREE.Vector3();
+const outward = new THREE.Vector3();
 
 // Ancora d'atterraggio: ci si avvicina dal lato da cui si arriva. La regia
 // del tour sceglie l'inquadratura: tre quarti (default), orbita bassa a pelo
@@ -90,6 +91,8 @@ export function FlightRig({ setCoordinates }: FlightRigProps) {
     const coordThrottle = useRef(0);
     const proximityThrottle = useRef(0);
     const lastOpenAt = useRef<Record<string, number>>({});
+    // tregua dopo che il pilota ha interrotto la scorta della Lucciola
+    const escortGraceUntil = useRef(0);
 
     // edge-triggered sul contatore: ogni richiesta avvia un volo nuovo,
     // anche se la destinazione è la stessa di prima (es. ripresa del tour)
@@ -100,6 +103,8 @@ export function FlightRig({ setCoordinates }: FlightRigProps) {
         const store = useUniverseStore.getState();
         const flyTo = store.flyTo;
         if (!flyTo || !controls.current) return;
+        // un volo verso un pianeta "libera" dalla scorta: tanto si torna a casa
+        if (store.guide === "escorting" && flyTo !== "overview") store.setGuide("approaching");
         const anchor = resolveAnchor(flyTo, camera, store.flyShot);
         if (!anchor) return;
         const from = camera.position.clone();
@@ -160,6 +165,11 @@ export function FlightRig({ setCoordinates }: FlightRigProps) {
                 ctl.enabled = true;
                 // pulisce anche flyTo/flyShot: senza, il tour non può riprendere
                 store.cancelFlight();
+                if (store.guide === "escorting") {
+                    // la Lucciola lascia fare, ma resta in zona e riaggancia tra poco
+                    store.setGuide("approaching");
+                    escortGraceUntil.current = Date.now() + BOUNDS.reattachDelayMs;
+                }
             } else {
                 f.t = Math.min(f.t + dt / f.duration, 1);
                 const e = easeInOutCubic(f.t);
@@ -186,6 +196,17 @@ export function FlightRig({ setCoordinates }: FlightRigProps) {
                 .addScaledVector(forward, flightInput.z);
             if (move.lengthSq() > 0) {
                 move.normalize().multiplyScalar(speed);
+                // muro morbido ai confini: la componente in uscita si spegne
+                // progressivamente, finché oltre softWall non si avanza più
+                const fromCenter = cam.position.length();
+                if (fromCenter > BOUNDS.limit) {
+                    outward.copy(cam.position).normalize();
+                    const out = move.dot(outward);
+                    if (out > 0) {
+                        const wall = Math.min((fromCenter - BOUNDS.limit) / BOUNDS.softWall, 1);
+                        move.addScaledVector(outward, -out * wall);
+                    }
+                }
                 cam.position.add(move);
                 ctl.target.add(move);
             }
@@ -256,6 +277,19 @@ export function FlightRig({ setCoordinates }: FlightRigProps) {
                         break;
                     }
                 }
+            }
+
+            // --- confini: la Lucciola Guardiana ---
+            const fromCenter = cam.position.length();
+            if (fromCenter >= BOUNDS.limit) {
+                if (store.guide !== "escorting" && !flight.current && now >= escortGraceUntil.current) {
+                    store.setGuide("escorting");
+                    store.requestFlight("overview", false);
+                }
+            } else if (fromCenter >= BOUNDS.warn) {
+                if (store.guide === "idle") store.setGuide("approaching");
+            } else if (store.guide !== "idle" && !flight.current && !store.flying) {
+                store.setGuide("idle");
             }
 
             for (const a of SECRET_ARTIFACTS) {

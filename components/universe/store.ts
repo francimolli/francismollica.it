@@ -65,6 +65,9 @@ interface UniverseStore {
     setFlying: (v: boolean) => void;
     setWarping: (v: boolean) => void;
     setArrived: (id: string | null) => void;
+    // la Lucciola Guardiana dei confini
+    guide: GuideState;
+    setGuide: (v: GuideState) => void;
     // la visita guidata
     tour: {
         source: "manual" | "screensaver";
@@ -125,6 +128,8 @@ export const useUniverseStore = create<UniverseStore>((set) => ({
     setFlying: (v) => set({ flying: v }),
     setWarping: (v) => set({ warping: v }),
     setArrived: (id) => set({ arrivedAt: id, flying: false, flyTo: null }),
+    guide: "idle",
+    setGuide: (v) => set({ guide: v }),
     proximitySection: null,
     setProximitySection: (id) => set({ proximitySection: id }),
     pendingUnlock: null,

@@ -11,6 +11,7 @@ import { OVERVIEW, PLANETS, SECTION_PLANET } from "./config";
 import { Ambient } from "./Ambient";
 import { Planet } from "./Planet";
 import { Fauna } from "./Fauna";
+import { Guida } from "./Guida";
 import { Artifacts } from "./Artifacts";
 import { Mood } from "./Mood";
 import { Ship } from "./Ship";
@@ -38,6 +39,7 @@ function DebugProbe() {
                 flyTo: s.flyTo,
                 flying: s.flying,
                 arrivedAt: s.arrivedAt,
+                guide: s.guide,
                 phase: s.tour?.phase ?? null,
                 stop: s.tour?.stopIndex ?? null,
                 paused: (s.tour?.pausedUntil ?? 0) > Date.now(),
@@ -83,7 +85,7 @@ export function CartoonUniverse() {
     const creatureEgg = friendCount >= CREATURE_EGG_GOAL;
     const preset = QUALITY_PRESETS[tier];
 
-    const [toast, setToast] = useState<string | null>(null);
+    const [toast, setToast] = useState<{ title: string; message: string } | null>(null);
     // suggerimento comandi al primo ingresso (solo desktop; componente client-only)
     const [showHint, setShowHint] = useState(() => {
         try {
@@ -258,8 +260,9 @@ export function CartoonUniverse() {
     // artefatto trovato o easter egg delle amicizie: toast + sblocchi
     useEffect(() => {
         let timer: ReturnType<typeof setTimeout> | null = null;
-        const show = (message: string, alsoClearPending: boolean) => {
-            setToast(message);
+        const wow = (t as never as Record<string, Record<string, Record<string, string>>>).secrets?.alert?.wow ?? "✦";
+        const show = (title: string, message: string, alsoClearPending: boolean) => {
+            setToast({ title, message });
             if (timer) clearTimeout(timer);
             timer = setTimeout(() => {
                 setToast(null);
@@ -270,7 +273,7 @@ export function CartoonUniverse() {
             if (s.pendingUnlock && s.pendingUnlock !== prev.pendingUnlock) {
                 unlockSecret(s.pendingUnlock);
                 const secretT = (t as never as Record<string, Record<string, { message?: string }>>).secrets;
-                show(secretT?.[s.pendingUnlock]?.message ?? s.pendingUnlock, true);
+                show(wow, secretT?.[s.pendingUnlock]?.message ?? s.pendingUnlock, true);
             }
             // l'uovo scatta esattamente al traguardo (non ri-annuncia ai mount successivi)
             if (
@@ -278,7 +281,15 @@ export function CartoonUniverse() {
                 prev.creatureFriends.length < CREATURE_EGG_GOAL &&
                 prev.creatureFriends.length > 0
             ) {
-                show(t.universe?.eggMessage ?? "✦", false);
+                show(wow, t.universe?.eggMessage ?? "✦", false);
+            }
+            // la Lucciola Guardiana ti ha trovato / ti scorta a casa
+            const guideT = t.universe?.guide;
+            if (s.guide === "approaching" && prev.guide === "idle") {
+                show(guideT?.title ?? "✦", guideT?.found ?? "✦", false);
+            }
+            if (s.guide === "escorting" && prev.guide !== "escorting") {
+                show(guideT?.title ?? "✦", guideT?.escort ?? "✦", false);
             }
         });
         return () => {
@@ -334,6 +345,7 @@ export function CartoonUniverse() {
                             <Planet key={p.id} config={p} label={planetLabels[p.id]} phrases={phrases} />
                         ))}
                         <Fauna />
+                        <Guida />
                         <Artifacts />
                         <Ship />
                     </Suspense>
@@ -391,9 +403,9 @@ export function CartoonUniverse() {
                         </div>
                         <div>
                             <div className="font-heading text-xs font-extrabold uppercase tracking-widest text-[#ffd98a]">
-                                {(t as never as Record<string, Record<string, Record<string, string>>>).secrets?.alert?.wow}
+                                {toast.title}
                             </div>
-                            <div className="font-sans text-sm font-medium text-white">{toast}</div>
+                            <div className="font-sans text-sm font-medium text-white">{toast.message}</div>
                         </div>
                     </motion.div>
                 )}
