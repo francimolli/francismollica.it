@@ -295,6 +295,11 @@ export function CartoonUniverse() {
                 <Mood />
                 <DebugProbe />
 
+                {/* Montata PRIMA della Ship: a parità di priorità gli useFrame
+                    girano in ordine di registrazione, e la navicella deve
+                    leggere la camera DOPO che il rig l'ha mossa (niente jitter). */}
+                <FlightRig setCoordinates={setCoordinates} />
+
                 <PerformanceMonitor
                     onDecline={() => useUniverseStore.getState().degrade()}
                     flipflops={2}
@@ -309,8 +314,6 @@ export function CartoonUniverse() {
                         <Ship />
                     </Suspense>
                 </PerformanceMonitor>
-
-                <FlightRig setCoordinates={setCoordinates} />
 
                 {/* post leggero: bloom morbido + vignetta (spento sul tier basso) */}
                 {tier !== "low" && (
