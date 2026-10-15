@@ -4,78 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
-import { RotateCcw, Settings2, SlidersHorizontal, Zap, Menu as MenuIcon } from "lucide-react";
+import { RotateCcw, Settings2, Zap, Menu as MenuIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useCityControls } from "@/components/CityControlsContext";
-import { useFloatingSection } from "@/components/FloatingSectionContext";
 import { translations } from "@/lib/translations";
 import React from "react";
-
-// --- PROFESSIONAL SLIDER COMPONENT (Bigger & Better) ---
-const ControlSlider = ({
-    label,
-    value,
-    min,
-    max,
-    step,
-    onChange,
-    unit = "",
-    displayValue,
-    width = "w-32" // Default width increased
-}: {
-    label: string,
-    value: number,
-    min: number,
-    max: number,
-    step: number,
-    onChange: (val: number) => void,
-    unit?: string,
-    displayValue?: string,
-    width?: string
-}) => (
-    <div className={`group flex flex-col gap-2 relative ${width}`}>
-        {/* Label Row */}
-        <div className="flex justify-between items-end text-[11px] font-heading tracking-widest uppercase font-extrabold">
-            <span className="text-u-lime/90 group-hover:text-u-sun transition-colors">{label}</span>
-            <span className="text-u-cream font-mono font-bold drop-shadow-[0_0_6px_rgba(255,217,138,0.4)]">{displayValue || value}{unit}</span>
-        </div>
-
-        {/* Slider Input */}
-        <div className="relative h-4 flex items-center">
-            {/* Track */}
-            <div className="absolute w-full h-[5px] bg-white/10 rounded-full overflow-hidden backdrop-blur-sm border border-white/5">
-                <div
-                    className="h-full bg-u-lilac shadow-[0_0_12px_rgba(201,182,245,0.7)]"
-                    style={{ width: `${((value - min) / (max - min)) * 100}%` }}
-                />
-            </div>
-
-            <input
-                type="range"
-                min={min}
-                max={max}
-                step={step}
-                value={value}
-                onChange={(e) => onChange(parseFloat(e.target.value))}
-                className="w-full absolute z-10 opacity-0 cursor-pointer h-full"
-            />
-
-            {/* Thumb Visual */}
-            <div
-                className="pointer-events-none absolute h-4 w-4 bg-u-surface border-2 border-u-sun rounded-full shadow-[0_0_10px_rgba(255,217,138,0.7)] group-hover:scale-125 transition-transform duration-200"
-                style={{
-                    left: `calc(${((value - min) / (max - min)) * 100}% - 8px)`
-                }}
-            />
-        </div>
-    </div>
-);
-
-// --- SEPARATOR ---
-const VerticalDivider = () => (
-    <div className="w-px h-8 bg-gradient-to-b from-transparent via-white/20 to-transparent mx-4" />
-);
 
 export function Header() {
     const [isOpen, setIsOpen] = useState(false);
@@ -83,22 +17,14 @@ export function Header() {
     const t = translations[language];
 
     const {
-        time, setTime,
-        fogDensity, setFogDensity,
-        trafficLevel, setTrafficLevel,
-        zoom, setZoom,
         resetDefaults,
-        manualSetTime,
-        timeSpeed, setTimeSpeed,
-        flyTo, resetView,
+        resetView,
         coordinates,
         invertYAxis, setInvertYAxis,
         invertXAxis, setInvertXAxis,
         soundEnabled, setSoundEnabled,
         activateBoost, boostActive, boostCooldown
     } = useCityControls();
-
-    const { setExpandedSection } = useFloatingSection();
 
     // Online Status
     const [isOnline, setIsOnline] = useState(false);
@@ -111,12 +37,6 @@ export function Header() {
         };
         checkOnlineStatus();
     }, []);
-
-    const formatTime = (val: number) => {
-        const hours = Math.floor(val);
-        const minutes = Math.floor((val - hours) * 60);
-        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-    };
 
     return (
         <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none select-none">
@@ -154,33 +74,7 @@ export function Header() {
                     </div>
                 </div>
 
-                {/* 2. CENTER: COMMAND CONSOLE (Desktop Only - Bigger) */}
-                <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <div className="flex items-center px-8 py-3 bg-u-surface/70 border-2 border-u-lilac/20 rounded-full backdrop-blur-md shadow-[0_8px_30px_rgba(10,10,35,0.5)]">
-
-                        {/* Sliders */}
-                        <div className="flex items-center gap-6">
-                            <ControlSlider label={t.header.controls.localTime} value={time} displayValue={formatTime(time)} min={0} max={24} step={0.25} onChange={manualSetTime} unit="" width="w-36" />
-                            <VerticalDivider />
-                            <ControlSlider label={t.header.controls.timeWarp} value={timeSpeed} min={-5} max={5} step={0.25} onChange={setTimeSpeed} unit="x" width="w-24" />
-                            <VerticalDivider />
-                            <ControlSlider label={t.header.controls.traffic} value={trafficLevel} min={0} max={100} step={1} onChange={setTrafficLevel} unit="%" width="w-24" />
-                        </div>
-
-                        {/* Integrated Reset */}
-                        <div className="pl-6 ml-4 border-l border-white/10">
-                            <button
-                                onClick={resetDefaults}
-                                className="clay-press flex items-center justify-center w-9 h-9 rounded-full bg-white/5 border border-white/5 text-white/40 hover:text-u-sun hover:border-u-sun/50 hover:bg-u-surface2/60 transition-all duration-300"
-                                title="System Reset"
-                            >
-                                <RotateCcw size={16} />
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                {/* 3. RIGHT: TOOLS (Desktop & Mobile) */}
+                {/* 2. RIGHT: TOOLS (Desktop & Mobile) */}
                 <div className="flex items-center justify-end gap-3 lg:gap-4 lg:w-[400px] shrink-0">
 
                     {/* Telemetry (Desktop Only) */}
@@ -199,6 +93,15 @@ export function Header() {
                         </button>
 
                         <div className="w-px h-5 bg-white/10" />
+
+                        {/* RESET */}
+                        <button
+                            onClick={resetDefaults}
+                            className="clay-press flex items-center justify-center w-9 h-9 rounded-full bg-white/5 border border-white/5 text-white/40 hover:text-u-sun hover:border-u-sun/50 hover:bg-u-surface2/60 transition-all duration-300"
+                            title="Reset"
+                        >
+                            <RotateCcw size={16} />
+                        </button>
 
                         {/* BOOST BUTTON (Green Lightning) */}
                         <button
@@ -291,10 +194,6 @@ export function Header() {
 
                                     <div className="p-8 space-y-10 flex-1 overflow-y-auto">
                                         <div className="space-y-8">
-                                            <ControlSlider label={t.header.controls.timeWarp || "Time Warp"} value={timeSpeed} min={-5} max={5} step={0.25} onChange={setTimeSpeed} unit="x" width="w-full" />
-                                            <ControlSlider label={t.header.controls.traffic || "Density"} value={trafficLevel} min={0} max={100} step={1} onChange={setTrafficLevel} unit="%" width="w-full" />
-                                            <ControlSlider label={t.header.controls.timeOfDay || "Time of Day"} value={time} displayValue={formatTime(time)} min={0} max={24} step={0.25} onChange={manualSetTime} unit="" width="w-full" />
-
                                             {/* Invert Y Toggle */}
                                             <div className="flex items-center justify-between pt-2">
                                                 <span className="text-[10px] font-heading uppercase tracking-widest text-u-lilac/80 font-extrabold">{t.header.controls.invertY || "Invert Look Y"}</span>
